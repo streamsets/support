@@ -1,16 +1,44 @@
 <img src="../../readme.png" align="right" />
 
-# Support Tooling / Example Pipelines and more....
+# LocalDir ==> DataTypeConversion ==> JDBCProducer
 
-This repository will host any tooling that support team use in day to day job to make things more efficient and intresting. Also let's build a repository of example pipelines to avoid re-inventing the wheel.
+# Table schema:
 
-## Contributing
+create table flights
+(Year mediumint ,
+Month mediumint ,
+DayofMonth mediumint ,
+DayOfWeek mediumint ,
+DepTime mediumint ,
+CRSDepTime mediumint ,
+ArrTime mediumint ,
+CRSArrTime mediumint ,
+UniqueCarrier varchar(255) ,
+FlightNum mediumint ,
+TailNum varchar(255) ,
+ActualElapsedTime mediumint ,
+CRSElapsedTime mediumint ,
+AirTime varchar(255) ,
+ArrDelay mediumint ,
+DepDelay mediumint ,
+Origin varchar(255) ,
+Dest varchar(255) ,
+Distance mediumint ,
+TaxiIn varchar(255) ,
+TaxiOut varchar(255) ,
+Cancelled mediumint ,
+CancellationCode varchar(255) ,
+Diverted mediumint ,
+CarrierDelay varchar(255) ,
+WeatherDelay varchar(255) ,
+NASDelay varchar(255) ,
+SecurityDelay varchar(255) ,
+LateAircraftDelay varchar(255),
+id mediumint(8) unsigned NOT NULL auto_increment,
+PRIMARY KEY (id)) AUTO_INCREMENT=1;
 
-First step: Let's contribute.
-Please add a nice readme for your contributions to make it easy to consume
+# Test Data: 
+wget http://stat-computing.org/dataexpo/2009/1987.csv.bz2
 
-## Versioning
 
-1) Let's add the SDC_VERSION in pipeline name before contributing here to avoid versioning issue while using them
-2) Please add readme on your pipeline adding adequate details.
-3) Screenshots and details on setting up endpoints are very much welcome
+
