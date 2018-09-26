@@ -11,7 +11,7 @@ Please add a nice readme for your contributions to make it easy to consume
 
 ## Versioning
 
-1) Let's add the SDC_VERSION in pipeline names before contributing here to avoid versioning issue while using them
+1) Let's add the SDC_VERSION in pipeline name before contributing here to avoid versioning issue while using them
 2) Please add readme on your pipeline adding adequate details.
 3) Screenshots and details on setting up endpoints are very much welcome
 
