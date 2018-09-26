@@ -1,4 +1,4 @@
-<img src="../images/readme.png" align="right" />
+<img src="/images/readme.png" align="right" />
 J
 ## JMS(Active MQ) ==> Trash
 <img src="JMS_pipeline.png" align="center" />
