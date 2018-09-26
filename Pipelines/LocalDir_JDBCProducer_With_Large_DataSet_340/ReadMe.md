@@ -1,6 +1,7 @@
 <img src="../../readme.png" align="right" />
 LocalDir ==> DataTypeConversion ==> JDBCProducer
 <img src="LocalDir_JDBCProducer_With_Large_DataSet.png" align="center" />
+
 # Table schema:
 ```
 create table flights
