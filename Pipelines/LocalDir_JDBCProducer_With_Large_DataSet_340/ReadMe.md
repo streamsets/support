@@ -3,7 +3,7 @@
 # LocalDir ==> DataTypeConversion ==> JDBCProducer
 
 # Table schema:
-
+```
 create table flights
 (Year mediumint ,
 Month mediumint ,
@@ -36,7 +36,7 @@ SecurityDelay varchar(255) ,
 LateAircraftDelay varchar(255),
 id mediumint(8) unsigned NOT NULL auto_increment,
 PRIMARY KEY (id)) AUTO_INCREMENT=1;
-
+```
 # Test Data: 
 wget http://stat-computing.org/dataexpo/2009/1987.csv.bz2
 
