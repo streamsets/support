@@ -1,7 +1,7 @@
 <img src="../../readme.png" align="right" />
-
-# JMS(Active MQ) ==> Trash
-
+J
+## JMS(Active MQ) ==> Trash
+<img src="MS_pipeline.png" align="right" />
 # JMS configuration:
 
 <img src="JMS.png" align="center" />
