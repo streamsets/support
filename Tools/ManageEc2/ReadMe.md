@@ -12,7 +12,12 @@ This script start/stop the AWS instance.
 # Usage: /Users/sanjeev/aws.sh [-start] [-stop] [-status] [-setup]
 
   -start  <instance-name>       Start the AWS instance.
+  
   -stop    <instance-name>     Stop the AWS instance
+  
   -status   [OPTIONAL] <instance-name>    Status of the AWS instance
+  
   -setup <your-name>  Update /etc/hosts file with your EC2 instances
+  
       ** <your-name>  == Owner TAG on your EC2 instances
+      
