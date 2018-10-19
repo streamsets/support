@@ -1,6 +1,10 @@
 <img src="/images/readme.png" align="right" />
 
-This script start/stop the AWS instance.
+This script perform following operations on your EC2 instance
+1) Status check
+2) Start instance
+3) Stop instance
+4) Update /etc/hosts file with your EC2 instance information
 
 # Pre-req:
 
