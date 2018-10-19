@@ -49,4 +49,4 @@ You can add docker start command to your ~/.bash_profile on the ec2 instance to 
 
 I'm going to test setting up cron job using this script so that we can shutdown our instance right after they are automatically restarted by IT
 # why?
-Becasue now you can leverage this script to start/stop your instance from your Mac and therefore no need for these instance to start running at 7 AM in the morning when you're not using it. You're welcome ;)
+Becasue now you can leverage this script to manage your instances from your Mac and therefore no need for these instances to start running at 7 AM in the morning when you're not using it. You're welcome ;)
