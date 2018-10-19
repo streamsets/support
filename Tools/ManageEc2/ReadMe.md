@@ -1,6 +1,6 @@
 <img src="/images/readme.png" align="right" />
 
-This script perform following operations on your EC2 instance
+# This script perform following operations on your EC2 instance
 1) Status check
 2) Start instance
 3) Stop instance
