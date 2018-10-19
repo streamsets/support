@@ -27,7 +27,7 @@ Default output format:  [json / text] ** Script can handle either, however choos
 2) Your host file is default /etc/hosts ** I'll wonder why it would be anything else ;)
 
 # Customization:
-1) When you clone this script locally, please update the 'SSH_KEY' variable with your AWS key
+1) When you clone this script locally, please update the 'SSH_KEY'variable at the top with your AWS key
 
 # Pro-Tip: 
 
