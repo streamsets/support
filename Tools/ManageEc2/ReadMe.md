@@ -4,14 +4,34 @@
 1) Status check
 2) Start instance
 3) Stop instance
-4) Update /etc/hosts file with your EC2 instance information
+4) Update /etc/hosts file with your EC2 instance information. Use 'setup' option to update your hosts file with your current ec2 instances
 
 # Pre-req:
 
 1) Get your AWS Access ID and Secret from IT
 2) Install awscli (eg: for OSX -brew install awscli) or follow ==> https://docs.aws.amazon.com/cli/latest/userguide/cli-install-macos.html
 
-** You can add docker start command to your ~/.bash_profile on the ec2 instance to launch your docker containers upon starting the instance using this script 
+  # Configuring your AWS CLI
+  Run the command 'aws configure'
+  This will ask you for following:
+  
+AWS Access Key ID: get from IT 
+AWS Secret Access Key: get from IT
+Default region name: Region for your EC2 instances. For example:  [us-west-2] - ** Please note that the region is 'us-west-2' NOT 'us-west-2a'
+Default output format:  [json / text] ** Script can handle either, however choose JSON for a better format if you are going to play with AWS CLI
+
+3) This scripts makes certain assumptions and need one customization
+
+# Assumptions: 
+1) The 'owner' tag on your Ec2 instance is same as your user name on your Mac
+2) Your host file is default /etc/hosts ** I'll wonder why it would be anything else ;)
+
+# Customization:
+1) When you clone this script locally, please update the 'SSH_KEY' variable with your AWS key
+
+# Pro-Tip: 
+
+You can add docker start command to your ~/.bash_profile on the ec2 instance to launch your docker containers upon starting the instance using this script 
 
 # Usage: /Users/sanjeev/aws.sh [-start] [-stop] [-status] [-setup]
 
