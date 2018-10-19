@@ -5,12 +5,14 @@ This script start/stop the AWS instance.
 # Pre-req:
 
 1) Get your AWS Access ID and Secret from IT
-2) Install awscli (eg: for OSX -brew install awscli)
-3) Add docker start command to your .bash_profile on the ec2 instance to launch your docker containers upon starting the instance using this script 
+2) Install awscli (eg: for OSX -brew install awscli) or follow ==> https://docs.aws.amazon.com/cli/latest/userguide/cli-install-macos.html
 
-# Usage: /Users/sanjeev/ec2.sh [-start] [-stop] [-status]
+** You can add docker start command to your ~/.bash_profile on the ec2 instance to launch your docker containers upon starting the instance using this script 
 
-This script start/stop the AWS instance
-  -start         Start the AWS instance.
-  -stop         Stop the AWS instance
-  -status         Status of the AWS instance
+# Usage: /Users/sanjeev/aws.sh [-start] [-stop] [-status] [-setup]
+
+  -start  <instance-name>       Start the AWS instance.
+  -stop    <instance-name>     Stop the AWS instance
+  -status   [OPTIONAL] <instance-name>    Status of the AWS instance
+  -setup <your-name>  Update /etc/hosts file with your EC2 instances
+      ** <your-name>  == Owner TAG on your EC2 instances
