@@ -8,8 +8,10 @@
 
 
 SSH_KEY='~/.ssh/sanju_aws.pem'
-USERNAME=$USER
+USERNAME=$USER  # Hard code this value for status command to work if running the script from a host where username will be diffrent from your username
 HostFile='/etc/hosts'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
 #prints command usage
 
 usage() {
@@ -23,7 +25,12 @@ usage() {
 }
 
 log() {
-  echo "\033[33;5;7m\n $1 \n\033[0m"
+  if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        printf "\n ${YELLOW}$1${NC} \n\n"  # Linux
+  fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "\033[33;5;7m\n $1 \n\033[0m" # Mac OSX
+  fi
 }
 
 if [[ $# -gt 2 ]]
