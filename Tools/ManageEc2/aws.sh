@@ -32,8 +32,6 @@ if [[ $# -gt 2 ]]
     usage
 fi
 
-
-
 ARG=$2
 
 # Function to check the status of the AWS instance
@@ -161,14 +159,16 @@ setup(){
             do
               hostname=$line
               hostip=$(echo ${hostname%%.*} | sed -e 's/ip-//' -e 's/-/./g')
-              if [[ 'grep $hostname $HostFile' ]]
+              HOST_IN_ETC=$(grep $hostname $HostFile)
+              if [[  -z "${HOST_IN_ETC// }" ]]
               then
-                echo "\033[33;5;7m\n $hostname \033[0m alreasy exists in /etc/hosts file. skipping..."
-              else
                 sudo bash -c "echo $hostip  $hostname >> /etc/hosts"
+              else
+                echo "\033[33;5;7m\n $hostname \033[0m alreasy exists in /etc/hosts file. skipping..."
+
               fi
            done < AWS.txt
-           rm -f AWS.txt
+           #rm -f AWS.txt
         fi
   fi
 }
