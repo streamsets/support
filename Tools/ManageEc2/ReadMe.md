@@ -45,8 +45,16 @@ You can add docker start command to your ~/.bash_profile on the ec2 instance to 
   
       ** <your-name>  == Owner TAG on your EC2 instances
       
-# Coming soon:
+# Setting up a cron job(in-progress):
 
-I'm going to test setting up cron job using this script so that we can shutdown our instance right after they are automatically restarted by IT
-# why?
-Becasue now you can leverage this script to manage your instances from your Mac and therefore no need for these instances to start running at 7 AM in the morning when you're not using it. You're welcome ;)
+1) vi <filename>.txt
+2) Specify the schedule and the script to run
+  For example:
+  05 07 * * *  /home/ec2-user/aws.sh stop lab
+  Above means that the script will be called every day at 7:05 AM 
+3) To schedule the job, run ==> sudo crontab -u ec2-user <filename>.txt
+4) To list your cron job, run ==> sudo crontab -u ec2-user -l
+5) If you need to make changes to your job, run ==> sudo crontab -u ec2-user -e
+6) To remove the cron job, run ==> sudo crontab -u ec2-user -r
+  
+# ** We all will have one cron job including entries for everyone on the team. In doing so, we all can use a single AWS micro(free) instance to run our cron job. 
