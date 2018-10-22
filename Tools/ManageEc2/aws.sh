@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 usage() {
 
   if [[ "$OSTYPE" == "linux-gnu" ]]; then # Linux
-    echo "\n Usage: ${0} [-start] [-stop] [-status] [-setup] \n" >&2
+    echo '\n Usage: ${0} [-start] [-stop] [-status] [-setup] \n' >&2
     echo '  -start  <instance-name>                  Start the AWS instance.' >&2
     echo '  -stop    <instance-name>                 Stop the AWS instance' >&2
     echo '  -status   [OPTIONAL] <instance-name>     Status of the AWS instance' >&2
@@ -141,7 +141,7 @@ stop(){
            STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
             if [[ -z "${STATUS// }" ]]
             then
-               echo "Instance is already stopped"
+               log "Instance is already stopped"
                exit 1
             fi
       fi
