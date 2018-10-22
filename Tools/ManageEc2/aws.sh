@@ -18,11 +18,11 @@ usage() {
 
   if [[ "$OSTYPE" == "linux-gnu" ]]; then # Linux
     printf '\n Usage: ${0} [-start] [-stop] [-status] [-setup] \n' >&2
-    printf '  -start  <instance-name>                  Start the AWS instance.' >&2
-    printf '  -stop    <instance-name>                 Stop the AWS instance' >&2
-    printf '  -stopAll                                 Stop all of your AWS instances' >&2
-    printf '  -status   [OPTIONAL] <instance-name>     Status of the AWS instance' >&2
-    printf '  -setup <your-name>                       Updates /etc/hosts file with your AWS instances' >&2
+    printf '  -start  <instance-name>                  Start the AWS instance. \n' >&2
+    printf '  -stop    <instance-name>                 Stop the AWS instance \n' >&2
+    printf '  -stopAll                                 Stop all of your AWS instances \n' >&2
+    printf '  -status   [OPTIONAL] <instance-name>     Status of the AWS instance \n' >&2
+    printf '  -setup <your-name>                       Updates /etc/hosts file with your AWS instances \n' >&2
     printf '                                         <your-name>  == Owner TAG on your AWS instances \n'  >&2
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
