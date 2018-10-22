@@ -15,13 +15,26 @@ NC='\033[0m' # No Color
 #prints command usage
 
 usage() {
-  echo "Usage: ${0} [-start] [-stop] [-status] [-setup] \n" >&2
-  echo '  -start  <instance-name>       Start the AWS instance.' >&2
-  echo '  -stop    <instance-name>     Stop the AWS instance' >&2
-  echo '  -status   [OPTIONAL] <instance-name>    Status of the AWS instance' >&2
-  echo '  -setup <your-name>  Update /etc/hosts file with your EC2 instances' >&2
-  echo '      ** <your-name>  == Owner TAG on your EC2 instances \n' >&2
-  exit 1
+
+  if [[ "$OSTYPE" == "linux-gnu" ]]; then # Linux
+    echo "\n Usage: ${0} [-start] [-stop] [-status] [-setup] \n" >&2
+    echo '  -start  <instance-name>                  Start the AWS instance.' >&2
+    echo '  -stop    <instance-name>                 Stop the AWS instance' >&2
+    echo '  -status   [OPTIONAL] <instance-name>     Status of the AWS instance' >&2
+    echo '  -setup <your-name>                       Update /etc/hosts file with your EC2 instances' >&2
+    echo '                                         <your-name>  == Owner TAG on your EC2 instances \n'  >&2
+  fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
+        echo "\n  Usage: ${0} \033[33;5;7m  [-start] [-stop] [-status] [-setup]   \033[0m "  >&2
+        echo "\033[33;5;7m\n-start  <instance-name>\033[0m                  Start the AWS instance."  >&2
+        echo "\033[33;5;7m\n-stop    <instance-name>\033[0m                 Stop the AWS instance"  >&2
+        echo "\033[33;5;7m\n-status   [OPTIONAL] <instance-name>\033[0m     Status of the AWS instance"  >&2
+        echo "\033[33;5;7m\n-setup <your-name>\033[0m                       Update /etc/hosts file with your EC2 instances"  >&2
+        echo "                                         <your-name>  == Owner TAG on your EC2 instances \n"  >&2
+        exit 1
+  fi
+
+
 }
 
 log() {
@@ -64,7 +77,7 @@ status(){
        STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
         if [[ $STATUS = 'running' ]]
         then
-           echo "Instance is $STATUS"
+           log 'Instance is running'
         else
             log 'Instance is not running'
           fi
@@ -89,7 +102,7 @@ start(){
       STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
        if [[ $STATUS = 'running' ]]
        then
-          echo "Instance is already $STATUS"
+          log 'Instance is already running'
           exit 1
        fi
  fi
@@ -166,10 +179,11 @@ setup(){
             do
               hostname=$line
               hostip=$(echo ${hostname%%.*} | sed -e 's/ip-//' -e 's/-/./g')
+              name_tag=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$hostname" | grep TAGS | grep name | awk '{print $3}')
               HOST_IN_ETC=$(grep $hostname $HostFile)
               if [[  -z "${HOST_IN_ETC// }" ]]
               then
-                sudo bash -c "echo $hostip  $hostname >> /etc/hosts"
+                sudo bash -c "echo $hostip  $hostname $name_tag >> /etc/hosts"
               else
                 echo "\033[33;5;7m\n $hostname \033[0m alreasy exists in /etc/hosts file. skipping..."
 
