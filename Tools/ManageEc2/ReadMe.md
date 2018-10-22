@@ -47,14 +47,14 @@ You can add docker start command to your ~/.bash_profile on the ec2 instance to 
       
 # Setting up a cron job(in-progress):
 
-1) vi <filename>.txt
+1) vi jobname.cron
 2) Specify the schedule and the script to run
   For example:
   05 07 * * *  /home/ec2-user/aws.sh stop lab
   Above means that the script will be called every day at 7:05 AM 
-3) To schedule the job, run ==> sudo crontab -u ec2-user <filename>.txt
+3) To schedule the job, run ==> sudo crontab -u ec2-user jobname.cron
 4) To list your cron job, run ==> sudo crontab -u ec2-user -l
 5) If you need to make changes to your job, run ==> sudo crontab -u ec2-user -e
 6) To remove the cron job, run ==> sudo crontab -u ec2-user -r
   
-# ** We all will have one cron job including entries for everyone on the team. In doing so, we all can use a single AWS micro(free) instance to run our cron job. 
+ ** We all will have one cron job including entries for everyone on the team. In doing so, we all can use a single AWS micro(free) instance to run our cron job. 
