@@ -17,13 +17,13 @@ NC='\033[0m' # No Color
 usage() {
 
   if [[ "$OSTYPE" == "linux-gnu" ]]; then # Linux
-    echo '\n Usage: ${0} [-start] [-stop] [-status] [-setup] \n' >&2
-    echo '  -start  <instance-name>                  Start the AWS instance.' >&2
-    echo '  -stop    <instance-name>                 Stop the AWS instance' >&2
-    echo '  -stopAll                                 Stop all of your AWS instances' >&2
-    echo '  -status   [OPTIONAL] <instance-name>     Status of the AWS instance' >&2
-    echo '  -setup <your-name>                       Updates /etc/hosts file with your AWS instances' >&2
-    echo '                                         <your-name>  == Owner TAG on your AWS instances \n'  >&2
+    printf '\n Usage: ${0} [-start] [-stop] [-status] [-setup] \n' >&2
+    printf '  -start  <instance-name>                  Start the AWS instance.' >&2
+    printf '  -stop    <instance-name>                 Stop the AWS instance' >&2
+    printf '  -stopAll                                 Stop all of your AWS instances' >&2
+    printf '  -status   [OPTIONAL] <instance-name>     Status of the AWS instance' >&2
+    printf '  -setup <your-name>                       Updates /etc/hosts file with your AWS instances' >&2
+    printf '                                         <your-name>  == Owner TAG on your AWS instances \n'  >&2
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
         echo "\n  Usage: ${0} \033[33;5;7m  [-start] [-stop] [-status] [-setup]   \033[0m "  >&2
