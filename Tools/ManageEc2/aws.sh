@@ -189,7 +189,7 @@ setup(){
 
               fi
            done < AWS.txt
-           #rm -f AWS.txt
+           rm -f AWS.txt
         fi
   fi
 }
