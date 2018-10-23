@@ -16,8 +16,11 @@
   This will ask you for following:
   
 AWS Access Key ID: get from IT 
+
 AWS Secret Access Key: get from IT
+
 Default region name: Region for your EC2 instances. For example:  [us-west-2] - ** Please note that the region is 'us-west-2' NOT 'us-west-2a'
+
 Default output format:  [json / text] ** Script can handle either, however choose JSON for a better format if you are going to play with AWS CLI
 
 3) This scripts makes certain assumptions and need one customization
