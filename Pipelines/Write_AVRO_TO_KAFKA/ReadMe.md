@@ -1,14 +1,13 @@
 <img src="/images/readme.png" align="right" />
 J
-## JMS(Active MQ) ==> Trash
+## Dir ==> KAFKA
 <img src="JMS_pipeline.png" align="center" />
-# JMS configuration:
+# KAFKA configuration:
 
-<img src="JMS.png" align="center" />
+<img src="/images/readme.png" align="center" />
+J
 
-# JMS setup:
 
-Using STE framework: ste -v start JMS_ActiveMQ
 
 
 
