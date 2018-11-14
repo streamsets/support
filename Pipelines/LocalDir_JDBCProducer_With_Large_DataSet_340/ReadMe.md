@@ -1,6 +1,6 @@
 <img src="/images/readme.png" align="right" />
 LocalDir ==> DataTypeConversion ==> JDBCProducer
-<img src="LocalDir_JDBCProducer_With_Large_DataSet.png" align="center" />
+<img src="/images/LocalDir_JDBCProducer_With_Large_DataSet.png" align="center" />
 
 # Table schema:
 ```
