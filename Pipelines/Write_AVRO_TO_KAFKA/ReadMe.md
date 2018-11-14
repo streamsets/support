@@ -3,7 +3,7 @@
 ## Dir ==> KAFKA
 
 # KAFKA configuration:
-<img src="/images/AVRO" align="center" />
+<img src="/images/AVRO.png" align="center" />
 
 
 
