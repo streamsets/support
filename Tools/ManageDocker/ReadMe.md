@@ -2,7 +2,7 @@
 
 # This scripts makes it easy to start/stop/statuscheck on the Docker engine on your Mac
 
-#   Usage: usage   [-start] [-stop] [-status]
+#   Usage: doc  [-start] [-stop] [-status]
 
 -start        Start the Docker engine.
 
