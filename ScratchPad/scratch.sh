@@ -546,15 +546,17 @@ xmail.password=${file("email-password.txt")}
 # FROM email address to use for the messages
 xmail.from.address=sanjeev@streamsets.com
 
-=============================================================== SCH ===============================================================
+=============================================================== STREAMSETS ===============================================================
 
+ControlHub:
+=============
 cd ~/workspace
 git clone https://github.com/streamsets/topology_sch.git
 pip3 install -r topology_sch/requirements.txt
 clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
 
 For example:
-clusterdock -v start topology_sch --predictable --sch-version 3.8.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.7.1
+clusterdock -v start topology_sch --predictable --sch-version 3.9.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.7.2
 
 
 Additional SDC instances:
@@ -562,7 +564,9 @@ Additional SDC instances:
 For example:
 stf -v start sdc --version 3.6.1 --hostname sch.cluster --sch-server-url http://sch.cluster:18631  --sch-username ‘admin@admin’ --sch-password ‘admin@admin’
 
-=============================================================== CDH ===============================================================
+CDH:
+===
+
 
 cd ~/workspace
 git clone https://github.com/clusterdock/topology_cdh.git -b streamsets
@@ -570,3 +574,12 @@ sudo pip3 install -r topology_cdh/requirements.txt
 
 ste -v start CDH_5.15.0 --sdc-version 3.7.1 --predictable --single-node
 ste -v start CDH_6.0.0_Kerberos_SSL_Encrypt --sdc-version 3.7.1 --predictable --secondary-nodes node-{2..3}
+
+STF:
+====
+ Running tests against Salesforce
+
+ stf -v test -vs --salesforce-username 'test-o7humwfbp3ot@example.com' --salesforce-password 'b$E)2bJs84' --sdc-version 3.8.0-latest  --sdc-server-url http://85fefaa97200:18630 stage/test_salesforce_stages.py
+ stf -v test -vs --salesforce-username 'test-o7humwfbp3ot@example.com' --salesforce-password 'b$E)2bJs84' --sdc-version 3.8.0-latest  --sdc-server-url http://ip-172-31-37-183.us-west-2.compute.internal:32769 stage/test_salesforce_stages.py
+
+ stf -v test -vs --salesforce-username 'test-4yyiafjwfgeo@example.com' --salesforce-password 'oyv9UB#4*p' --sdc-version 3.8.0-latest  --sdc-server-url http://node-1.cluster:18630 stage/test_salesforce_stages.py
