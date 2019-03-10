@@ -94,7 +94,7 @@ if [[ $ARG < 1 ]]
     usage
     exit 1
 fi
-for container in $(docker ps -a);
+for container in $(docker ps -a | grep -v sad_dirac | awk '{if (NR!=1) {print $1}}');
    do
       echo "$(docker start $container)"
    done
