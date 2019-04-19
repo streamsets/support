@@ -7,8 +7,8 @@
 #Update /etc/hosts file with your AWS instance information
 
 
-SSH_KEY='~/.ssh/sanju_aws.pem'
-USERNAME=$USER  # Hard code this value for status command to work if running the script from a host where username will be diffrent from your username
+SSH_KEY='~/.ssh/sanju.pem'
+USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
 HostFile='/etc/hosts'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
@@ -68,7 +68,8 @@ status(){
  elif [[ $ARG > 1 ]]
      then
        HOSTNAME=$ARG
-       AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $2}')
+       AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $3}')
+       PUBLIC_AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $2}')
        INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
        if [[ -z "${AWS_HOSTNAME// }" ]]
           then
@@ -96,7 +97,8 @@ start(){
   fi
 
  HOSTNAME=$ARG
- AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $2}')
+ AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $3}')
+ PUBLIC_AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $2}')
  INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
  NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
 
@@ -125,7 +127,7 @@ start(){
             else
               sleep 10
               echo "\033[33;5;7m\n $INSTANCE_ID --> ($NAME_TAG) \033[0m started successfully !!"
-              echo "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$AWS_HOSTNAME\n"
+              echo "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$PUBLIC_AWS_HOSTNAME\n"
             fi
 }
 
@@ -139,7 +141,8 @@ stop(){
   elif  [[ $ARG > 1 ]]
     then
       HOSTNAME=$ARG
-      AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $2}')
+      AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $3}')
+      PUBLIC_AWS_HOSTNAME=$(cat /etc/hosts | grep -i $HOSTNAME |  awk '{print $2}')
       INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
 
       if [[ -z "${AWS_HOSTNAME// }" ]]

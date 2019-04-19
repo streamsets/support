@@ -1,7 +1,7 @@
 {
   "Binds":[
-    "/home/ubuntu/.streamsets/testenvironments/CDH_5.15.0:/etc/clusterdock/client:rw",
-    "/home/ubuntu/.streamsets/testenvironments/CDH_5.15.0/localtime:/etc/localtime:rw"
+    "/home/ubuntu/.streamsets/testenvironments/CDH_5.15.0/localtime:/etc/localtime:rw",
+    "/home/ubuntu/.streamsets/testenvironments/CDH_5.15.0:/etc/clusterdock/client:rw"
   ],
   "ContainerIDFile":"",
   "LogConfig":{
@@ -12,10 +12,22 @@
   },
   "NetworkMode":"default",
   "PortBindings":{
-    "18088/tcp":[
+    "18630/tcp":[
       {
         "HostIp":"",
-        "HostPort":"18088"
+        "HostPort":"18630"
+      }
+    ],
+    "18341/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18341"
+      }
+    ],
+    "18343/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18343"
       }
     ],
     "18352/tcp":[
@@ -24,16 +36,58 @@
         "HostPort":"18352"
       }
     ],
-    "18630/tcp":[
+    "18362/tcp":[
       {
         "HostIp":"",
-        "HostPort":"18630"
+        "HostPort":"18362"
       }
     ],
-    "19888/tcp":[
+    "18372/tcp":[
       {
         "HostIp":"",
-        "HostPort":"19888"
+        "HostPort":"18372"
+      }
+    ],
+    "18380/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18380"
+      }
+    ],
+    "18381/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18381"
+      }
+    ],
+    "18390/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18390"
+      }
+    ],
+    "18391/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18391"
+      }
+    ],
+    "18392/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18392"
+      }
+    ],
+    "18400/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18400"
+      }
+    ],
+    "18401/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18402"
       }
     ],
     "7180/tcp":[
@@ -59,6 +113,54 @@
         "HostIp":"",
         "HostPort":"8888"
       }
+    ],
+    "10002/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10002"
+      }
+    ],
+    "18088/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18088"
+      }
+    ],
+    "18089/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18089"
+      }
+    ],
+    "19888/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"19888"
+      }
+    ],
+    "50070/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"50070"
+      }
+    ],
+    "50075/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"50075"
+      }
+    ],
+    "60010/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"60010"
+      }
+    ],
+    "60030/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"60030"
+      }
     ]
   },
   "RestartPolicy":{
@@ -68,22 +170,23 @@
   "AutoRemove":false,
   "VolumeDriver":"",
   "VolumesFrom":[
-    "bb45cf74030bbaeac98bd0a42b12c3981611b7648383d134cc1b327dc8c73d3d",
-    "fd456d0b0df618cc24c2f433ce4b0e3c6e6debeedfa21c5335e30e8d1f166bfc"
+    "b1d5c886788ad5db49bf1debab7301e18ded9b8ffd58dfc9c8a53128c654207c",
+    "e27be9e8840409e201f14b7475ec690a7d68693026eb5a60686a119847769ebb",
+    "b22fb66fbf8652c02f5282a49798784653c0c8beb05be7a4957a9433259ac40c",
+    "f6bb4fa3242320375e44b5df89e01d76c683ffa1536e9216ff3e310febc151dd",
+    "8d94bb30eff5d91609890970a5b8a6247f4b0ef5fd805b02f8a5bf81bf825bec",
+    "97374fb2c737b63f9b17c7b97efc42c4f842bf7e562d3f3505b3bafc48418661",
+    "c3bed467170818a19107ad03b0c46f3674715514d1ebeaa243f6d9c59879ce7c",
+    "f60a7034ae127aa4e29ccbcfda9e31f16d727103745c3f2a2270ee4f8d342122",
+    "b502b8fe049a2b1b10cec3d506c415d5550507da5037847ea4d53457cda013c7"
   ],
   "CapAdd":[
     "ALL"
   ],
   "CapDrop":null,
-  "Dns":[
-
-  ],
-  "DnsOptions":[
-
-  ],
-  "DnsSearch":[
-
-  ],
+  "Dns":null,
+  "DnsOptions":null,
+  "DnsSearch":null,
   "ExtraHosts":null,
   "GroupAdd":null,
   "IpcMode":"shareable",

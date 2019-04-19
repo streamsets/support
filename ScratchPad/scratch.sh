@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 
 =============================================================== BASH =================================================================
@@ -116,23 +117,137 @@ export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/usr/jdk64/jdk1.8.0_77/jre/lib/*
 javac -cp `hadoop classpath`$HADOOP_CLASSPATH HdfsDemo.java
 java -cp `hadoop classpath`$HADOOP_CLASSPATH: HdfsDemo
 
-=============================================================== Docker ===============================================================
+=============================================================== Docker/STE/STF ===============================================================
+
+ssh -i <key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<hostname>
+
+ssh -i ~/.ssh/sanju.pem -L 8042:172.18.0.3:8042 -fN ubuntu@lab
 
 Exposing docker ports:
 
-1) Stop the container
+1) Stop the container ; for container in $(docker ps -q);do echo "$(docker stop $container)"; done
 2) Stop docker engine - sudo systemctl stop docker
-3) Edit hostconfig.json & config.v2.json
+3) Edit hostconfig.json & config.v2.json  --  /var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/
 4) sudo systemctl start docker
 5) Start the container
 
-CDH:
+docker ps -a | awk '{if (NR!=1) {print "docker rm "$1}}'
 
-clusterdock -v start --namespace streamsets topology_cdh --java jdk1.8.0_131 --cdh-version 5.12.0 --cm-version 5.12.0 --kafka-version 2.1.0 --kudu-version 1.4.0 --predictable --spark2-version 2.1-r1 --sdc-version 3.4.1.0
+CDH :
 
-ste -v start CDH_5.15.0_Spark2 --sdc-version 3.4.1 --predictable --secondary-nodes node-{2..3}
 
-ste -v start CDH_5.15.0_Spark2 --sdc-version 3.4.1 --predictable --nodes cdh-1 --secondary-nodes cdh-{2..3}
+git clone https://github.com/clusterdock/topology_cdh.git
+sudo pip3 install -r topology_cdh/requirements.txt
+
+Non Kerberos:
+
+ste -v start CDH_5.15.0 --kafka-version 3.1.0  --spark2-version 2.3-r2 --sdc-version 3.7.2 --predictable --secondary-nodes node-{2..3}
+
+
+Kerberos:
+clusterdock -v start --namespace streamsets topology_cdh --kerberos --kerberos-principals sdctest --java jdk1.8.0_131 --cdh-version 5.15.0 --cm-version 5.15.0 --kafka-version 2.1.0 --ssl encryption --kudu-version 1.7.0 --predictable --spark2-version 2.3-r2 --sdc-version 3.8.0 --secondary-nodes node-{2..3}
+
+ste -v start CDH_5.15.0_Kerberos --kafka-version 3.1.0  --kudu-version 1.7.0 --spark2-version 2.3-r2 --sdc-version 3.7.2 --predictable --secondary-nodes node-{2..3}
+ls ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/
+sudo cp ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/clusterdock.keytab ~/sdc-backup.keytab
+cp ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/clusterdock.keytab ${SDC_CONTAINER_ID}:/etc/sdc/sdc.keytab
+docker cp ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/krb5.conf ${CONTAINER_ID}:/etc/krb5.conf
+
+edit /etc/sdc/sdc.properties
+
+kerberos.client.enabled=true
+kerberos.client.principal=sdctest@CLUSTER
+kerberos.client.keytab=/etc/sdc/sdc.keytab
+
+Get ticket on shell:
+
+kinit hdfs/node-1.cluster@CLUSTER -kt /var/run/cloudera-scm-agent/process/225-hdfs-NAMENODE/hdfs.keytab
+
+update /etc/hosts
+172.18.0.2 node-1.cluster  node1 # clusterdock
+172.18.0.3 node-2.cluster  node2 # clusterdock
+172.18.0.4 node-3.cluster  node3 # clusterdock
+172.18.0.5 kdc.cluster kdc  # clusterdock
+
+MISC:
+
+ln -s /etc/hadoop/conf/hdfs-site.xml hdfs-site.xml
+ln -s /etc/hadoop/conf/core-site.xml core-site.xml
+ln -s /etc/hadoop/conf/mapred-site.xml mapred-site.xml
+ln -s /etc/hadoop/conf/yarn-site.xml yarn-site.xml
+
+Running the tests:
+
+Hadoop stages:
+stf -v --testframework-config-directory /home/ubuntu/.streamsets/testenvironments/CDH_5.15.0_Kerberos test -vs --sdc-server-url=http://node-1.cluster:18630 --cluster-server=cm://node-1.cluster:7180 --kerberos stage/test_hadoop_fs_stages.py::test_hadoop_fs_destination
+MR:
+stf -v --testframework-config-directory /home/ubuntu/.streamsets/testenvironments/CDH_5.15.0_Kerberos test -vs --sdc-server-url=http://node-1.cluster:18630 --cluster-server=cm://node-1.cluster:7180 --kerberos stage/test_mapreduce_executor.py
+
+ControlHub:
+=============
+cd ~/workspace
+git clone https://github.com/streamsets/topology_sch.git -b streamsets
+pip3 install -r topology_sch/requirements.txt
+clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
+
+For example:
+clusterdock -v start topology_sch --predictable --sch-version 3.9.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.7.2
+
+
+Additional SDC instances:
+
+For example:
+stf -v start sdc --version 3.7.1 --hostname localhost --sch-server-url http://sch.cluster:18631  --sch-username 'admin@admin' --sch-password 'admin@admin'
+
+STF:
+====
+ Running tests against Salesforce
+
+ stf -v test -vs --salesforce-username 'test-o7humwfbp3ot@example.com' --salesforce-password 'b$E)2bJs84' --sdc-version 3.8.0-latest  --sdc-server-url http://85fefaa97200:18630 stage/test_salesforce_stages.py
+ stf -v test -vs --salesforce-username 'test-o7humwfbp3ot@example.com' --salesforce-password 'b$E)2bJs84' --sdc-version 3.8.0-latest  --sdc-server-url http://ip-172-31-37-183.us-west-2.compute.internal:32769 stage/test_salesforce_stages.py
+
+ stf -v test -vs --salesforce-username 'test-4yyiafjwfgeo@example.com' --salesforce-password 'oyv9UB#4*p' --sdc-version 3.8.0-latest  --sdc-server-url http://node-1.cluster:18630 stage/test_salesforce_stages.py
+
+Contact Object Record:
+
+FirstName,Birthdate,LastName,Email,LeadSource
+Sanju,,Chauhan,xtest1@example.com,Advertisement
+Siyona,,Chauhan,xtest1@example.com,Advertisement
+Shraddha,,Sumit,xtest1@example.com,Advertisement
+
+ElasticSearch:
+
+stf test -vs -m elasticsearch --elasticsearch-url http://elastic:changeme@myelastic.cluster:9200 --sdc-version 3.7.2 --sdc-server-url http://node-1.cluster:18630 stage/test_elasticsearch_stages.py
+
+
+REST Calls:
+
+# login to Control Hub security app
+curl -X POST -d '{"userName":"admin@admin", "password": "admin@admin"}' http://sch.cluster:18631/security/public-rest/v1/authentication/login --header "Content-Type:application/json" --header "X-Requested-By:admin@admin" -c cookie.txt
+
+# generate auth token from security app
+sessionToken=$(cat cookie.txt | grep SSO | rev | grep -o '^\S*' | rev)
+echo "Generated session token : $sessionToken"
+
+# Call SDC REST APIs using auth token
+curl -X GET http://sch.cluster:18631/security/rest/v1/currentUser --header "Content-Type:application/json" --header "X-Requested-By:SCH" --header "X-SS-REST-CALL:true" --header "X-SS-User-Auth-Token:$sessionToken" -i
+curl -X GET http://sch.cluster:18631/policy/rest/v2/persistent/policy/o:seed/pageId=PolicyListPage --header "Content-Type:application/json" --header "X-Requested-By:SCH" --header "X-SS-REST-CALL:true" --header "X-SS-User-Auth-Token:$sessionToken" -i
+
+curl -X GET http://sch.cluster:18631/pipelinestore/rest/v1/pipelineCommit/8942dd00-471f-4701-b231-312fa90e507b:admin --header "Content-Type:application/json" --header "X-Requested-By:SCH" --header "X-SS-REST-CALL:true" --header "X-SS-User-Auth-Token:$sessionToken" -i
+curl -s -X POST -d '{"userName":"admin@experian”, "password": "12345678"}' https://cloud.streamsets.com/security/public-rest/v1/authentication/login --header "Content-Type:application/json" --header "X-Requested-By:admin"  -D - | grep SS-SSO-LOGIN | sed -e 's/[^=]*=//' -e 's/;.*//'
+
+STREAMSETS CLI:
+
+bin/streamsets cli -U http://localhost:18331 help store import
+
+bin/streamsets cli -U http://node-1.cluster:18343 -a dpm -u admin@admin -p admin@admin --dpmURL http://sch.cluster:18631 store list
+
+bin/streamsets cli -U http://node-1.cluster:18400 -a dpm -u admin@admin -p admin@admin --dpmURL http://sch.cluster:18631 store import -n "Dev to Trash" -f
+
+bin/streamsets cli -U http://localhost:18331 -u admin -p admin store list
+bin/streamsets cli -U http://localhost:18331 -u admin -p admin store import -n "Dev to Trash" -f
+
+
 
 MapR:
 git clone https://github.com/kirtiv1/topology_mapr.git -b handle-mapr-mep-version
@@ -148,10 +263,71 @@ service mapr-warden start
 on node-1:
 maprcli node services -name webserver -action start -nodes node-1.cluster
 
+=============================================================== KAFKA ===============================================================
 
-Local CDH setup on my mac:
+--create topic
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic test
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic stats
 
-docker start 595055aa6ebd a1eb85ed93cb 65bde0e41d13 71d8aed3d8ee 4137548c1f0b 4b563d75c989
+--list kafka-topics
+kafka-topics --list --zookeeper `hostname`:2181
+
+--describe topic
+
+kafka-topics --describe --zookeeper `hostname`:2181 --topic sanju
+
+-- count messages in a topic
+kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic source --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
+
+--Post messages to queue:
+
+kafka-console-producer --broker-list `hostname`:9092 --topic siyona
+
+--post desired number of messages:
+
+while read -r line; do kafka-console-producer.sh --broker-list `hostname`:9092 --topic sanju |  echo $line; done < test.csv
+
+kafka-console-consumer --bootstrap-server `hostname`:9092 --topic sanju --from-beginning
+
+=============================================================== Misc ===============================================================
+Java Download on Ubuntu:
+sudo apt-get update
+wget --header "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz
+CentOS:
+
+curl -L -b "oraclelicense=a" -O http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.rpm
+sudo yum localinstall jdk-8u181-linux-x64.rpm
+sudo alternatives --config java
+
+linux user add - useradd -G
+=============================================================== AWS ===============================================================
+
+
+Configure AWS CLI:
+
+aws configure
+
+List instances by tag/value:
+
+aws ec2 describe-instances --filters "Name=tag:owner,Values=sanjeev"
+
+=============================================================== SMTP ===============================================================
+
+
+mail.transport.protocol=smtp
+mail.smtp.host=smtp.gmail.com
+mail.smtp.port=587
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+mail.smtps.host=smtp.gmail.com
+mail.smtps.port=465
+mail.smtps.auth=true
+# If 'mail.smtp.auth' or 'mail.smtps.auth' are to true, these properties are used for the user/password credentials,
+# ${file("email-password.txt")} will load the value from the 'email-password.txt' file in the config directory (where this file is)
+xmail.username=sanjeev@streamsets.com
+xmail.password=${file("email-password.txt")}
+# FROM email address to use for the messages
+xmail.from.address=sanjeev@streamsets.com
 
 =============================================================== SQL ===============================================================
 
@@ -486,100 +662,3 @@ mysql> use mydb;
 mysql> source db_backup.dump;
 OR
 mysql --max_allowed_packet=100M -u root -p database < dump.sql
-
-=============================================================== KAFKA ===============================================================
-
---create topic
-kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic sanju
-
---list kafka-topics
-kafka-topics --list --zookeeper `hostname`:2181
-
--- count messages in a topic
-  kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic Bulgaria --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
-
---Post messages to queue:
-
-kafka-console-producer --broker-list `hostname`:9092 --topic Bulgaria
-
---post desired number of messages:
-
-while read -r line; do kafka-console-producer.sh --broker-list `hostname`:6667 --topic siyona |  echo $line; done < test.csv
-
-=============================================================== Misc ===============================================================
-Java Download on Ubuntu:
-sudo apt-get update
-wget --header "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz
-CentOS:
-
-curl -L -b "oraclelicense=a" -O http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.rpm
-sudo yum localinstall jdk-8u181-linux-x64.rpm
-sudo alternatives --config java
-
-linux user add - useradd -G
-=============================================================== AWS ===============================================================
-
-
-Configure AWS CLI:
-
-aws configure
-
-List instances by tag/value:
-
-aws ec2 describe-instances --filters "Name=tag:owner,Values=sanjeev"
-
-=============================================================== SMTP ===============================================================
-
-
-mail.transport.protocol=smtp
-mail.smtp.host=smtp.gmail.com
-mail.smtp.port=587
-mail.smtp.auth=true
-mail.smtp.starttls.enable=true
-mail.smtps.host=smtp.gmail.com
-mail.smtps.port=465
-mail.smtps.auth=true
-# If 'mail.smtp.auth' or 'mail.smtps.auth' are to true, these properties are used for the user/password credentials,
-# ${file("email-password.txt")} will load the value from the 'email-password.txt' file in the config directory (where this file is)
-xmail.username=sanjeev@streamsets.com
-xmail.password=${file("email-password.txt")}
-# FROM email address to use for the messages
-xmail.from.address=sanjeev@streamsets.com
-
-=============================================================== STREAMSETS ===============================================================
-
-ControlHub:
-=============
-cd ~/workspace
-git clone https://github.com/streamsets/topology_sch.git
-pip3 install -r topology_sch/requirements.txt
-clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
-
-For example:
-clusterdock -v start topology_sch --predictable --sch-version 3.9.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.7.2
-
-
-Additional SDC instances:
-
-For example:
-stf -v start sdc --version 3.6.1 --hostname sch.cluster --sch-server-url http://sch.cluster:18631  --sch-username ‘admin@admin’ --sch-password ‘admin@admin’
-
-CDH:
-===
-
-
-cd ~/workspace
-git clone https://github.com/clusterdock/topology_cdh.git -b streamsets
-sudo pip3 install -r topology_cdh/requirements.txt
-
-ste -v start CDH_5.15.0 --sdc-version 3.7.1 --predictable --single-node
-ste -v start CDH_6.0.0_Kerberos_SSL_Encrypt --sdc-version 3.7.1 --predictable --secondary-nodes node-{2..3}
-
-STF:
-====
- Running tests against Salesforce
-
- stf -v test -vs --salesforce-username 'test-o7humwfbp3ot@example.com' --salesforce-password 'b$E)2bJs84' --sdc-version 3.8.0-latest  --sdc-server-url http://85fefaa97200:18630 stage/test_salesforce_stages.py
- stf -v test -vs --salesforce-username 'test-o7humwfbp3ot@example.com' --salesforce-password 'b$E)2bJs84' --sdc-version 3.8.0-latest  --sdc-server-url http://ip-172-31-37-183.us-west-2.compute.internal:32769 stage/test_salesforce_stages.py
-
- stf -v test -vs --salesforce-username 'test-4yyiafjwfgeo@example.com' --salesforce-password 'oyv9UB#4*p' --sdc-version 3.8.0-latest  --sdc-server-url http://node-1.cluster:18630 stage/test_salesforce_stages.py

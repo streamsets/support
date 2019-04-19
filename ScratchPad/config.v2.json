@@ -3,56 +3,56 @@
 
   },
   "State":{
-    "Running":true,
+    "Running":false,
     "Paused":false,
     "Restarting":false,
     "OOMKilled":false,
     "RemovalInProgress":false,
     "Dead":false,
-    "Pid":2743,
-    "ExitCode":0,
+    "Pid":0,
+    "ExitCode":137,
     "Error":"",
-    "StartedAt":"2019-03-01T20:10:36.78753584Z",
-    "FinishedAt":"2019-03-01T02:00:15.800342779Z",
+    "StartedAt":"2019-04-11T16:37:18.704677845Z",
+    "FinishedAt":"2019-04-11T17:34:11.196717718Z",
     "Health":{
-      "Status":"healthy",
+      "Status":"unhealthy",
       "FailingStreak":0,
       "Log":[
         {
-          "Start":"2019-03-01T22:07:47.680855571Z",
-          "End":"2019-03-01T22:07:47.755388459Z",
+          "Start":"2019-04-11T17:33:55.131677899Z",
+          "End":"2019-04-11T17:33:55.201802881Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-03-01T22:07:48.760501864Z",
-          "End":"2019-03-01T22:07:48.831168937Z",
+          "Start":"2019-04-11T17:33:56.206478877Z",
+          "End":"2019-04-11T17:33:56.282433085Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-03-01T22:07:49.836028439Z",
-          "End":"2019-03-01T22:07:49.899093375Z",
+          "Start":"2019-04-11T17:33:57.286871541Z",
+          "End":"2019-04-11T17:33:57.367944728Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-03-01T22:07:50.904286912Z",
-          "End":"2019-03-01T22:07:50.976558625Z",
+          "Start":"2019-04-11T17:33:58.372688685Z",
+          "End":"2019-04-11T17:33:58.454288132Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-03-01T22:07:51.981687568Z",
-          "End":"2019-03-01T22:07:52.062351994Z",
+          "Start":"2019-04-11T17:33:59.459181843Z",
+          "End":"2019-04-11T17:33:59.535047752Z",
           "ExitCode":0,
           "Output":""
         }
       ]
     }
   },
-  "ID":"3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3",
-  "Created":"2019-02-13T23:45:57.534874898Z",
+  "ID":"1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42",
+  "Created":"2019-04-11T16:37:09.132207405Z",
   "Managed":false,
   "Path":"/sbin/init",
   "Args":[
@@ -66,16 +66,43 @@
     "AttachStdout":false,
     "AttachStderr":false,
     "ExposedPorts":{
-      "18088/tcp":{
+      "18630/tcp":{
+
+      },
+      "18341/tcp":{
+
+      },
+      "18343/tcp":{
 
       },
       "18352/tcp":{
 
       },
-      "18630/tcp":{
+      "18362/tcp":{
 
       },
-      "19888/tcp":{
+      "18372/tcp":{
+
+      },
+      "18380/tcp":{
+
+      },
+      "18381/tcp":{
+
+      },
+      "18390/tcp":{
+
+      },
+      "18391/tcp":{
+
+      },
+      "18392/tcp":{
+
+      },
+      "18400/tcp":{
+
+      },
+      "18401/tcp":{
 
       },
       "7180/tcp":{
@@ -85,6 +112,30 @@
 
       },
       "8088/tcp":{
+
+      },
+      "18088/tcp":{
+
+      },
+      "18089/tcp":{
+
+      },
+      "19888/tcp":{
+
+      },
+      "50070/tcp":{
+
+      },
+      "50075/tcp":{
+
+      },
+      "60010/tcp":{
+
+      },
+      "60030/tcp":{
+
+      },
+      "10002/tcp":{
 
       }
     },
@@ -108,7 +159,7 @@
       "Retries":1
     },
     "ArgsEscaped":true,
-    "Image":"docker.io/streamsets/clusterdock:cdh5.15.0_cm5.15.0_single-node",
+    "Image":"docker.io/streamsets/clusterdock:cdh5.15.0_cm5.15.0_primary-node",
     "Volumes":{
       "/data/kudu":{
 
@@ -124,13 +175,13 @@
     "Entrypoint":null,
     "OnBuild":null,
     "Labels":{
-      "com.clusterdock.clusterdock":"{\"cluster_name\": \"richest_praesepe\", \"name\": \"clusterdock\", \"location\": \"/home/ubuntu/.streamsets/testenvironments/CDH_5.15.0/workspace/venv/lib/python3.5/site-packages\", \"version\": \"2.1.0\"}"
+      "com.clusterdock.clusterdock":"{\"name\": \"clusterdock\", \"location\": \"/home/ubuntu/.streamsets/testenvironments/CDH_5.15.0/workspace/venv/lib/python3.5/site-packages\", \"version\": \"2.1.0\", \"cluster_name\": \"crucial_m22\"}"
     }
   },
-  "Image":"sha256:080911790adf8053113035a605ce1fa9a1f9a1551616d4d3c0a1043fa6b4f9b0",
+  "Image":"sha256:ff96a4d786feab0d7046e08d1c67fe3505902ba1c059951f931b4c32e9d2c0aa",
   "NetworkSettings":{
     "Bridge":"",
-    "SandboxID":"968a9f0bd4e2c21e54edb5fa4eb164305ab341599eec8813d78d94f9d9cbc5e6",
+    "SandboxID":"7cc76fc571a6f7128fbd722ec96635123a5a445862a2f1c431efc4087d0856cc",
     "HairpinMode":false,
     "LinkLocalIPv6Address":"",
     "LinkLocalIPv6PrefixLen":0,
@@ -140,90 +191,46 @@
         "Links":null,
         "Aliases":[
           "node-1",
-          "3d6fc1cdaaca"
+          "1818a8105b22"
         ],
-        "NetworkID":"2ee4a18fbfd64d7f54f79deda3230e6d3203a566149ca6a5c4810ae298f87471",
-        "EndpointID":"a6d59466e42f8d63d10cfb820f1fa1d0e847d9e3f4f69299ffe495705d06786e",
-        "Gateway":"172.18.0.1",
-        "IPAddress":"172.18.0.2",
-        "IPPrefixLen":16,
+        "NetworkID":"fde45233e5be93bb4beb5392ba5af08f4e5612eb82f822d9b5dbc1a2c6551c5a",
+        "EndpointID":"",
+        "Gateway":"",
+        "IPAddress":"",
+        "IPPrefixLen":0,
         "IPv6Gateway":"",
         "GlobalIPv6Address":"",
         "GlobalIPv6PrefixLen":0,
-        "MacAddress":"02:42:ac:12:00:02",
+        "MacAddress":"",
         "DriverOpts":null,
         "IPAMOperational":false
       }
     },
     "Service":null,
-    "Ports":{
-      "18088/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18088"
-        }
-      ],
-      "18352/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18352"
-        }
-      ],
-      "18630/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18630"
-        }
-      ],
-      "19888/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"19888"
-        }
-      ],
-      "7180/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"7180"
-        }
-      ],
-      "8042/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"8042"
-        }
-      ],
-      "8088/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"8088"
-        }
-      ]
-    },
-    "SandboxKey":"/var/run/docker/netns/968a9f0bd4e2",
+    "Ports":null,
+    "SandboxKey":"/var/run/docker/netns/7cc76fc571a6",
     "SecondaryIPAddresses":null,
     "SecondaryIPv6Addresses":null,
     "IsAnonymousEndpoint":true,
     "HasSwarmEndpoint":false
   },
-  "LogPath":"/var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3-json.log",
-  "Name":"/silly_archimedes",
+  "LogPath":"/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42-json.log",
+  "Name":"/flamboyant_goldwasser",
   "Driver":"overlay2",
   "Platform":"linux",
   "MountLabel":"",
   "ProcessLabel":"",
   "RestartCount":0,
   "HasBeenStartedBefore":true,
-  "HasBeenManuallyStopped":false,
+  "HasBeenManuallyStopped":true,
   "MountPoints":{
     "/data/kudu":{
       "Source":"",
       "Destination":"/data/kudu",
       "RW":true,
-      "Name":"7421bec5728afc6bc2993ad34343821b7a14e67bf2e0a6cfd959bc5c0cf3301c",
+      "Name":"0fd1de0f5371477f7ec893d4f271455d07bcd337b5e2860c7122de2e9ce9c20c",
       "Driver":"local",
       "Type":"volume",
-      "ID":"9b853f14a5c995bb543280cdcf43969e8266817491c34dc1c88e54110cbc2190",
       "Spec":{
 
       }
@@ -258,14 +265,35 @@
         "Target":"/etc/localtime"
       }
     },
+    "/opt/clusterdock/csd/SPARK2":{
+      "Source":"",
+      "Destination":"/opt/clusterdock/csd/SPARK2",
+      "RW":true,
+      "Name":"8193d5063b38118e980ce5d1b7a4ff173c7397e19b5363ce92740f7e25386ddd",
+      "Driver":"local",
+      "Type":"volume",
+      "Spec":{
+
+      }
+    },
     "/opt/clusterdock/csd/STREAMSETS_DATACOLLECTOR":{
       "Source":"",
       "Destination":"/opt/clusterdock/csd/STREAMSETS_DATACOLLECTOR",
       "RW":true,
-      "Name":"2f80653054839979f53f1f6d6cb879b5be050b5bf5294a7948f4efc79a6d15b6",
+      "Name":"ebcb8a76aae95800aaec806e2052a4680c230393544f638a279031b7d2d0c62f",
       "Driver":"local",
       "Type":"volume",
-      "ID":"ba1af612016c0b0b4fa74d8d5638bc8b1fb8d4b9cbf925d2cd0bb29583beb7d1",
+      "Spec":{
+
+      }
+    },
+    "/opt/clusterdock/parcel-repo/SPARK2":{
+      "Source":"",
+      "Destination":"/opt/clusterdock/parcel-repo/SPARK2",
+      "RW":true,
+      "Name":"308096bb8afec0159bce8a875074a0f18bc6682f1ae5def3b07aa507832cfafb",
+      "Driver":"local",
+      "Type":"volume",
       "Spec":{
 
       }
@@ -274,10 +302,9 @@
       "Source":"",
       "Destination":"/opt/clusterdock/parcel-repo/STREAMSETS_DATACOLLECTOR",
       "RW":true,
-      "Name":"1115ee286b582c668a8c3fae94f7133200ecf162bbd1263e3ddcabcb9841d41c",
+      "Name":"8adfc1eff2930217c59b9246894b1a3279f8b6f02b4faf2b5d36a1c3011e46ae",
       "Driver":"local",
       "Type":"volume",
-      "ID":"8449212d4e108d588a3e899f66af5ed695ac518e71f751db4c940f407d561e02",
       "Spec":{
 
       }
@@ -286,10 +313,9 @@
       "Source":"",
       "Destination":"/usr/java/jdk1.8.0_131",
       "RW":true,
-      "Name":"e4d6e9b8b1f4b57daef8d8c292d5bfd671a7b738511749fdf89ae460af358332",
+      "Name":"7e249823866ba1b1ab695b035bb678af01e24d820c67b576f64a1a0a7bb24589",
       "Driver":"local",
       "Type":"volume",
-      "ID":"79f12e74eccdd5faa787c9addc75553501d43fb6583fbd9907ad739270ef759b",
       "Spec":{
 
       }
@@ -298,10 +324,10 @@
   "SecretReferences":null,
   "ConfigReferences":null,
   "AppArmorProfile":"docker-default",
-  "HostnamePath":"/var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/hostname",
-  "HostsPath":"/var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/hosts",
-  "ShmPath":"/var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/shm",
-  "ResolvConfPath":"/var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/resolv.conf",
+  "HostnamePath":"/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/hostname",
+  "HostsPath":"/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/hosts",
+  "ShmPath":"/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/shm",
+  "ResolvConfPath":"/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/resolv.conf",
   "SeccompProfile":"unconfined",
   "NoNewPrivileges":false
 }

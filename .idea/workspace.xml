@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6bb39792-c94b-41d6-baa7-9020d37124d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScratchPad/config.v2_ports.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScratchPad/hostconfig_ports.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchPad/config.v2.json" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchPad/config.v2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchPad/hostconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchPad/hostconfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScratchPad/scratch.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchPad/scratch.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/ManageDocker/doc.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/ManageDocker/doc.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/ManageEc2/aws.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/ManageEc2/aws.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,37 +20,42 @@
     <session id="-886415019">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
+          <entry key="project.closed" value="8" />
           <entry key="project.open.time.0" value="3" />
           <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.4" value="2" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.open.time.7" value="2" />
+          <entry key="project.opened" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="json" value="3" />
+          <entry key="json" value="7" />
           <entry key="md" value="1" />
-          <entry key="sh" value="9" />
+          <entry key="sh" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Bash" value="9" />
-          <entry key="JSON" value="3" />
+          <entry key="Bash" value="10" />
+          <entry key="JSON" value="7" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="sh" value="539" />
+          <entry key="json" value="256" />
+          <entry key="sh" value="1440" />
           <entry key="txt" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Bash" value="539" />
+          <entry key="Bash" value="1440" />
+          <entry key="JSON" value="256" />
           <entry key="PLAIN_TEXT" value="21" />
         </counts>
       </usages-collector>
@@ -55,11 +63,47 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1410">
+              <caret line="94" column="20" selection-end-line="241" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="27" selection-end-line="332" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig_ports.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1140">
+              <caret line="76" column="1" selection-end-line="149" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2_ports.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3360">
+              <caret line="224" column="1" selection-start-line="75" selection-end-line="224" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tools/ManageDocker/doc.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="89">
-              <caret line="96" column="31" selection-start-line="96" selection-start-column="31" selection-end-line="96" selection-end-column="31" />
+            <state relative-caret-position="1695">
+              <caret line="113" column="7" selection-start-line="110" selection-end-line="113" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -67,17 +111,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/aws.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="66" column="7" lean-forward="true" selection-start-line="63" selection-start-column="3" selection-end-line="66" selection-end-column="7" />
+            <state relative-caret-position="2340">
+              <caret line="156" column="48" selection-start-line="156" selection-start-column="48" selection-end-line="156" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ScratchPad/scratch.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="495" column="47" lean-forward="true" selection-start-line="495" selection-end-line="495" selection-end-column="47" />
+            <state relative-caret-position="531">
+              <caret line="246" column="73" lean-forward="true" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
             </state>
           </provider>
         </entry>
@@ -86,8 +130,21 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+      <find>echo</find>
+      <find>docker</find>
+      <find>CDH</find>
+      <find>AWS_HOSTNAME</find>
+      <find>SCH</find>
+      <find>&quot;HostIp&quot;:&quot;&quot;</find>
+      <find>hostconf</find>
+      <find>sch</find>
+      <find>kerberos</find>
+      <find>curl</find>
       <find>kafka</find>
     </findStrings>
+    <replaceStrings>
+      <replace>&quot;HostIp&quot;:&quot;0.0.0.0&quot;</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -97,15 +154,20 @@
       <list>
         <option value="$PROJECT_DIR$/Tools/PipelineCLI/startPipeline.sh" />
         <option value="$PROJECT_DIR$/DockerConfigs/hostconfig.json" />
+        <option value="$PROJECT_DIR$/Tools/ManageDocker/doc.sh" />
+        <option value="$PROJECT_DIR$/Tools/ManageEc2/aws.sh" />
+        <option value="$PROJECT_DIR$/ScratchPad/hostconfig_ports.json" />
+        <option value="$PROJECT_DIR$/ScratchPad/config.v2_ports.json" />
+        <option value="$PROJECT_DIR$/ScratchPad/hostconfig.json" />
         <option value="$PROJECT_DIR$/ScratchPad/config.v2.json" />
         <option value="$PROJECT_DIR$/ScratchPad/scratch.sh" />
-        <option value="$PROJECT_DIR$/Tools/ManageDocker/doc.sh" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1680" />
-    <option name="height" value="1050" />
+    <option name="x" value="1680" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -115,6 +177,7 @@
     <panes>
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -154,11 +217,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552246348951" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555021248406" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
@@ -199,10 +261,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <frame x="1680" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25274727" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11927582" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -216,7 +278,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.27586207" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32016212" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3298184" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -267,55 +329,69 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/ReadMe.md">
+      <provider editor-type-id="text-editor" />
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="-333" />
           <second_editor />
         </state>
       </provider>
-      <provider editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/DockerConfigs/hostconfig.json" />
+    <entry file="file://$PROJECT_DIR$/ScratchPad/shellclass/scratch.sh" />
     <entry file="file://$PROJECT_DIR$/Tools/PipelineCLI/startPipeline.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="14" lean-forward="true" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
+        <state relative-caret-position="150">
+          <caret line="10" column="173" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="173" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ScratchPad/shellclass/scratch.sh" />
     <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/aws.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="66" column="7" lean-forward="true" selection-start-line="63" selection-start-column="3" selection-end-line="66" selection-end-column="7" />
+        <state relative-caret-position="1410">
+          <caret line="94" column="20" selection-end-line="241" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3401">
-          <caret line="306" column="1" selection-start-line="306" selection-start-column="1" selection-end-line="306" selection-end-column="1" />
+        <state relative-caret-position="255">
+          <caret line="17" column="27" selection-end-line="332" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ScratchPad/scratch.sh">
+    <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig_ports.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="495" column="47" lean-forward="true" selection-start-line="495" selection-end-line="495" selection-end-column="47" />
+        <state relative-caret-position="1140">
+          <caret line="76" column="1" selection-end-line="149" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2_ports.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3360">
+          <caret line="224" column="1" selection-start-line="75" selection-end-line="224" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Tools/ManageDocker/doc.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="96" column="31" selection-start-line="96" selection-start-column="31" selection-end-line="96" selection-end-column="31" />
+        <state relative-caret-position="1695">
+          <caret line="113" column="7" selection-start-line="110" selection-end-line="113" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/aws.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2340">
+          <caret line="156" column="48" selection-start-line="156" selection-start-column="48" selection-end-line="156" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ScratchPad/scratch.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="531">
+          <caret line="246" column="73" lean-forward="true" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
         </state>
       </provider>
     </entry>
