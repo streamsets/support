@@ -1,82 +1,53 @@
 #!/usr/bin/env bash
 
+=============================================================== Development Notes =================================================================
+ # Create a new branch with the Jira id
+ git checkout -b SDC-11465 origin/master
+ git status
+ #Make changes and commit
+
+ git add <files>
+ git commit
+
+ # Verify the changes can be seen in the got log
+ git log
+
+ # Fetach changes by others and rebase
+
+ git fetch
+ git rebase -i
+ #Send for review:
+
+ git review -R
+
+
+Enable remote debugger:
+export SDC_JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=51598
 
 =============================================================== BASH =================================================================
-
-find ./ -name pipeline.json | for pipeline in $(cat $pipeline); do grep -i "labels" $pipeline; done
-find . -name system.log | for logs in $(cat $logs); do grep -i "G1 Young Generation GC in" $logs; done
+Python install on mac: https://wsvincent.com/install-python3-mac/
 
 TCPDUMP:
 tcpdump -A -nn dst 172.18.4.115 port 8080 
 
 Automated jstack - https://github.com/Azure/hbase-utils/blob/master/debug/hdi_collect_stacks.sh
 
-Detect pause is logs:
-The following awk lines may be helpful to spot a timeline gap in the log
-
-awk 'BEGIN{ threshold=177} /^20[0-9][0-9]/{ if(!length(curr_time)){ split($1, d, "-") ; split($2, t, ":") ; curr_time = mktime(d[1] " " d[2] " " d[3] " " t[1] " " t[2] " " t[3]); curr_line=$0 } else{ split($1, d, "-") ;split($2, t, ":"); prev_time = curr_time; prev_line=curr_line ;curr_time = mktime(d[1] " " d[2] " " d[3] " " t[1] " " t[2] " " t[3]); curr_line=$0 ; gap = curr_time-prev_time; if(gap > threshold) { printf "=====Line %d =========================================================================\n", NR; print prev_line; print " | " ; printf " %d seconds gap\n",gap ; print " | " ; print curr_line ; flag=1 } } } END { if(flag!=1){print "No pauses found in log"}}'   <filename>
 
 CURL:
 
-WebHDFS
-
 curl -i --negotiate -u : "http://master2.openstacklocal:50070/webhdfs/v1/tmp/?op=LISTSTATUS"
-
-
-Sample log:
-
-$ grep "1506612784935.d87b7f9b740282c058a34edbf0f3515a." catalina.2017-10-31.out
-Mon Oct 30 16:58:34 CET 2017, RpcRetryingCaller{globalStartTime=1509379114214, pause=1000, retries=3}, org.apache.hadoop.hbase.NotServingRegionException: org.apache.hadoop.hbase.NotServingRegionException: Region dco_edma:utilisateur,1-MRH4ZM,1506612784935.d87b7f9b740282c058a34edbf0f3515a. is not online on noeyy5jb.noe.edf.fr,60020,1508437472510
-Mon Oct 30 16:58:37 CET 2017, RpcRetryingCaller{globalStartTime=1509379114214, pause=1000, retries=3}, org.apache.hadoop.hbase.NotServingRegionException: org.apache.hadoop.hbase.NotServingRegionException: Region dco_edma:utilisateur,1-MRH4ZM,1506612784935.d87b7f9b740282c058a34edbf0f3515a. is not online on noeyy5jb.noe.edf.fr,60020,1508437472510
-Mon Oct 30 16:58:42 CET 2017, RpcRetryingCaller{globalStartTime=1509379114214, pause=1000, retries=3}, org.apache.hadoop.hbase.NotServingRegionException: org.apache.hadoop.hbase.NotServingRegionException: Region dco_edma:utilisateur,1-MRH4ZM,1506612784935.d87b7f9b740282c058a34edbf0f3515a. is not online on noeyy5jb.noe.edf.fr,60020,1508437472510
-
-$ grep NotServingRegionException ../catalina.2017-10-31.out | awk -F "," '{print $7}' | awk '{print $1}' | sort | uniq -c | wc -l
-      23
-
-$ grep NotServingRegionException ../catalina.2017-10-31.out | awk -F "," '{print $7}' | awk '{print $1}' | sort | uniq -c
-  12 1490778790938.4c2778ab5f5bd69fb90506b3d8f9e329.
-  30 1496321429986.b4d41e21d29cad1430297df0cc3bb740.
-  10 1496384153157.450b8564ebe60c34f9f0e89328d9dfea.
-
 
 keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore1.jks -storepass password -validity 360 -keysize 2048
 
-credentialStores=jks
-credentialStore.jks.def
-credentialStore.jks.config.keystore.type
-credentialStore.jks.config.keystore.file
-credentialStore.jks.config.keystore.storePassword
 
 
-credentialStores=jks
-credentialStore.jks.def=streamsets-datacollector-jks-credentialstore-lib::com_streamsets_datacollector_credential_javakeystore_JavaKeyStoreCredentialStore
-credentialStore.jks.config.keystore.type=PKCS12
-credentialStore.jks.config.keystore.file=/etc/sdc-jks/jks-credentialStore.pkcs12
-credentialStore.jks.config.keystore.storePassword=password
-
-Create SSH tunnel:
-
-ssh -i <ssh-key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<ec2_host>
-
-ssh -i ~/.ssh/sanju_aws.pem -L 18636:172.18.0.3:18636 -fN ubuntu@ec2-34-214-4-253.us-west-2.compute.amazonaws.com
-ssh -i ~/.ssh/sanju_aws.pem -L 18636:172.18.0.2:18636 -fN ubuntu@ec2-34-214-4-253.us-west-2.compute.amazonaws.com
-
-find . -name tpstats | grep -v '76.96.27.71' | grep -v 76.96.26.222 | for tpstats in $(cat $tpstats); do ls $tpstats ; done; for tpstats in $(cat $tpstats); do awk -F "/" '{print $3 }'; cat $tpstats | grep -i Native-Transport-Requests | awk '{print $3}'; done | awk '{key=$0; getline; print key " - " $0;}'
-find . -name tpstats | for tpstats in $(cat $tpstats); do ls $tpstats | grep -Ev '76.96.27.71 | 76.96.26.222' |do ls $tpstats; done;
-find . -name tpstats | for tpstats in $(cat $tpstats); do ls $tpstats  | awk -F "/" '{print $3 }'; cat $tpstats | grep -i Native-Transport-Requests | awk '{print $3}'; done | awk '{key=$0; getline; print key " - " $0;}'
-find . -name system.log | for logs in $(cat $logs); do grep -i "exception" $logs ; done
 sudo lsof -i -n | grep LISTEN | grep java > lsof-`hostname -i`.txt
-for i in $(find . -name system.log);do echo -e "========= $i =========="; grep -i "intersects a local range" $i ; done
-$ find . -name system.log | for logs in $(cat $logs); do grep -i "G1 Young Generation GC in" $logs | awk -F " " '{print $13}' | sed  's/ms.//g'; done | sort -nr | head -5
-find /usr/lib | grep jar$ | while read fname; do jar tf $fname | grep && echo $fname; done
 
+Find class in JAR:
+
+find ./ | grep jar$ | while read fname; do jar tf $fname | grep JmxReporter && echo $fname; done
 sed -i 's/something/other/g' filename.txt
 
-set local time:
-cp /etc/localtime /root/old.timezone
-rm -f /etc/localtime
-ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
-date
 
 Add a service user:
 for f in `cat hosts.txt | awk '{print $1}'`; do ssh -i ~/.ssh/sanju.pem root@$f useradd -g hdfs sanju ; done
@@ -108,29 +79,38 @@ listprinc
 xst -k sanju.keytab dn/data7.openstacklocal@HWX.COM
 copy the keytab to the desired host
 
-
-Running java code against cluster⇒
-export JAVA_HOME=/usr/jdk64/jdk1.8.0_77/
-export PATH=$PATH:/usr/jdk64/jdk1.8.0_77/bin/
-export HADOOP_CLASSPATH=`hadoop classpath`
-export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/usr/jdk64/jdk1.8.0_77/jre/lib/*
-javac -cp `hadoop classpath`$HADOOP_CLASSPATH HdfsDemo.java
-java -cp `hadoop classpath`$HADOOP_CLASSPATH: HdfsDemo
-
 =============================================================== Docker/STE/STF ===============================================================
 
-ssh -i <key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<hostname>
+Create SSH tunnel:
 
+ssh -i <ssh-key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<ec2_host>
+ssh -i ~/.ssh/sanju_aws.pem -L 18636:172.18.0.3:18636 -fN ubuntu@ec2-34-214-4-253.us-west-2.compute.amazonaws.com
 ssh -i ~/.ssh/sanju.pem -L 8042:172.18.0.3:8042 -fN ubuntu@lab
 
 Exposing docker ports:
 
 1) Stop the container ; for container in $(docker ps -q);do echo "$(docker stop $container)"; done
 2) Stop docker engine - sudo systemctl stop docker
-3) Edit hostconfig.json & config.v2.json  --  /var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/
+3) Edit hostconfig.json & config.v2.json
+
+/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/hostconfig.json
+/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/config.v2.json
+
+/var/lib/docker/containers/ddf91130dd9b68c808c6f6772530039a30041b38ff58b8e06e5f4b69868c2399/hostconfig.json
+/var/lib/docker/containers/ddf91130dd9b68c808c6f6772530039a30041b38ff58b8e06e5f4b69868c2399/config.v2.json
+
+/var/lib/docker/containers/83392dcfef758896cd11ef8c7140fb40b2fb540494c89ef3fea50915047e6e70/hostconfig.json
+/var/lib/docker/containers/83392dcfef758896cd11ef8c7140fb40b2fb540494c89ef3fea50915047e6e70/config.v2.json
+
 4) sudo systemctl start docker
 5) Start the container
 
+Exposing port on a running container:
+
+docker run -dti --rm --net host bobrik/socat TCP4-LISTEN:7187,fork TCP4:<container-ip>:7187
+
+Find and Kill Docker containers:
+docker ps -a | awk '{if (NR!=1) {print "docker stop "$1}}'
 docker ps -a | awk '{if (NR!=1) {print "docker rm "$1}}'
 
 CDH :
@@ -224,6 +204,7 @@ REST Calls:
 
 # login to Control Hub security app
 curl -X POST -d '{"userName":"admin@admin", "password": "admin@admin"}' http://sch.cluster:18631/security/public-rest/v1/authentication/login --header "Content-Type:application/json" --header "X-Requested-By:admin@admin" -c cookie.txt
+
 
 # generate auth token from security app
 sessionToken=$(cat cookie.txt | grep SSO | rev | grep -o '^\S*' | rev)
