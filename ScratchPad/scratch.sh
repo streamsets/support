@@ -113,7 +113,7 @@ ssh -i ~/.ssh/sanju.pem -L 1521:sanjeev-oracle12.ctbxv82tncac.us-west-2.rds.amaz
 
 
 
-Exposing docker ports:
+Exposing docker ports(Linux):
 
 1) Stop the container ; for container in $(docker ps -q);do echo "$(docker stop $container)"; done
 2) Stop docker engine - sudo systemctl stop docker
@@ -131,12 +131,16 @@ Exposing docker ports:
 4) sudo systemctl start docker
 5) Start the container
 
-Exposing port on a running container:
+Exposing docker ports(Mac OS)
 
-docker run -dti --rm --net host bobrik/socat TCP4-LISTEN:7187,fork TCP4:<container-ip>:7187
-docker run -dti --rm --net host recursing_hypatia TCP4-LISTEN:19631,fork TCP4:172.19.0.3:19631
+1)Install socat. With brew:
+    brew install socat
+2)Run this socat command to forward TCP requests to the socket
+    socat TCP-LISTEN:51599,reuseaddr,fork,bind=localhost UNIX-CONNECT:/var/run/docker.sock
+3)Map what you want on tcp://localhost:51599
 
 Find and Kill Docker containers:
+
 docker ps -a | awk '{if (NR!=1) {print "docker stop "$1}}'
 docker ps -a | awk '{if (NR!=1) {print "docker rm "$1}}'
 
@@ -691,7 +695,7 @@ ldapsearch -LLL -H ldaps://adc01.streamsets.net:636 -x -D 'sanjeev@streamsets.ne
 
 Example configuration for Active Directory (username/password removed)
 
-# Default values for a LDAP UserGroupProvider configuration
+# Streamsets LDAP configuration
 
 userGroupProvider.id=M
 userGroupProvider.M.providerClass=com.streamsets.apps.security.authentication.MultiUserGroupProvider
@@ -726,3 +730,10 @@ userGroupProvider.M.multi.AD.ldap.groupMemberAttribute=member
 userGroupProvider.M.multi.AD.ldap.groupNameAttribute=cn
 userGroupProvider.M.multi.AD.ldap.groupFullNameAttribute=description
 userGroupProvider.M.multi.AD.ldap.groupFilter=%s={dn}
+
+
+============================================================= DEBUG LOGS ===============================================
+
+#LDAP
+log4j.logger.com.streamsets.apps.security.authentication.ldap.LdapUserGroupProvider=TRACE
+
