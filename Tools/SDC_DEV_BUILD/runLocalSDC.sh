@@ -1,4 +1,5 @@
 #!/bin/bash
+
 export SDC_VERSION=3.9.0-SNAPSHOT
 : "${SDC_VERSION? Need to set SDC_VERSION}"
 
@@ -28,5 +29,7 @@ echo $SDC_DATA
 ln -s ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/etc ~/SDC/etc
 ln -s ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/libexec ~/SDC/libexec
 
+# set ulimits
+ulimit -n 32768
 # Launch SDC
 ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/bin/streamsets dc

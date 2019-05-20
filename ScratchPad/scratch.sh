@@ -24,6 +24,27 @@
 Enable remote debugger:
 export SDC_JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=51598
 
+Reverting to older git commit:
+git reflog
+git reset --hard  HEAD@{8}
+
+reverting specific changes from commit:
+https://stackoverflow.com/questions/12481639/remove-files-from-git-commit
+
+git reset --soft HEAD~1
+#Back out changes like below:
+git reset HEAD ./out/*
+git reset HEAD ./MiscJavaClients/target/*
+git reset HEAD ./.idea/*
+git reset HEAD ./MiscJavaClients/target/*
+git status
+#commit rest of the changes.
+git commit -c ORIG_HEAD
+#For example:
+git commit -c HEAD@{8}
+
+
+
 =============================================================== BASH =================================================================
 Python install on mac: https://wsvincent.com/install-python3-mac/
 
@@ -86,6 +107,11 @@ Create SSH tunnel:
 ssh -i <ssh-key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<ec2_host>
 ssh -i ~/.ssh/sanju_aws.pem -L 18636:172.18.0.3:18636 -fN ubuntu@ec2-34-214-4-253.us-west-2.compute.amazonaws.com
 ssh -i ~/.ssh/sanju.pem -L 8042:172.18.0.3:8042 -fN ubuntu@lab
+ssh -i ~/.ssh/sanju.pem -L 1521:oracle12c-sanjeev.ctbxv82tncac.us-west-2.rds.amazonaws.com:1521 -fN sanjeev@ip-192-168-142-254.us-west-2.compute.internal
+
+ssh -i ~/.ssh/sanju.pem -L 1521:sanjeev-oracle12.ctbxv82tncac.us-west-2.rds.amazonaws.com:1521 sanjeev@34.222.148.53
+
+
 
 Exposing docker ports:
 
@@ -108,6 +134,7 @@ Exposing docker ports:
 Exposing port on a running container:
 
 docker run -dti --rm --net host bobrik/socat TCP4-LISTEN:7187,fork TCP4:<container-ip>:7187
+docker run -dti --rm --net host recursing_hypatia TCP4-LISTEN:19631,fork TCP4:172.19.0.3:19631
 
 Find and Kill Docker containers:
 docker ps -a | awk '{if (NR!=1) {print "docker stop "$1}}'
@@ -247,8 +274,8 @@ maprcli node services -name webserver -action start -nodes node-1.cluster
 =============================================================== KAFKA ===============================================================
 
 --create topic
-kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic test
-kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic stats
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic cdc
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic cdc
 
 --list kafka-topics
 kafka-topics --list --zookeeper `hostname`:2181
@@ -258,7 +285,7 @@ kafka-topics --list --zookeeper `hostname`:2181
 kafka-topics --describe --zookeeper `hostname`:2181 --topic sanju
 
 -- count messages in a topic
-kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic source --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
+kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic cdc --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
 
 --Post messages to queue:
 
@@ -269,6 +296,14 @@ kafka-console-producer --broker-list `hostname`:9092 --topic siyona
 while read -r line; do kafka-console-producer.sh --broker-list `hostname`:9092 --topic sanju |  echo $line; done < test.csv
 
 kafka-console-consumer --bootstrap-server `hostname`:9092 --topic sanju --from-beginning
+
+-- Delete topic
+
+kafka-topics --zookeeper `hostname`:2181 --delete --topic cdc
+
+-- Read message and output to standard out
+
+kafka-console-consumer --zookeeper `hostname`:2181 --topic cdc > /tmp/cdc.out
 
 =============================================================== Misc ===============================================================
 Java Download on Ubuntu:
@@ -470,7 +505,7 @@ Student Table:
 
 DROP TABLE Student_Table;
 
-CREATE TABLE Student_Table (
+CREATE TABLE student (
   id mediumint(8) unsigned NOT NULL auto_increment,
   Student_ID mediumint,
  Last_Name varchar(255) default NULL,
@@ -480,7 +515,7 @@ CREATE TABLE Student_Table (
   PRIMARY KEY (id)
 ) AUTO_INCREMENT=1;
 
-INSERT INTO `Student_Table` (`Student_ID`,`Last_Name`,`First_Name`,`Class_Code`,`Grade_Pt`) VALUES (100,"Mark","Gretchen","SO",5),(101,"Hyatt","Kellie","SR",5),(102,"Reece","Selma","SO",1),(103,"Jameson","Zoe","SR",7),(104,"Matthew","Athena","",5),(105,"Erich","Iliana","FR",2),(106,"Bruno","Shellie","FR",7),(107,"Cairo","Margaret","SO",2),(108,"Ciaran","Kyra","JR",3),(109,"Bert","Zephr","",6),(110,"Hamilton","Tallulah","SR",7),(111,"Curran","Eleanor","JR",4),(112,"Graham","Kelly","SO",5),(113,"Reed","Brenna","",10),(114,"Keegan","Keiko","SO",10),(115,"Jason","Chiquita","JR",6),(116,"Walker","Halla","FR",10),(117,"Jameson","Echo","JR",7),(118,"Byron","Judith","SO",6),(119,"Thaddeus","Ursula","SR",3),(120,"Aaron","Marny","SO",10),(121,"Lionel","Imogene","SR",7),(122,"Thane","Ciara","JR",3),(123,"Linus","Debra","SR",5),(124,"Caldwell","Keiko","",9),(125,"Omar","Irene","SO",1),(126,"Cole","India","",7),(127,"Tanek","Rhonda","JR",2),(128,"Isaiah","Sandra","FR",4),(129,"Chancellor","Elaine","",2),(130,"Edan","Brielle","JR",3),(131,"Nero","Joy","JR",2),(132,"Elijah","Kathleen","SR",7),(133,"Caleb","Bertha","SO",7),(134,"Kasper","Samantha","FR",3),(135,"Philip","Hedda","SR",2),(136,"Chadwick","Stephanie","JR",1),(137,"John","Lacy","FR",5),(138,"Todd","Deborah","SR",3),(139,"Orson","Alexandra","FR",10),(140,"Hyatt","Ivy","SO",1),(141,"Michael","Ruby","SO",5),(142,"Jesse","Nicole","FR",8),(143,"Malachi","Hedy","FR",3),(144,"Holmes","Yolanda","JR",3),(145,"Holmes","Amaya","SR",3),(146,"Cruz","Dakota","JR",5),(147,"Herman","Rachel","SO",1),(148,"Vernon","Inez","SO",8),(149,"Robert","Nichole","JR",6),(150,"Brenden","Ramona","JR",4),(151,"Anthony","Shay","JR",3),(152,"Walker","Cameron","FR",4),(153,"Rigel","Kiara","JR",10),(154,"Colton","Desiree","SR",4),(155,"Cyrus","Ruby","SO",7),(156,"Arsenio","Dai","",6),(157,"Randall","Fatima","FR",6),(158,"Peter","Regan","SR",1),(159,"Merrill","Jenette","SR",8),(160,"Neil","Yvonne","",5),(161,"Edan","Bethany","SR",9),(162,"Jerry","Lani","FR",3),(163,"Lev","Cherokee","SR",1),(164,"Ryder","Phoebe","SO",1),(165,"Stewart","Shaeleigh","JR",4),(166,"Ahmed","Quintessa","",8),(167,"Abel","Giselle","SR",4),(168,"Alvin","Hermione","SR",1),(169,"Nasim","Brynne","SR",9),(170,"Connor","Ivory","SR",5),(171,"Moses","Tamara","",2),(172,"Jack","Zelenia","SO",10),(173,"Tyler","Ora","",4),(174,"Ali","Nola","SR",6),(175,"Gray","Victoria","FR",5),(176,"Alexander","Montana","JR",8),(177,"Allistair","Zelda","",1),(178,"Herman","Jemima","",2),(179,"Myles","Britanni","SO",6),(180,"Devin","Heather","",9),(181,"Dustin","Mechelle","FR",1),(182,"Tanek","Blythe","SR",7),(183,"Lester","Shaeleigh","FR",10),(184,"Phelan","Daryl","JR",6),(185,"Kadeem","Minerva","",5),(186,"Elijah","Orli","",4),(187,"Aladdin","Cameran","FR",5),(188,"Paul","Althea","JR",8),(189,"Hyatt","Ivory","FR",10),(190,"Kasimir","Daphne","JR",9),(191,"Isaac","Aiko","JR",5),(192,"Porter","Stella","SR",10),(193,"Joseph","Maile","JR",1),(194,"Devin","Tanisha","SO",6),(195,"Kermit","Cally","JR",5),(196,"Abel","Autumn","",3),(197,"Garrison","Lysandra","SO",8),(198,"Nash","Ora","",9),(199,"Cade","Priscilla","SR",7);
+INSERT INTO student (Student_ID,Last_Name,First_Name,Class_Code,Grade_Pt) VALUES (100,'Mark','Gretchen','SO',5),(101,'Hyatt','Kellie','SR',5),(102,'Reece','Selma','SO',1),(103,'Jameson','Zoe','SR',7),(104,'Matthew','Athena','',5),(105,'Erich','Iliana','FR',2),(106,'Bruno','Shellie','FR',7),(107,'Cairo','Margaret','SO',2),(108,'Ciaran','Kyra','JR',3),(109,'Bert','Zephr','',6),(110,'Hamilton','Tallulah','SR',7),(111,'Curran','Eleanor','JR',4),(112,'Graham','Kelly','SO',5),(113,'Reed','Brenna','',10),(114,'Keegan','Keiko','SO',10),(115,'Jason','Chiquita','JR',6),(116,'Walker','Halla','FR',10),(117,'Jameson','Echo','JR',7),(118,'Byron','Judith','SO',6),(119,'Thaddeus','Ursula','SR',3),(120,'Aaron','Marny','SO',10),(121,'Lionel','Imogene','SR',7),(122,'Thane','Ciara','JR',3),(123,'Linus','Debra','SR',5),(124,'Caldwell','Keiko','',9),(125,'Omar','Irene','SO',1),(126,'Cole','India','',7),(127,'Tanek','Rhonda','JR',2),(128,'Isaiah','Sandra','FR',4),(129,'Chancellor','Elaine','',2),(130,'Edan','Brielle','JR',3),(131,'Nero','Joy','JR',2),(132,'Elijah','Kathleen','SR',7),(133,'Caleb','Bertha','SO',7),(134,'Kasper','Samantha','FR',3),(135,'Philip','Hedda','SR',2),(136,'Chadwick','Stephanie','JR',1),(137,'John','Lacy','FR',5),(138,'Todd','Deborah','SR',3),(139,'Orson','Alexandra','FR',10),(140,'Hyatt','Ivy','SO',1),(141,'Michael','Ruby','SO',5),(142,'Jesse','Nicole','FR',8),(143,'Malachi','Hedy','FR',3),(144,'Holmes','Yolanda','JR',3),(145,'Holmes','Amaya','SR',3),(146,'Cruz','Dakota','JR',5),(147,'Herman','Rachel','SO',1),(148,'Vernon','Inez','SO',8),(149,'Robert','Nichole','JR',6),(150,'Brenden','Ramona','JR',4),(151,'Anthony','Shay','JR',3),(152,'Walker','Cameron','FR',4),(153,'Rigel','Kiara','JR',10),(154,'Colton','Desiree','SR',4),(155,'Cyrus','Ruby','SO',7),(156,'Arsenio','Dai','',6),(157,'Randall','Fatima','FR',6),(158,'Peter','Regan','SR',1),(159,'Merrill','Jenette','SR',8),(160,'Neil','Yvonne','',5),(161,'Edan','Bethany','SR',9),(162,'Jerry','Lani','FR',3),(163,'Lev','Cherokee','SR',1),(164,'Ryder','Phoebe','SO',1),(165,'Stewart','Shaeleigh','JR',4),(166,'Ahmed','Quintessa','',8),(167,'Abel','Giselle','SR',4),(168,'Alvin','Hermione','SR',1),(169,'Nasim','Brynne','SR',9),(170,'Connor','Ivory','SR',5),(171,'Moses','Tamara','',2),(172,'Jack','Zelenia','SO',10),(173,'Tyler','Ora','',4),(174,'Ali','Nola','SR',6),(175,'Gray','Victoria','FR',5),(176,'Alexander','Montana','JR',8),(177,'Allistair','Zelda','',1),(178,'Herman','Jemima','',2),(179,'Myles','Britanni','SO',6),(180,'Devin','Heather','',9),(181,'Dustin','Mechelle','FR',1),(182,'Tanek','Blythe','SR',7),(183,'Lester','Shaeleigh','FR',10),(184,'Phelan','Daryl','JR',6),(185,'Kadeem','Minerva','',5),(186,'Elijah','Orli','',4),(187,'Aladdin','Cameran','FR',5),(188,'Paul','Althea','JR',8),(189,'Hyatt','Ivory','FR',10),(190,'Kasimir','Daphne','JR',9),(191,'Isaac','Aiko','JR',5),(192,'Porter','Stella','SR',10),(193,'Joseph','Maile','JR',1),(194,'Devin','Tanisha','SO',6),(195,'Kermit','Cally','JR',5),(196,'Abel','Autumn','',3),(197,'Garrison','Lysandra','SO',8),(198,'Nash','Ora','',9),(199,'Cade','Priscilla','SR',7);
 
 DROP TABLE Sales_Data;
 
@@ -643,3 +678,51 @@ mysql> use mydb;
 mysql> source db_backup.dump;
 OR
 mysql --max_allowed_packet=100M -u root -p database < dump.sql
+
+============================================ Oracle Docker Setup ===============================
+
+https://docs.google.com/document/d/1bSPT2MWl8TlVyPrQBx50sLkGrYgaHyYCbnJBFRwMqcI/edit#heading=h.ovjw0pxdz7qa
+https://docs.google.com/document/d/10dddP_I0vo-_idanLNqI4-X3dM_v0n6j0rqkb_piU4g/edit#heading=h.opdzljml682i
+
+============================================ SCH LDAP Setup ===============================
+To check connectivity:
+
+ldapsearch -LLL -H ldaps://adc01.streamsets.net:636 -x -D 'sanjeev@streamsets.net' -w 'pwd' -b 'ou=StreamSets,dc=streamsets,dc=net' sAMAccountName=sanjeev
+
+Example configuration for Active Directory (username/password removed)
+
+# Default values for a LDAP UserGroupProvider configuration
+
+userGroupProvider.id=M
+userGroupProvider.M.providerClass=com.streamsets.apps.security.authentication.MultiUserGroupProvider
+userGroupProvider.M.multi.ids=AD
+userGroupProvider.M.multi.fetchGroups=true
+userGroupProvider.M.multi.allGroupsProviderId=AD
+userGroupProvider.M.multi.AD.providerClass=com.streamsets.apps.security.authentication.ldap.LdapUserGroupProvider
+
+
+userGroupProvider.externalProvider.principalCache.expiration.secs=60
+userGroupProvider.M.multi.AD.ldap.poolMinConnections=3
+userGroupProvider.M.multi.AD.ldap.poolMaxConnections=10
+userGroupProvider.M.multi.AD.ldap.poolValidateConnections=true
+userGroupProvider.M.multi.AD.ldap.connectionTimeoutMillis=5000
+userGroupProvider.M.multi.AD.ldap.responseTimeoutMillis=5000
+userGroupProvider.M.multi.AD.ldap.hostname=adc01.streamsets.net
+userGroupProvider.M.multi.AD.ldap.port=636
+userGroupProvider.M.multi.AD.ldap.ldaps=true
+userGroupProvider.M.multi.AD.ldap.startTLS=false
+userGroupProvider.M.multi.AD.ldap.userBaseDn=OU=StreamSets,DC=streamsets,DC=net
+userGroupProvider.M.multi.AD.ldap.userObjectClass=organizationalPerson
+userGroupProvider.M.multi.AD.ldap.userNameAttribute=sAMAccountName
+userGroupProvider.M.multi.AD.ldap.userEmailAttribute=mail
+userGroupProvider.M.multi.AD.ldap.userFullNameAttribute=cn
+userGroupProvider.M.multi.AD.ldap.userFilter=%s={user}
+userGroupProvider.M.multi.AD.ldap.bindDn=sanjeev@streamsets.net
+userGroupProvider.M.multi.AD.ldap.bindPassword=********
+userGroupProvider.M.multi.AD.ldap.fetchGroups=true
+userGroupProvider.M.multi.AD.ldap.groupBaseDn=OU=StreamSets,DC=streamsets,DC=net
+userGroupProvider.M.multi.AD.ldap.groupObjectClass=group
+userGroupProvider.M.multi.AD.ldap.groupMemberAttribute=member
+userGroupProvider.M.multi.AD.ldap.groupNameAttribute=cn
+userGroupProvider.M.multi.AD.ldap.groupFullNameAttribute=description
+userGroupProvider.M.multi.AD.ldap.groupFilter=%s={dn}
