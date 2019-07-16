@@ -3,48 +3,48 @@
 
   },
   "State":{
-    "Running":true,
+    "Running":false,
     "Paused":false,
     "Restarting":false,
     "OOMKilled":false,
     "RemovalInProgress":false,
     "Dead":false,
-    "Pid":128933,
-    "ExitCode":0,
+    "Pid":0,
+    "ExitCode":137,
     "Error":"",
-    "StartedAt":"2019-05-07T21:38:14.751012876Z",
-    "FinishedAt":"2019-05-07T21:37:43.192542737Z",
+    "StartedAt":"2019-06-18T22:56:17.030180934Z",
+    "FinishedAt":"2019-07-15T22:39:13.221187647Z",
     "Health":{
-      "Status":"healthy",
+      "Status":"unhealthy",
       "FailingStreak":0,
       "Log":[
         {
-          "Start":"2019-05-07T22:23:09.676431Z",
-          "End":"2019-05-07T22:23:09.755967478Z",
+          "Start":"2019-07-15T22:38:56.751323168Z",
+          "End":"2019-07-15T22:38:56.937911133Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-05-07T22:23:10.761339168Z",
-          "End":"2019-05-07T22:23:10.838997409Z",
+          "Start":"2019-07-15T22:38:57.943941176Z",
+          "End":"2019-07-15T22:38:58.138014914Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-05-07T22:23:11.844362001Z",
-          "End":"2019-05-07T22:23:11.918954707Z",
+          "Start":"2019-07-15T22:38:59.145229133Z",
+          "End":"2019-07-15T22:38:59.334388296Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-05-07T22:23:12.924382179Z",
-          "End":"2019-05-07T22:23:13.010644229Z",
+          "Start":"2019-07-15T22:39:00.341307496Z",
+          "End":"2019-07-15T22:39:00.528036557Z",
           "ExitCode":0,
           "Output":""
         },
         {
-          "Start":"2019-05-07T22:23:14.01587814Z",
-          "End":"2019-05-07T22:23:14.086482956Z",
+          "Start":"2019-07-15T22:39:01.535071571Z",
+          "End":"2019-07-15T22:39:01.757072951Z",
           "ExitCode":0,
           "Output":""
         }
@@ -102,7 +102,10 @@
       "18390/tcp":{
 
       },
-      "18391/tcp":{
+      "10390/tcp":{
+
+      },
+      "11391/tcp":{
 
       },
       "18392/tcp":{
@@ -139,6 +142,38 @@
 
       },
       "8042/tcp":{
+
+      },
+      "10372/tcp":{
+
+      },
+      "11372/tcp":{
+
+      },
+      "10380/tcp":{
+
+      },
+      "11380/tcp":{
+
+      },"10381/tcp":{
+
+      },
+      "11381/tcp":{
+
+      },
+      "11390/tcp":{
+
+      },
+      "18391/tcp":{
+
+      },
+      "10391/tcp":{
+
+      },
+      "10392/tcp":{
+
+      },
+      "11392/tcp":{
 
       },
       "8088/tcp":{
@@ -187,7 +222,7 @@
   "Image":"sha256:ff96a4d786feab0d7046e08d1c67fe3505902ba1c059951f931b4c32e9d2c0aa",
   "NetworkSettings":{
     "Bridge":"",
-    "SandboxID":"f18d677fd0603dab75c4a53f8af4dbb30265d127c5b06ac56a1dbfe65971134a",
+    "SandboxID":"4eaee205bcfc07b38ec7285b762043a0a68491adf0a713d147d1ab0eb8c9c5e9",
     "HairpinMode":false,
     "LinkLocalIPv6Address":"",
     "LinkLocalIPv6PrefixLen":0,
@@ -200,178 +235,21 @@
           "1818a8105b22"
         ],
         "NetworkID":"fde45233e5be93bb4beb5392ba5af08f4e5612eb82f822d9b5dbc1a2c6551c5a",
-        "EndpointID":"241ba2b2834e9eeae9f63d5569032a556ca8b6a7eb356daa47028971c0bed805",
-        "Gateway":"172.18.0.1",
-        "IPAddress":"172.18.0.9",
-        "IPPrefixLen":16,
+        "EndpointID":"",
+        "Gateway":"",
+        "IPAddress":"",
+        "IPPrefixLen":0,
         "IPv6Gateway":"",
         "GlobalIPv6Address":"",
         "GlobalIPv6PrefixLen":0,
-        "MacAddress":"02:42:ac:12:00:09",
+        "MacAddress":"",
         "DriverOpts":null,
         "IPAMOperational":false
       }
     },
     "Service":null,
-    "Ports":{
-      "10000/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"10000"
-        }
-      ],
-      "10002/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"10002"
-        }
-      ],
-      "18088/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18088"
-        }
-      ],
-      "18089/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18089"
-        }
-      ],
-      "18341/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18341"
-        }
-      ],
-      "18343/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18343"
-        }
-      ],
-      "18352/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18352"
-        }
-      ],
-      "18362/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18362"
-        }
-      ],
-      "18372/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18372"
-        }
-      ],
-      "18380/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18380"
-        }
-      ],
-      "18381/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18381"
-        }
-      ],
-      "18390/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18390"
-        }
-      ],
-      "18391/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18391"
-        }
-      ],
-      "18392/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18392"
-        }
-      ],
-      "18400/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18400"
-        }
-      ],
-      "18401/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18402"
-        }
-      ],
-      "18630/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"18630"
-        }
-      ],
-      "19888/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"19888"
-        }
-      ],
-      "50070/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"50070"
-        }
-      ],
-      "50075/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"50075"
-        }
-      ],
-      "51598/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"51598"
-        }
-      ],
-      "60010/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"60010"
-        }
-      ],
-      "60030/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"60030"
-        }
-      ],
-      "7180/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"7180"
-        }
-      ],
-      "8042/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"8042"
-        }
-      ],
-      "8088/tcp":[
-        {
-          "HostIp":"0.0.0.0",
-          "HostPort":"8088"
-        }
-      ]
-    },
-    "SandboxKey":"/var/run/docker/netns/f18d677fd060",
+    "Ports":null,
+    "SandboxKey":"/var/run/docker/netns/4eaee205bcfc",
     "SecondaryIPAddresses":null,
     "SecondaryIPv6Addresses":null,
     "IsAnonymousEndpoint":true,
@@ -385,7 +263,7 @@
   "ProcessLabel":"",
   "RestartCount":0,
   "HasBeenStartedBefore":true,
-  "HasBeenManuallyStopped":false,
+  "HasBeenManuallyStopped":true,
   "MountPoints":{
     "/data/kudu":{
       "Source":"",
@@ -394,7 +272,6 @@
       "Name":"0fd1de0f5371477f7ec893d4f271455d07bcd337b5e2860c7122de2e9ce9c20c",
       "Driver":"local",
       "Type":"volume",
-      "ID":"8cedffc1d3f332f141c0fd8e8418613627bab356e234b36aa3d88a10d4eaccb6",
       "Spec":{
 
       }
@@ -436,7 +313,6 @@
       "Name":"8193d5063b38118e980ce5d1b7a4ff173c7397e19b5363ce92740f7e25386ddd",
       "Driver":"local",
       "Type":"volume",
-      "ID":"f3d2b682a2b945e8b4d43a72f5246582c7f2a1350d412e2b9b391ce533b5e35e",
       "Spec":{
 
       }
@@ -448,7 +324,6 @@
       "Name":"ebcb8a76aae95800aaec806e2052a4680c230393544f638a279031b7d2d0c62f",
       "Driver":"local",
       "Type":"volume",
-      "ID":"7c0f1dc84988db996e52970b7bd75e07abc2ac102f0996f24b9f54ca621e361e",
       "Spec":{
 
       }
@@ -460,7 +335,6 @@
       "Name":"308096bb8afec0159bce8a875074a0f18bc6682f1ae5def3b07aa507832cfafb",
       "Driver":"local",
       "Type":"volume",
-      "ID":"d7dd848d849fa466ae0f5ce620ebdd7da3dde79e28ed1709bce3a6f0d70c54c6",
       "Spec":{
 
       }
@@ -472,7 +346,6 @@
       "Name":"8adfc1eff2930217c59b9246894b1a3279f8b6f02b4faf2b5d36a1c3011e46ae",
       "Driver":"local",
       "Type":"volume",
-      "ID":"335a486b544947cde95bea726270e1d7ca0dfef4ed9f670824503de9763a5366",
       "Spec":{
 
       }
@@ -484,7 +357,6 @@
       "Name":"7e249823866ba1b1ab695b035bb678af01e24d820c67b576f64a1a0a7bb24589",
       "Driver":"local",
       "Type":"volume",
-      "ID":"4caa8ff25d2d3852541ec54f7f2486125d8c01fe714b6bed614427f635af41a0",
       "Spec":{
 
       }

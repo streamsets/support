@@ -78,6 +78,12 @@
         "HostPort":"18381"
       }
     ],
+    "18382/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18382"
+      }
+    ],
     "18390/tcp":[
       {
         "HostIp":"",
@@ -103,6 +109,12 @@
       }
     ],
     "18401/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"18401"
+      }
+    ],
+    "18402/tcp":[
       {
         "HostIp":"",
         "HostPort":"18402"
@@ -166,6 +178,90 @@
       {
         "HostIp":"",
         "HostPort":"8088"
+      }
+    ],
+    "10372/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10372"
+      }
+    ],
+    "11372/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"11372"
+      }
+    ],
+    "10380/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10380"
+      }
+    ],
+    "11380/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"11380"
+      }
+    ],
+    "10381/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10381"
+      }
+    ],
+    "11381/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"11381"
+      }
+    ],
+    "10382/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10382"
+      }
+    ],
+    "11382/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"11382"
+      }
+    ],
+    "10390/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10390"
+      }
+    ],
+    "11390/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"11390"
+      }
+    ],
+    "10391/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10391"
+      }
+    ],
+    "11391/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"11391"
+      }
+    ],
+    "10392/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"10392"
+      }
+    ],
+    "11392/tcp":[
+      {
+        "HostIp":"",
+        "HostPort":"11392"
       }
     ],
     "8888/tcp":[
