@@ -66,7 +66,7 @@ sudo lsof -i -n | grep LISTEN | grep java > lsof-`hostname -i`.txt
 
 Find class in JAR:
 
-find ./ | grep jar$ | while read fname; do jar tf $fname | grep JmxReporter && echo $fname; done
+find ./ | grep jar$ | while read fname; do jar tf $fname | grep JsonGenerator && echo $fname; done
 sed -i 's/something/other/g' filename.txt
 
 
@@ -102,16 +102,19 @@ copy the keytab to the desired host
 
 =============================================================== Docker/STE/STF ===============================================================
 
-Create SSH tunnel:
 
-ssh -i <ssh-key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<ec2_host>
-ssh -i ~/.ssh/sanju_aws.pem -L 18636:172.18.0.3:18636 -fN ubuntu@ec2-34-214-4-253.us-west-2.compute.amazonaws.com
-ssh -i ~/.ssh/sanju.pem -L 8042:172.18.0.3:8042 -fN ubuntu@lab
-ssh -i ~/.ssh/sanju.pem -L 1521:oracle12c-sanjeev.ctbxv82tncac.us-west-2.rds.amazonaws.com:1521 -fN sanjeev@ip-192-168-142-254.us-west-2.compute.internal
+Opening tunnel in background:
 
-ssh -i ~/.ssh/sanju.pem -L 1521:sanjeev-oracle12.ctbxv82tncac.us-west-2.rds.amazonaws.com:1521 sanjeev@34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L <local-port>:<remote-host>:<remote-port> user@bastion
 
-
+ssh -i ~/.ssh/sanju.pem -f -N -L 18391:10.10.48.216:18391 34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L 7180:10.10.48.216:7180 34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L 18631:10.10.48.216:18631 34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L 18372:10.10.48.216:18372 34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L 18381:10.10.48.216:18381 34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L 18382:10.10.48.216:18382 34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L 18390:10.10.48.216:18390 34.222.148.53
+ssh -i ~/.ssh/sanju.pem -f -N -L 10391:10.10.48.216:10391 34.222.148.53
 
 Exposing docker ports(Linux):
 
@@ -119,17 +122,14 @@ Exposing docker ports(Linux):
 2) Stop docker engine - sudo systemctl stop docker
 3) Edit hostconfig.json & config.v2.json
 
-/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/hostconfig.json
-/var/lib/docker/containers/1818a8105b2266ce2b3bae7ab38cee419e0b5db0903d026a0989c3eee2fdbc42/config.v2.json
+sudo vi /var/lib/docker/containers/23337e129dd79ccb487f601acf3cd65006f144f44e2647b36f0350fd1cb54301/hostconfig.json
 
-/var/lib/docker/containers/ddf91130dd9b68c808c6f6772530039a30041b38ff58b8e06e5f4b69868c2399/hostconfig.json
-/var/lib/docker/containers/ddf91130dd9b68c808c6f6772530039a30041b38ff58b8e06e5f4b69868c2399/config.v2.json
-
-/var/lib/docker/containers/83392dcfef758896cd11ef8c7140fb40b2fb540494c89ef3fea50915047e6e70/hostconfig.json
-/var/lib/docker/containers/83392dcfef758896cd11ef8c7140fb40b2fb540494c89ef3fea50915047e6e70/config.v2.json
+sudo vi /var/lib/docker/containers/23337e129dd79ccb487f601acf3cd65006f144f44e2647b36f0350fd1cb54301/config.v2.json
 
 4) sudo systemctl start docker
 5) Start the container
+
+
 
 Exposing docker ports(Mac OS)
 
@@ -152,7 +152,7 @@ sudo pip3 install -r topology_cdh/requirements.txt
 
 Non Kerberos:
 
-ste -v start CDH_5.15.0 --kafka-version 3.1.0  --spark2-version 2.3-r2 --sdc-version 3.7.2 --predictable --secondary-nodes node-{2..3}
+ste -v start CDH_5.15.0 --kafka-version 3.1.0  --spark2-version 2.3-r2 --sdc-version 3.9.1 --predictable --secondary-nodes node-{2..3}
 
 
 Kerberos:
@@ -186,6 +186,7 @@ ln -s /etc/hadoop/conf/hdfs-site.xml hdfs-site.xml
 ln -s /etc/hadoop/conf/core-site.xml core-site.xml
 ln -s /etc/hadoop/conf/mapred-site.xml mapred-site.xml
 ln -s /etc/hadoop/conf/yarn-site.xml yarn-site.xml
+ln -s /etc/hive/conf/hive-site.xml hive-site.xml
 
 Running the tests:
 
@@ -194,15 +195,17 @@ stf -v --testframework-config-directory /home/ubuntu/.streamsets/testenvironment
 MR:
 stf -v --testframework-config-directory /home/ubuntu/.streamsets/testenvironments/CDH_5.15.0_Kerberos test -vs --sdc-server-url=http://node-1.cluster:18630 --cluster-server=cm://node-1.cluster:7180 --kerberos stage/test_mapreduce_executor.py
 
+stf -v test -vs --sdc-server-url http://node-1.cluster:18630 stage/
+
 ControlHub:
 =============
 cd ~/workspace
-git clone https://github.com/streamsets/topology_sch.git -b streamsets
+git clone https://github.com/streamsets/topology_sch.git
 pip3 install -r topology_sch/requirements.txt
 clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
 
 For example:
-clusterdock -v start topology_sch --predictable --sch-version 3.9.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.7.2
+clusterdock -v start topology_sch --predictable --sch-version 3.9.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.8.2
 
 
 Additional SDC instances:
@@ -234,7 +237,7 @@ stf test -vs -m elasticsearch --elasticsearch-url http://elastic:changeme@myelas
 REST Calls:
 
 # login to Control Hub security app
-curl -X POST -d '{"userName":"admin@admin", "password": "admin@admin"}' http://sch.cluster:18631/security/public-rest/v1/authentication/login --header "Content-Type:application/json" --header "X-Requested-By:admin@admin" -c cookie.txt
+curl -X POST -d '{"userName":"admin@admin", "password": "matrix008"}' http://sch.cluster:18631/security/public-rest/v1/authentication/login --header "Content-Type:application/json" --header "X-Requested-By:admin@admin" -c cookie.txt
 
 
 # generate auth token from security app
@@ -250,7 +253,7 @@ curl -s -X POST -d '{"userName":"admin@experian”, "password": "12345678"}' htt
 
 STREAMSETS CLI:
 
-bin/streamsets cli -U http://localhost:18331 help store import
+bin/streamsets cli -U http://localhost:19372 help store import
 
 bin/streamsets cli -U http://node-1.cluster:18343 -a dpm -u admin@admin -p admin@admin --dpmURL http://sch.cluster:18631 store list
 
@@ -258,6 +261,8 @@ bin/streamsets cli -U http://node-1.cluster:18400 -a dpm -u admin@admin -p admin
 
 bin/streamsets cli -U http://localhost:18331 -u admin -p admin store list
 bin/streamsets cli -U http://localhost:18331 -u admin -p admin store import -n "Dev to Trash" -f
+
+bin/streamsets cli -U http://macbook:19372 -a dpm -u admin@admin -p matrix008 --dpmURL http://sch.cluster:18631 store list
 
 
 
@@ -289,7 +294,7 @@ kafka-topics --list --zookeeper `hostname`:2181
 kafka-topics --describe --zookeeper `hostname`:2181 --topic sanju
 
 -- count messages in a topic
-kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic cdc --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
+kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic <topic-name> --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
 
 --Post messages to queue:
 
@@ -307,7 +312,7 @@ kafka-topics --zookeeper `hostname`:2181 --delete --topic cdc
 
 -- Read message and output to standard out
 
-kafka-console-consumer --zookeeper `hostname`:2181 --topic cdc > /tmp/cdc.out
+kafka-console-consumer --zookeeper `hostname`:2181 --topic source > /tmp/source.out
 
 =============================================================== Misc ===============================================================
 Java Download on Ubuntu:
@@ -731,9 +736,72 @@ userGroupProvider.M.multi.AD.ldap.groupNameAttribute=cn
 userGroupProvider.M.multi.AD.ldap.groupFullNameAttribute=description
 userGroupProvider.M.multi.AD.ldap.groupFilter=%s={dn}
 
+For SDC:
+
+Under sdc.prop
+http.authentication.login.module=ldap
+http.authentication.ldap.role.mapping=Eng:admin
+
+Under ldap-login.conf:
+
+ldap {
+     com.streamsets.datacollector.http.LdapLoginModule required
+     debug="true"
+     useLdaps="true"
+     useStartTLS="false"
+     contextFactory="com.sun.jndi.ldap.LdapCtxFactory"
+     hostname="adc01.streamsets.net"
+     port="636"
+     bindDn="sanjeev@streamsets.net"
+     bindPassword="@ldap-bind-password.txt@"
+     forceBindingLogin="true"
+     userBaseDn="OU=StreamSets,DC=streamsets,DC=net"
+     userIdAttribute="sAMAccountName"
+     userPasswordAttribute=""
+     userObjectClass="person"
+     userFilter="sAMAccountName={user}"
+     roleBaseDn="OU=StreamSets,DC=streamsets,DC=net"
+     roleNameAttribute="cn"
+     roleMemberAttribute="member"
+     roleObjectClass="group"
+     roleFilter="member={dn}";
+};
+
+
 
 ============================================================= DEBUG LOGS ===============================================
 
 #LDAP
 log4j.logger.com.streamsets.apps.security.authentication.ldap.LdapUserGroupProvider=TRACE
+
+
+Here's a quick & dirty Python example that authenticates against DPM, and then uses the cookie from DPM to make a requests to a DPM-managed SDC:
+
+import requests
+import json
+dpm_auth_creds = {"userName": "alex@woolford.io", "password": "p@ssword"}
+headers = {"Content-Type": "application/json", "X-Requested-By": "SDC"}
+auth_request = requests.post('http://dpm.woolford.io:18631/security/public-rest/v1/authentication/login', data=json.dumps(dpm_auth_creds), headers=headers)
+cookies = auth_request.cookies
+pipeline_status = requests.get("http://dpm.woolford.io:18630/rest/v1/pipeline/httporiginpaginationaed0daee-7810-4c2e-af29-8b7b6fe0c8b0/status", cookies=cookies)
+print(pipeline_status.content.decode())
+This returns:
+
+{
+"pipelineId" : "httporiginpaginationaed0daee-7810-4c2e-af29-8b7b6fe0c8b0",
+"rev" : "0",
+"user" : "alex@woolford.io",
+"status" : "EDITED",
+"message" : "Pipeline edited",
+"timeStamp" : 1527174457123,
+"attributes" : {
+"IS_REMOTE_PIPELINE" : false,
+"RUNTIME_PARAMETERS" : null
+},
+"executionMode" : "STANDALONE",
+"metrics" : null,
+"retryAttempt" : 0,
+"nextRetryTimeStamp" : 0,
+"name" : "httporiginpaginationaed0daee-7810-4c2e-af29-8b7b6fe0c8b0"
+}
 
