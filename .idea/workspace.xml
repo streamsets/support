@@ -1,137 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="MiscJavaClients:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="6bb39792-c94b-41d6-baa7-9020d37124d8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ScratchPad/config.v2_ports.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchPad/hostconfig_ports.json" afterDir="false" />
+    <list default="true" id="6bb39792-c94b-41d6-baa7-9020d37124d8" name="Default Changelist" comment="cleaned up scratchpad">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/support.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/support.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScratchPad/config.v2.json" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchPad/config.v2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScratchPad/hostconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchPad/hostconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/SqlServerJDBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/SqlServerJDBC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/db2.java" beforeDir="false" afterPath="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/db2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScratchPad/scratch.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchPad/scratch.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/ManageEc2/aws.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/ManageEc2/aws.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/SDC_DEV_BUILD/runLocalSDC.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/SDC_DEV_BUILD/runLocalSDC.sh" afterDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/MiscJavaClients/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="hideWarnings" value="true" />
+    <option name="HIDE_WARNINGS" value="true" />
+  </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-886415019">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="8" />
-          <entry key="project.open.time.0" value="3" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.closed" value="31" />
+          <entry key="project.open.time.0" value="8" />
+          <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.13" value="1" />
+          <entry key="project.open.time.1371" value="1" />
+          <entry key="project.open.time.16" value="1" />
+          <entry key="project.open.time.18" value="1" />
           <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.3" value="2" />
-          <entry key="project.open.time.4" value="2" />
-          <entry key="project.open.time.7" value="2" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.open.time.22" value="1" />
+          <entry key="project.open.time.23" value="1" />
+          <entry key="project.open.time.3" value="5" />
+          <entry key="project.open.time.4" value="3" />
+          <entry key="project.open.time.407" value="1" />
+          <entry key="project.open.time.45012" value="1" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.6454" value="1" />
+          <entry key="project.open.time.7" value="3" />
+          <entry key="project.open.time.80" value="1" />
+          <entry key="project.open.time.891" value="1" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="39" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="json" value="7" />
-          <entry key="md" value="1" />
-          <entry key="sh" value="10" />
+          <entry key="MF" value="2" />
+          <entry key="iml" value="2" />
+          <entry key="java" value="39" />
+          <entry key="json" value="23" />
+          <entry key="md" value="15" />
+          <entry key="pl" value="1" />
+          <entry key="properties" value="1" />
+          <entry key="props" value="1" />
+          <entry key="py" value="1" />
+          <entry key="sh" value="25" />
+          <entry key="xml" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Bash" value="10" />
-          <entry key="JSON" value="7" />
-          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Bash" value="25" />
+          <entry key="IDEA_MODULE" value="2" />
+          <entry key="JAVA" value="39" />
+          <entry key="JSON" value="23" />
+          <entry key="Manifest" value="2" />
+          <entry key="Markdown" value="14" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="Perl" value="1" />
+          <entry key="Properties" value="1" />
+          <entry key="Python" value="1" />
+          <entry key="XML" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="json" value="256" />
-          <entry key="sh" value="1440" />
+          <entry key="java" value="1354" />
+          <entry key="json" value="399" />
+          <entry key="md" value="1044" />
+          <entry key="py" value="46" />
+          <entry key="sh" value="4486" />
           <entry key="txt" value="21" />
+          <entry key="xml" value="41" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Bash" value="1440" />
-          <entry key="JSON" value="256" />
+          <entry key="Bash" value="4486" />
+          <entry key="JAVA" value="1354" />
+          <entry key="JSON" value="399" />
+          <entry key="Markdown" value="1044" />
           <entry key="PLAIN_TEXT" value="21" />
+          <entry key="Python" value="46" />
+          <entry key="XML" value="41" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1410">
-              <caret line="94" column="20" selection-end-line="241" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="27" selection-end-line="332" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig_ports.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1140">
-              <caret line="76" column="1" selection-end-line="149" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2_ports.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3360">
-              <caret line="224" column="1" selection-start-line="75" selection-end-line="224" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/ManageDocker/doc.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1695">
-              <caret line="113" column="7" selection-start-line="110" selection-end-line="113" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/aws.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2340">
-              <caret line="156" column="48" selection-start-line="156" selection-start-column="48" selection-end-line="156" selection-end-column="48" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ScratchPad/scratch.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="531">
-              <caret line="246" column="73" lean-forward="true" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
+            <state relative-caret-position="521">
+              <caret line="111" lean-forward="true" selection-start-line="111" selection-end-line="111" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tools/Utilities/ports.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="package-info" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>echo</find>
-      <find>docker</find>
       <find>CDH</find>
       <find>AWS_HOSTNAME</find>
       <find>SCH</find>
@@ -139,8 +150,24 @@
       <find>hostconf</find>
       <find>sch</find>
       <find>kerberos</find>
-      <find>curl</find>
+      <find>tar</find>
+      <find>1818a8105b22</find>
+      <find>build</find>
+      <find>tunn</find>
+      <find>kinit</find>
+      <find>opt</find>
+      <find>elif</find>
+      <find>NameAttribute</find>
+      <find>providerClass</find>
+      <find>debug</find>
+      <find>docker</find>
+      <find>jar</find>
+      <find>hostconfig</find>
+      <find>bastion</find>
+      <find>useradd</find>
+      <find>rest</find>
       <find>kafka</find>
+      <find>curl</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;HostIp&quot;:&quot;0.0.0.0&quot;</replace>
@@ -156,34 +183,110 @@
         <option value="$PROJECT_DIR$/DockerConfigs/hostconfig.json" />
         <option value="$PROJECT_DIR$/Tools/ManageDocker/doc.sh" />
         <option value="$PROJECT_DIR$/Tools/ManageEc2/aws.sh" />
+        <option value="$PROJECT_DIR$/Misc-Java-Clients/CassandraJDBC/src/CassandraCql.java" />
+        <option value="$PROJECT_DIR$/Misc-Java-Clients/mapr-streams-sample-programs/README.md" />
+        <option value="$PROJECT_DIR$/Misc-Java-Clients/CassandraJDBC/ReadMe.md" />
+        <option value="$PROJECT_DIR$/Tools/BulkImportPipelines/PipelineImport.py" />
+        <option value="$PROJECT_DIR$/Misc-Java-Clients/HiveJDBCClient/src/HiveJdbcClient.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/README.md" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/java/rest/rest.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/java/rest/GetAgentLoginHistory.java" />
+        <option value="$PROJECT_DIR$/Test/src/RestClient.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/cassandra/jdbcclient/CassandraCql.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/hive/jdbcclient/HiveJdbcClient.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/javaclients/run/Run.java" />
+        <option value="$PROJECT_DIR$/Test/src/GetAgentLoginHistory.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/javaclients/execute/Run.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/java/rest/RestClient.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/MySQLJDBC.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/jms/client/JMSProducer.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/pom.xml" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mapr/examples/Consumer.java" />
+        <option value="$PROJECT_DIR$/Tools/ThreadDumps/JavaThreadDumps.sh" />
+        <option value="$PROJECT_DIR$/Pipelines/JMS_Trash/ReadMe.md" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/jms/client/JMSConsumer.java" />
+        <option value="$PROJECT_DIR$/Tools/SDC_DEV_BUILD/runLocalSDC.sh" />
+        <option value="$PROJECT_DIR$/Tools/SDC_DEV_BUILD/partialBuild.sh" />
+        <option value="$PROJECT_DIR$/Tools/SDC_DEV_BUILD/cleanUpLocalBuild.sh" />
+        <option value="$PROJECT_DIR$/Tools/Utilities/logPause.sh" />
+        <option value="$PROJECT_DIR$/Tools/ManageDocker/ReadMe.md" />
+        <option value="$PROJECT_DIR$/Tools/ManageEc2/ReadMe.md" />
+        <option value="$PROJECT_DIR$/Tools/Utilities/ReadMe.md" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/DB2.java" />
+        <option value="$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/SqlServerJDBC.java" />
+        <option value="$PROJECT_DIR$/Tools/Utilities/restart_ssh_mac.sh" />
         <option value="$PROJECT_DIR$/ScratchPad/hostconfig_ports.json" />
         <option value="$PROJECT_DIR$/ScratchPad/config.v2_ports.json" />
         <option value="$PROJECT_DIR$/ScratchPad/hostconfig.json" />
         <option value="$PROJECT_DIR$/ScratchPad/config.v2.json" />
+        <option value="$PROJECT_DIR$/Tools/Utilities/ports.sh" />
         <option value="$PROJECT_DIR$/ScratchPad/scratch.sh" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="1680" />
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Python</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PyInterpreterInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="support" type="b2602c69:ProjectViewProjectNode" />
               <item name="support" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="support" type="b2602c69:ProjectViewProjectNode" />
+              <item name="support" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="support" type="b2602c69:ProjectViewProjectNode" />
+              <item name="support" type="462c0819:PsiDirectoryNode" />
+              <item name="MiscJavaClients" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="support" type="b2602c69:ProjectViewProjectNode" />
+              <item name="support" type="462c0819:PsiDirectoryNode" />
+              <item name="MiscJavaClients" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="support" type="b2602c69:ProjectViewProjectNode" />
+              <item name="support" type="462c0819:PsiDirectoryNode" />
+              <item name="Pipelines" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="support" type="b2602c69:ProjectViewProjectNode" />
@@ -199,33 +302,34 @@
               <item name="support" type="b2602c69:ProjectViewProjectNode" />
               <item name="support" type="462c0819:PsiDirectoryNode" />
               <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="ManageDocker" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="support" type="b2602c69:ProjectViewProjectNode" />
-              <item name="support" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="ManageEc2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="support" type="b2602c69:ProjectViewProjectNode" />
-              <item name="support" type="462c0819:PsiDirectoryNode" />
-              <item name="Tools" type="462c0819:PsiDirectoryNode" />
-              <item name="PipelineCLI" type="462c0819:PsiDirectoryNode" />
+              <item name="Utilities" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555021248406" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564039807831" />
+    <property name="jdk.selected.PYTHON_MODULE" value="Python 2.7" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Tools/Utilities" />
+      <recent name="$PROJECT_DIR$/MiscJavaClients/src/main/java" />
+      <recent name="$PROJECT_DIR$/MiscJavaClients" />
+      <recent name="$PROJECT_DIR$/Misc-Java-Clients/CassandraJdbcClient" />
+      <recent name="$PROJECT_DIR$/Misc-Java-Clients/CassandraJdbcClient/src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -238,6 +342,240 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager" selected="Application.JMSConsumer">
+    <configuration name="GetAgentLoginHistory" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GetAgentLoginHistory" />
+      <module name="Test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value=".*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HiveJdbcClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hive.jdbcclient.HiveJdbcClient" />
+      <module name="MiscJavaClients" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hive.jdbcclient.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JMSConsumer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.jms.client.JMSConsumer" />
+      <module name="MiscJavaClients" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.jms.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RestClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.java.rest.RestClient" />
+      <module name="MiscJavaClients" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value=".*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Run" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.javaclients.execute.Run" />
+      <module name="MiscJavaClients" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/MiscJavaClients" />
+      <shortenClasspath name="MANIFEST" />
+      <method v="2">
+        <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/MiscJavaClients/pom.xml" goal="assembly:single" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="Test" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <module name="Test" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="Test" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="Test" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="Test" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <module name="Test" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Twisted Trial">
+      <module name="Test" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <module name="Test" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <module name="Test" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Run" />
+      <item itemvalue="Application.HiveJdbcClient" />
+      <item itemvalue="Application.RestClient" />
+      <item itemvalue="Application.GetAgentLoginHistory" />
+      <item itemvalue="Application.JMSConsumer" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.JMSConsumer" />
+        <item itemvalue="Application.Run" />
+        <item itemvalue="Application.GetAgentLoginHistory" />
+        <item itemvalue="Application.RestClient" />
+        <item itemvalue="Application.HiveJdbcClient" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -261,10 +599,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1680" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="0" y="0" width="3440" height="1440" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11927582" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08092996" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -272,15 +610,15 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.18453427" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.498779" weight="0.18980668" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32016212" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.3298184" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.501221" side_tool="true" weight="0.36886102" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32928064" />
+      <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.49893504" weight="0.32897863" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -289,6 +627,7 @@
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="Terminal" order="8" sideWeight="0.498779" weight="0.85836387" />
     </layout>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -323,75 +662,281 @@
   <component name="VcsManagerConfiguration">
     <ignored-roots>
       <path value="$PROJECT_DIR$/ScratchPad/shellclass" />
+      <path value="$PROJECT_DIR$/Misc-Java-Clients/mapr-streams-sample-programs" />
+      <path value="$PROJECT_DIR$/Misc-Java-Clients/mapr-streams-producer-consumer" />
     </ignored-roots>
     <MESSAGE value="cleaned up scratchpad" />
     <option name="LAST_COMMIT_MESSAGE" value="cleaned up scratchpad" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/ReadMe.md">
-      <provider editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/DockerConfigs/hostconfig.json" />
+    <entry file="file://$PROJECT_DIR$/ScratchPad/shellclass/scratch.sh" />
+    <entry file="file://$PROJECT_DIR$/Misc-Java-Clients/mapr-streams-producer-consumer/pom.xml" />
+    <entry file="file://$PROJECT_DIR$/Tools/BulkImportPipelines/PipelineImport.py" />
+    <entry file="file://$PROJECT_DIR$/Misc-Java-Clients/CassandraJdbcClient/CassandraJdbcClient.iml" />
+    <entry file="file://$PROJECT_DIR$/Misc-Java-Clients/mapr-streams-producer-consumer/README.md" />
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/MiscJavaClients.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/CassandraCql.java" />
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/HiveJdbcClient.java" />
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/target/maven-archiver/pom.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/cassandra/jdbcclient/CassandraCql.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="55" column="32" selection-start-line="55" selection-start-column="12" selection-end-line="55" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mapr/examples/DBConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="25" column="101" lean-forward="true" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mapr/examples/Producer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-333" />
+          <first_editor relative-caret-position="364">
+            <caret line="97" column="26" selection-start-line="97" selection-start-column="26" selection-end-line="97" selection-end-column="26" />
+          </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DockerConfigs/hostconfig.json" />
-    <entry file="file://$PROJECT_DIR$/ScratchPad/shellclass/scratch.sh" />
-    <entry file="file://$PROJECT_DIR$/Tools/PipelineCLI/startPipeline.sh">
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/hive/jdbcclient/HiveJdbcClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="173" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="173" />
+        <state relative-caret-position="342">
+          <caret line="54" column="9" selection-start-line="26" selection-start-column="8" selection-end-line="54" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig.json">
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mapr/examples/Consumer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1410">
-          <caret line="94" column="20" selection-end-line="241" selection-end-column="1" />
+        <state relative-caret-position="120">
+          <caret line="8" column="55" selection-start-line="8" selection-start-column="55" selection-end-line="8" selection-end-column="55" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2.json">
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/main/app/Run.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="27" selection-end-line="332" selection-end-column="1" />
+        <state relative-caret-position="-475">
+          <caret column="20" selection-start-column="8" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig_ports.json">
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/resources/consumer.props">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/resources/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="76" column="1" selection-end-line="149" selection-end-column="1" />
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/jms/client/JMSProducer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/aws.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1005">
+          <caret line="67" column="5" selection-start-line="67" selection-start-column="1" selection-end-line="67" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/jms/client/JMSConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1023">
+          <caret line="108" column="21" selection-start-line="108" selection-start-column="21" selection-end-line="108" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/SDC_DEV_BUILD/cleanUpLocalBuild.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/SDC_DEV_BUILD/runLocalSDC.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/SDC_DEV_BUILD/partialBuild.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pipelines/JMS_Trash/ReadMe.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="210">
+            <caret line="14" column="66" selection-start-line="14" selection-start-column="66" selection-end-line="14" selection-end-column="66" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/ReadMe.md" />
+    <entry file="file://$PROJECT_DIR$/Test/src/GetAgentLoginHistory.java" />
+    <entry file="file://$PROJECT_DIR$/Tools/SyncRunInfo/README.md" />
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/doc.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="6" selection-start-line="46" selection-end-line="46" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/logPause.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="61" selection-start-line="2" selection-end-line="2" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/threads.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="8" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/SyncRunInfo.pl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/startPipeline.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/ReadMe.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="332">
+            <caret line="85" selection-start-line="85" selection-end-line="85" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/db2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="32" column="59" lean-forward="true" selection-start-line="32" selection-start-column="59" selection-end-line="32" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/restart_ssh_mac.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="37" lean-forward="true" selection-start-line="3" selection-start-column="37" selection-end-line="3" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/SqlServerJDBC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="1" lean-forward="true" selection-start-line="5" selection-end-line="27" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/rest/client/RestClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="35" column="43" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MiscJavaClients/src/main/java/com/mysql/jdbcclient/MySQLJDBC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2_ports.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3360">
-          <caret line="224" column="1" selection-start-line="75" selection-end-line="224" selection-end-column="1" />
+        <state relative-caret-position="270">
+          <caret line="18" column="2" lean-forward="true" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/ManageDocker/doc.sh">
+    <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1695">
-          <caret line="113" column="7" selection-start-line="110" selection-end-line="113" selection-end-column="7" />
+        <state relative-caret-position="-680">
+          <caret line="249" column="7" lean-forward="true" selection-start-line="249" selection-start-column="7" selection-end-line="249" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tools/ManageEc2/aws.sh">
+    <entry file="file://$PROJECT_DIR$/ScratchPad/hostconfig_ports.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2340">
-          <caret line="156" column="48" selection-start-line="156" selection-start-column="48" selection-end-line="156" selection-end-column="48" />
+        <state relative-caret-position="195">
+          <caret line="13" column="13" selection-end-line="259" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ScratchPad/config.v2.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="17" selection-end-line="648" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ScratchPad/scratch.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="246" column="73" lean-forward="true" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
+        <state relative-caret-position="521">
+          <caret line="111" lean-forward="true" selection-start-line="111" selection-end-line="111" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Utilities/ports.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -401,10 +946,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>MiscJavaClients:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -448,12 +995,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>support</last-edited>
+          <last-edited>MiscJavaClients</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -473,6 +1019,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

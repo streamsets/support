@@ -102,6 +102,15 @@ copy the keytab to the desired host
 
 =============================================================== Docker/STE/STF ===============================================================
 
+Add keys to SSH
+
+To list the keys:
+
+ssh-add -l
+
+To add the keys:
+
+ssh-add -k ~/.ssh/sanju.pem
 
 Opening tunnel in background:
 
@@ -284,7 +293,7 @@ maprcli node services -name webserver -action start -nodes node-1.cluster
 
 --create topic
 kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic cdc
-kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic cdc
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic sanju
 
 --list kafka-topics
 kafka-topics --list --zookeeper `hostname`:2181
@@ -578,7 +587,7 @@ STORED AS TEXTFILE;
 LOAD DATA LOCAL INPATH "/tmp/1987.csv" OVERWRITE INTO TABLE flights;
 
 
-create table onTimePerf
+create table onTimePerf1
 (DayofMonth INT ,
 DayOfWeek INT ,
 DepTime INT ,

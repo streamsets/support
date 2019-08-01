@@ -8,6 +8,8 @@ rm ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}
 touch ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/log/sdc.log
 rm ~/SDC/libexec
 rm ~/SDC/etc
+rm ~/SDC/bin
+rm ~/SDC/data
 
 # Kill any tail commands to log file
 
@@ -28,6 +30,8 @@ echo $SDC_DATA
 
 ln -s ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/etc ~/SDC/etc
 ln -s ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/libexec ~/SDC/libexec
+ln -s ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/bin ~/SDC/bin
+ln -s ~/workspace/datacollector/dist/target/streamsets-datacollector-${SDC_VERSION}/streamsets-datacollector-${SDC_VERSION}/data ~/SDC/data
 
 # set ulimits
 ulimit -n 32768
