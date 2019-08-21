@@ -92,6 +92,8 @@ KERBEROS SETUP:
 Adding kerberos user principal:
 kadmin.local
 addprinc <user>@realm
+Create the keytab files, using the Kadmin command:
+kadmin:  xst -k sdc.keytab sdc@CLUSTER
 
 Re-generating a keytab:
 kinit admin/admin@HWX.COM
@@ -138,6 +140,14 @@ sudo vi /var/lib/docker/containers/23337e129dd79ccb487f601acf3cd65006f144f44e264
 4) sudo systemctl start docker
 5) Start the container
 
+
+docker start 23337e129dd7
+docker start 76a1e54b173f
+docker start 5579af9fb033
+docker start 6aeabb78cbaa
+docker start ed6538209773
+docker start e83caff203e8
+docker start 3dedc4b868da
 
 
 Exposing docker ports(Mac OS)
@@ -214,7 +224,7 @@ pip3 install -r topology_sch/requirements.txt
 clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
 
 For example:
-clusterdock -v start topology_sch --predictable --sch-version 3.9.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.8.2
+clusterdock -v start topology_sch --predictable --sch-version 3.10.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.9.1
 
 
 Additional SDC instances:
@@ -292,7 +302,7 @@ maprcli node services -name webserver -action start -nodes node-1.cluster
 =============================================================== KAFKA ===============================================================
 
 --create topic
-kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic cdc
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic AAE1-EMME-ERROR
 kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic sanju
 
 --list kafka-topics
@@ -329,7 +339,7 @@ sudo apt-get update
 wget --header "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz
 CentOS:
 
-curl -L -b "oraclelicense=a" -O http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.rpm
+curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm > jdk-8u112-linux-x64.rpm
 sudo yum localinstall jdk-8u181-linux-x64.rpm
 sudo alternatives --config java
 
@@ -513,6 +523,7 @@ MYSQL command:
 Set root passsword - $ mysqladmin -u root password NEWPASSWORD
 Reset password - mysqladmin -u root -p'oldpassword' password newpass
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'host' IDENTIFIED BY 'password' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'node-1.cluster' IDENTIFIED BY 'Password1,' WITH GRANT OPTION;
 
 Test Employee database @ https://github.com/datacharmer/test_db
 Test data generator: https://github.com/snowindy/csv-test-data-generator
@@ -814,3 +825,26 @@ This returns:
 "name" : "httporiginpaginationaed0daee-7810-4c2e-af29-8b7b6fe0c8b0"
 }
 
+============================================================= DEBUG LOGS ===============================================
+
+Update node IP's with Cloudera manager:
+
+docker exec -it 23337e129dd7 service cloudera-scm-server stop
+docker exec -it 23337e129dd7 service cloudera-scm-agent stop
+docker exec -it  76a1e54b173f service cloudera-scm-agent stop
+docker exec -it  5579af9fb033 service cloudera-scm-agent stop
+
+
+1) Shutdown all services
+2) On all nodes, “service cloudera-scm-agent stop”
+3) On the CM server, “service cloudera-scm-server stop”.
+4) Extract the password for CM DB: grep password  /etc/cloudera-scm-server/db.properties
+5) #psql -h localhost -p 7432 -U scm
+6) select host_id,host_identifier,name,ip_address from hosts;
+7) update hosts set (host_identifier,name,ip_address) = ('node-1.cluster','node-1.cluster','172.18.0.2') where host_id=1;
+8) Then edit the /etc/cloudera-scm-agent/config.ini and update the server and the listen ip & hostname section on all nodes to the new interface ip & address
+
+docker exec -it 23337e129dd7 service cloudera-scm-server start
+docker exec -it 23337e129dd7 service cloudera-scm-agent start
+docker exec -it  76a1e54b173f service cloudera-scm-agent start
+docker exec -it  5579af9fb033 service cloudera-scm-agent start
