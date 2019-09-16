@@ -118,19 +118,24 @@ Opening tunnel in background:
 
 ssh -i ~/.ssh/sanju.pem -f -N -L <local-port>:<remote-host>:<remote-port> user@bastion
 
-ssh -i ~/.ssh/sanju.pem -f -N -L 18391:10.10.48.216:18391 34.222.148.53
-ssh -i ~/.ssh/sanju.pem -f -N -L 7180:10.10.48.216:7180 34.222.148.53
-ssh -i ~/.ssh/sanju.pem -f -N -L 18631:10.10.48.216:18631 34.222.148.53
-ssh -i ~/.ssh/sanju.pem -f -N -L 18372:10.10.48.216:18372 34.222.148.53
-ssh -i ~/.ssh/sanju.pem -f -N -L 18381:10.10.48.216:18381 34.222.148.53
-ssh -i ~/.ssh/sanju.pem -f -N -L 18382:10.10.48.216:18382 34.222.148.53
-ssh -i ~/.ssh/sanju.pem -f -N -L 18390:10.10.48.216:18390 34.222.148.53
-ssh -i ~/.ssh/sanju.pem -f -N -L 10391:10.10.48.216:10391 34.222.148.53
+Host 10.10.48.216
+ForwardAgent yes
+GatewayPorts yes
+ProxyCommand ssh -A sanjeev@ec2-34-222-148-53.us-west-2.compute.amazonaws.com -W %h:%p
+
+Host 10.10.59.56
+ForwardAgent yes
+GatewayPorts yes
+ProxyCommand ssh -A sanjeev@ec2-34-222-148-53.us-west-2.compute.amazonaws.com -W %h:%p
+
+ssh -D 1080 ubuntu@10.10.48.216
+ssh -D 1080 ubuntu@10.10.59.56
 
 Exposing docker ports(Linux):
 
 1) Stop the container ; for container in $(docker ps -q);do echo "$(docker stop $container)"; done
 2) Stop docker engine - sudo systemctl stop docker
+
 3) Edit hostconfig.json & config.v2.json
 
 sudo vi /var/lib/docker/containers/23337e129dd79ccb487f601acf3cd65006f144f44e2647b36f0350fd1cb54301/hostconfig.json
@@ -141,14 +146,10 @@ sudo vi /var/lib/docker/containers/23337e129dd79ccb487f601acf3cd65006f144f44e264
 5) Start the container
 
 
-docker start 23337e129dd7
-docker start 76a1e54b173f
-docker start 5579af9fb033
-docker start 6aeabb78cbaa
-docker start ed6538209773
-docker start e83caff203e8
-docker start 3dedc4b868da
+docker start 23337e129dd7 76a1e54b173f 5579af9fb033
 
+docker start 6aeabb78cbaa ed6538209773 e83caff203e8 3dedc4b868da
+docker exec -it e83caff203e8 service dpm start
 
 Exposing docker ports(Mac OS)
 
@@ -224,7 +225,7 @@ pip3 install -r topology_sch/requirements.txt
 clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
 
 For example:
-clusterdock -v start topology_sch --predictable --sch-version 3.10.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.9.1
+clusterdock -v start topology_sch --predictable --sch-version 3.11.0-latest --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.10.1-latest
 
 
 Additional SDC instances:
@@ -252,6 +253,9 @@ ElasticSearch:
 
 stf test -vs -m elasticsearch --elasticsearch-url http://elastic:changeme@myelastic.cluster:9200 --sdc-version 3.7.2 --sdc-server-url http://node-1.cluster:18630 stage/test_elasticsearch_stages.py
 
+Postgres::
+
+stf test -vs -m database --keep-sdc-instances --database postgresql://postgres-cdc-10.4.cluster:5432/default stage/test_postgres_cdc.py
 
 REST Calls:
 
@@ -313,7 +317,7 @@ kafka-topics --list --zookeeper `hostname`:2181
 kafka-topics --describe --zookeeper `hostname`:2181 --topic sanju
 
 -- count messages in a topic
-kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic <topic-name> --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
+kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic taxi --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
 
 --Post messages to queue:
 
@@ -339,8 +343,9 @@ sudo apt-get update
 wget --header "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz
 CentOS:
 
-curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm > jdk-8u112-linux-x64.rpm
-sudo yum localinstall jdk-8u181-linux-x64.rpm
+curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm > jdk-8u131-linux-x64.rpm
+
+sudo yum localinstall jdk-8u131-linux-x64.rpm
 sudo alternatives --config java
 
 linux user add - useradd -G
