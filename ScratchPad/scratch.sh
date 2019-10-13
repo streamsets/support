@@ -20,6 +20,15 @@
 
  git review -R
 
+Backtracking changes:
+
+git stash - put away changes
+git fetch origin - get recent chganges
+git rebase origin/master - rebase
+
+Retrive stashed changes:
+git stash pop
+
 
 Enable remote debugger:
 export SDC_JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=51598
@@ -66,7 +75,7 @@ sudo lsof -i -n | grep LISTEN | grep java > lsof-`hostname -i`.txt
 
 Find class in JAR:
 
-find ./ | grep jar$ | while read fname; do jar tf $fname | grep JsonGenerator && echo $fname; done
+find ./ | grep jar$ | while read fname; do jar tf $fname | grep PathElement && echo $fname; done
 sed -i 's/something/other/g' filename.txt
 
 
@@ -176,9 +185,12 @@ ste -v start CDH_5.15.0 --kafka-version 3.1.0  --spark2-version 2.3-r2 --sdc-ver
 
 
 Kerberos:
-clusterdock -v start --namespace streamsets topology_cdh --kerberos --kerberos-principals sdctest --java jdk1.8.0_131 --cdh-version 5.15.0 --cm-version 5.15.0 --kafka-version 2.1.0 --ssl encryption --kudu-version 1.7.0 --predictable --spark2-version 2.3-r2 --sdc-version 3.8.0 --secondary-nodes node-{2..3}
+clusterdock -v start --namespace streamsets topology_cdh --kerberos --kerberos-principals sdctest --java jdk1.8.0_131 --cdh-version 5.15.0 --cm-version 5.15.0 --kafka-version 2.1.0 --ssl encryption --kudu-version 1.7.0 --predictable --spark2-version 2.3-r2 --sdc-version 3.10.1 --secondary-nodes node-{2..3}
 
 ste -v start CDH_5.15.0_Kerberos --kafka-version 3.1.0  --kudu-version 1.7.0 --spark2-version 2.3-r2 --sdc-version 3.7.2 --predictable --secondary-nodes node-{2..3}
+
+ste -v start CDH_6.1.1_Kerberos --kafka-version 3.1.0  --kudu-version 1.7.0 --spark2-version 2.3-r2 --sdc-version 3.10.1 --predictable --secondary-nodes node-{2..3}
+
 ls ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/
 sudo cp ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/clusterdock.keytab ~/sdc-backup.keytab
 cp ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/clusterdock.keytab ${SDC_CONTAINER_ID}:/etc/sdc/sdc.keytab
@@ -220,12 +232,12 @@ stf -v test -vs --sdc-server-url http://node-1.cluster:18630 stage/
 ControlHub:
 =============
 cd ~/workspace
-git clone https://github.com/streamsets/topology_sch.git
+git clone git@github.com:streamsets/topology_sch.git
 pip3 install -r topology_sch/requirements.txt
 clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
 
 For example:
-clusterdock -v start topology_sch --predictable --sch-version 3.11.0-latest --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.10.1-latest
+clusterdock -v start topology_sch --predictable --sch-version 3.12.0-latest --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.10.1-latest
 
 
 Additional SDC instances:
@@ -317,7 +329,7 @@ kafka-topics --list --zookeeper `hostname`:2181
 kafka-topics --describe --zookeeper `hostname`:2181 --topic sanju
 
 -- count messages in a topic
-kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic taxi --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
+kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic AAE1-EMME-ERROR --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
 
 --Post messages to queue:
 
@@ -344,6 +356,8 @@ wget --header "Cookie: oraclelicense=accept-securebackup-cookie" https://downloa
 CentOS:
 
 curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm > jdk-8u131-linux-x64.rpm
+
+curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn/java/jdk/8u221-b11/230deb18db3e4014bb8e3e8324f81b43/jdk-8u221-linux-x64.rpm > jdk-8u221-linux-x64.rpm
 
 sudo yum localinstall jdk-8u131-linux-x64.rpm
 sudo alternatives --config java
@@ -481,7 +495,7 @@ wget http://stat-computing.org/dataexpo/2009/2007.csv.bz2
 wget http://stat-computing.org/dataexpo/2009/2008.csv.bz2
 
 
-create table flights
+create table flight
 (Year mediumint ,
 Month mediumint ,
 DayofMonth mediumint ,
@@ -528,7 +542,9 @@ MYSQL command:
 Set root passsword - $ mysqladmin -u root password NEWPASSWORD
 Reset password - mysqladmin -u root -p'oldpassword' password newpass
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'host' IDENTIFIED BY 'password' WITH GRANT OPTION;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'node-1.cluster' IDENTIFIED BY 'Password1,' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'node-1.cluster' IDENTIFIED BY '' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.18.0.3' IDENTIFIED BY '' WITH GRANT OPTION;
+flush privileges;
 
 Test Employee database @ https://github.com/datacharmer/test_db
 Test data generator: https://github.com/snowindy/csv-test-data-generator
@@ -567,7 +583,7 @@ LOAD DATA LOCAL INFILE '/tmp/1987.csv' INTO TABLE onTimePerfStage FIELDS TERMINA
 
 HIVE:
 
-create table flights
+create table flight
 (Year INT ,
 Month INT ,
 DayofMonth INT ,
