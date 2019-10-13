@@ -25,8 +25,8 @@ usage() {
   if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
         echo "\n  Usage: ${0} \033[33;5;7m  [-p] [-c] [-d]   \033[0m "  >&2
         echo "\033[33;5;7m\n-p   \033[0m     Java process ID."  >&2
-        echo "\033[33;5;7m\n-c    \033[0m     # of thread dumps to collecte"  >&2
-        echo "\033[33;5;7m\n-d  \033[0m     Delay(secs) between thread dump"  >&2
+        echo "\033[33;5;7m\n-c    \033[0m     # of thread dumps to collect"  >&2
+        echo "\033[33;5;7m\n-d  \033[0m     Delay(secs) between thread dumps"  >&2
         exit 1
   fi
 
