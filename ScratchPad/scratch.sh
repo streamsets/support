@@ -494,8 +494,9 @@ wget http://stat-computing.org/dataexpo/2009/2006.csv.bz2
 wget http://stat-computing.org/dataexpo/2009/2007.csv.bz2
 wget http://stat-computing.org/dataexpo/2009/2008.csv.bz2
 
+MySQL:
 
-create table flight
+create table flights
 (Year mediumint ,
 Month mediumint ,
 DayofMonth mediumint ,
@@ -527,6 +528,39 @@ SecurityDelay varchar(255) ,
 LateAircraftDelay varchar(255),
 id int unsigned NOT NULL auto_increment,
 PRIMARY KEY (id)) AUTO_INCREMENT=1;
+
+MS SQL Server:
+
+create table flights
+(Year int ,
+Month int ,
+DayofMonth int ,
+DayOfWeek int ,
+DepTime int ,
+CRSDepTime int ,
+ArrTime int ,
+CRSArrTime int ,
+UniqueCarrier varchar(255) ,
+FlightNum int ,
+TailNum varchar(255) ,
+ActualElapsedTime int ,
+CRSElapsedTime int ,
+AirTime varchar(255) ,
+ArrDelay int ,
+DepDelay int ,
+Origin varchar(255) ,
+Dest varchar(255) ,
+Distance int ,
+TaxiIn varchar(255) ,
+TaxiOut varchar(255) ,
+Cancelled int ,
+CancellationCode varchar(255) ,
+Diverted int ,
+CarrierDelay varchar(255) ,
+WeatherDelay varchar(255) ,
+NASDelay varchar(255) ,
+SecurityDelay varchar(255) ,
+LateAircraftDelay varchar(255));
 
 PostgreSQL Command:
 
