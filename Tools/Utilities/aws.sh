@@ -26,13 +26,13 @@ usage() {
     printf '                                         <your-name>  == Owner TAG on your AWS instances \n'  >&2
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
-        echo "\n  Usage: ${0} \033[33;5;7m  [-start] [-stop] [-status] [-setup]   \033[0m "  >&2
-        echo "\033[33;5;7m\n-start  <instance-name>\033[0m                  Start the AWS instance."  >&2
-        echo "\033[33;5;7m\n-stop    <instance-name>\033[0m                 Stop the AWS instance"  >&2
-        echo "\033[33;5;7m\n-stopAll   \033[0m                              Stop all of your AWS instances"  >&2
-        echo "\033[33;5;7m\n-status   [OPTIONAL] <instance-name>\033[0m     Status of the AWS instance"  >&2
-        echo "\033[33;5;7m\n-setup <your-name>\033[0m                       Updates /etc/hosts file with your AWS instances"  >&2
-        echo "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
+        echo -e "\n  Usage: ${0} \033[33;5;7m  [-start] [-stop] [-status] [-setup]   \033[0m "  >&2
+        echo -e "\033[33;5;7m\n-start  <instance-name>\033[0m                  Start the AWS instance."  >&2
+        echo -e "\033[33;5;7m\n-stop    <instance-name>\033[0m                 Stop the AWS instance"  >&2
+        echo -e "\033[33;5;7m\n-stopAll   \033[0m                              Stop all of your AWS instances"  >&2
+        echo -e "\033[33;5;7m\n-status   [OPTIONAL] <instance-name>\033[0m     Status of the AWS instance"  >&2
+        echo -e "\033[33;5;7m\n-setup <your-name>\033[0m                       Updates /etc/hosts file with your AWS instances"  >&2
+        echo -e "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
         exit 1
   fi
 
@@ -44,7 +44,7 @@ log() {
         printf "\n ${YELLOW}$1${NC} \n\n"  # Linux
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "\033[33;5;7m\n $1 \n\033[0m" # Mac OSX
+        echo -e"\033[33;5;7m\n $1 \n\033[0m" # Mac OSX
   fi
 }
 
@@ -60,10 +60,10 @@ ARG=$2
 status(){
   if [[ $ARG < 1 ]]
   then
-    echo "Querying status on all of your AWS instances...."
+    echo -e "Querying status on all of your AWS instances...."
    for i in $(aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
    do
-      echo "$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep name | awk '{print $3 "        ==> "}' | tr -d '\n')$(aws --output text ec2 describe-instances --instance-id $i | grep -w STATE | awk '{print $3}')"
+      echo -e "$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep name | awk '{print $3 "        ==> "}' | tr -d '\n')$(aws --output text ec2 describe-instances --instance-id $i | grep -w STATE | awk '{print $3}')"
    done
  elif [[ $ARG > 1 ]]
      then
@@ -76,7 +76,7 @@ status(){
             log 'Host not found in /etc/hosts file. Please verify the hostname'
             exit 1
        fi
-       echo "Querying status of <$ARG> instance"
+       echo -e "Querying status of <$ARG> instance"
        #INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
        STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
         if [[ $STATUS = 'running' ]]
@@ -117,7 +117,7 @@ start(){
  fi
 
  #INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
- echo "\nStarting: \033[33;5;7m $INSTANCE_ID --> ($NAME_TAG) \033[0m"
+ echo -e "\nStarting: \033[33;5;7m $INSTANCE_ID --> ($NAME_TAG) \033[0m"
  aws ec2 start-instances --instance-ids $INSTANCE_ID
  SSH_EXIT_STATUS=$?
  if [[ $SSH_EXIT_STATUS -ne 0 ]]
@@ -126,8 +126,8 @@ start(){
               log 'Error in starting the instnace....'
             else
               sleep 10
-              echo "\033[33;5;7m\n $INSTANCE_ID --> ($NAME_TAG) \033[0m started successfully !!"
-              echo "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$PUBLIC_AWS_HOSTNAME\n"
+              echo -e "\033[33;5;7m\n $INSTANCE_ID --> ($NAME_TAG) \033[0m started successfully !!"
+              echo -e "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$PUBLIC_AWS_HOSTNAME\n"
             fi
 }
 
@@ -158,7 +158,7 @@ stop(){
                exit 1
             fi
       fi
-      echo "Stopping your <$ARG> instance...."
+      echo -e "Stopping your <$ARG> instance...."
       #INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
       aws ec2 stop-instances --instance-ids $INSTANCE_ID
       SSH_EXIT_STATUS=$?
@@ -179,7 +179,7 @@ stopAll(){
      STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
       if [[ $STATUS = 'running' ]]
       then
-        echo "Stopping \033[33;5;7m\n $INSTANCE_ID --> ($NAME_TAG)... \033[0m"
+        echo -e "Stopping \033[33;5;7m\n $INSTANCE_ID --> ($NAME_TAG)... \033[0m"
          aws ec2 stop-instances --instance-ids $INSTANCE_ID
          SSH_EXIT_STATUS=$?
            if [[ $SSH_EXIT_STATUS -ne 0 ]]
@@ -188,7 +188,7 @@ stopAll(){
                     log 'Error in Stopping the instance....'
            fi
       else
-          echo "\033[33;5;7m\n $INSTANCE_ID --> ($NAME_TAG) \033[0m already stopped. Skipping to next..."
+          echo -e "\033[33;5;7m\n $INSTANCE_ID --> ($NAME_TAG) \033[0m already stopped. Skipping to next..."
       fi
   done < AWS.txt
   rm -f AWS.txt
@@ -216,15 +216,15 @@ setup(){
            while read line
             do
               HOSTNAME=$line
-              HOST_IP=$(echo ${HOSTNAME%%.*} | sed -e 's/ip-//' -e 's/-/./g')
+              HOST_IP=$(echo -e ${HOSTNAME%%.*} | sed -e 's/ip-//' -e 's/-/./g')
               NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
               HOST_IN_ETC=$(grep $HOSTNAME $HostFile)
 
               if [[  -z "${HOST_IN_ETC// }" ]]
               then
-                sudo bash -c "echo $HOST_IP  $HOSTNAME $NAME_TAG >> /etc/hosts"
+                sudo bash -c "echo -e $HOST_IP  $HOSTNAME $NAME_TAG >> /etc/hosts"
               else
-                echo "\033[33;5;7m\n $HOSTNAME \033[0m alreasy exists in /etc/hosts file. skipping..."
+                echo -e "\033[33;5;7m\n $HOSTNAME \033[0m alreasy exists in /etc/hosts file. skipping..."
 
               fi
            done < AWS.txt
