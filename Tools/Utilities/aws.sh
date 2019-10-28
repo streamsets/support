@@ -195,7 +195,7 @@ stopAll(){
   log 'All of your AWS instances stopped'
 }
 setup(){
-  echo "\nFinding your AWS instances...."
+  log 'Finding your AWS instances....'
   if [[ $ARG < 1 ]]
     then
       log 'Please provide the owner tag for your AWS instance'
