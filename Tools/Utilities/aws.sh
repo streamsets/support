@@ -27,7 +27,6 @@ usage() {
         echo -e  "${BC_YELLOW}\n tag ${NC}                                    Add aws-reaper tag to the AWS instances"  >&2
         echo -e  "${BC_YELLOW}\n setup <your-name>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
         echo -e  "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
-        exit 1
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
         echo  "\n  Usage: ${0} ${BC_YELLOW}  [start] [stop] [status] [reaper] [setup]   ${NC} "  >&2
@@ -39,7 +38,6 @@ usage() {
         echo  "${BC_YELLOW}\n tag ${NC}                                    Add aws-reaper tag to the AWS instances"  >&2
         echo  "${BC_YELLOW}\n setup <your-name>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
         echo  "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
-        exit 1
   fi
 }
 
@@ -122,11 +120,11 @@ start(){
  if [[ -z "${AWS_HOSTNAME// }" ]]
     then
       log 'Host not found in /etc/hosts file. Please verify the hostname'
-      exit 1
+
      elif [[ -z "${INSTANCE_ID// }" ]]
           then
             log 'AWS instance not found !!'
-            exit 1
+
           elif [[ $STATUS == 'running' ]]
                 then
                     log 'Instance is already running'
@@ -171,7 +169,6 @@ stop(){
       if [[ -z "${AWS_HOSTNAME// }" ]]
         then
             log 'Host not found in /etc/hosts file. Please verify the hostname'
-            exit 1
         elif [[ -z "${INSTANCE_ID// }" ]]
             then
                 log 'AWS instance not found !!'
