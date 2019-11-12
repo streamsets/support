@@ -24,8 +24,8 @@ usage() {
         echo -e  "${BC_YELLOW}\n stopAll   ${NC}                              Stop all of your AWS instances"  >&2
         echo -e  "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}     Status of the AWS instance"  >&2
         echo -e  "${BC_YELLOW}\n reaper ${NC}                                 Stop the instances with aws-reaper tag ON"  >&2
-        echo -e  "${BC_YELLOW}\n tag ${NC}                                    Add aws-reaper tag to the AWS instances"  >&2
-        echo -e  "${BC_YELLOW}\n setup <your-name>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
+        echo -e  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> on/off${NC}   Add aws-reaper tag to the AWS instances"  >&2
+        echo -e  "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
         echo -e  "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
@@ -35,8 +35,8 @@ usage() {
         echo  "${BC_YELLOW}\n stopAll   ${NC}                              Stop all of your AWS instances"  >&2
         echo  "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}     Status of the AWS instance"  >&2
         echo  "${BC_YELLOW}\n reaper ${NC}                                 Stop the instances with aws-reaper tag ON"  >&2
-        echo  "${BC_YELLOW}\n tag ${NC}                                    Add aws-reaper tag to the AWS instances"  >&2
-        echo  "${BC_YELLOW}\n setup <your-name>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
+        echo  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> on/off ${NC}  Add aws-reaper tag to the AWS instances"  >&2
+        echo  "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
         echo  "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
   fi
 }
@@ -101,31 +101,28 @@ status(){
 }
 # Function to start the AWS instance
 start(){
+HOSTNAME=$ARG
   if [[ "$NUM_ARG" -ge 3 ]]
     then
         log "Invalid number of arguments !!"
         usage
     elif [[ "$NUM_ARG" -le 1 ]]
     then
-      log 'Please provide instance name'
-      usage
-  fi
-
- HOSTNAME=$ARG
- AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
- INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
- NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
- STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
-
- if [[ -z "${AWS_HOSTNAME// }" ]]
+        log 'Please provide instance name to stop'
+        usage
+    elif [[ "$NUM_ARG" -eq 2 ]]
     then
-      log 'Host not found in /etc/hosts file. Please verify the hostname'
-
-     elif [[ -z "${INSTANCE_ID// }" ]]
-          then
-            log 'AWS instance not found !!'
-
-          elif [[ $STATUS == 'running' ]]
+      AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
+      INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
+      NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+      STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
+      if [[ -z "${AWS_HOSTNAME// }" ]]
+        then
+            log 'Host not found in /etc/hosts file. Please verify the hostname'
+        elif [[ -z "${INSTANCE_ID// }" ]]
+            then
+                log 'AWS instance not found !!'
+            elif [[ $STATUS == 'running' ]]
                 then
                     log 'Instance is already running'
                 else
@@ -138,34 +135,32 @@ start(){
                             log 'Error in starting the instance....'
                         else
                             sleep 10
-                            echo "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} started successfully !!"
+                            write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} started successfully !!"
                             #write  "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$PUBLIC_AWS_HOSTNAME\n"
                     fi
 
+        fi
   fi
-
 
 }
 
 # Function to stop the AWS instance
 stop(){
+  HOSTNAME=$ARG
   if [[ "$NUM_ARG" -ge 3 ]]
     then
         log "Invalid number of arguments !!"
         usage
     elif [[ "$NUM_ARG" -le 1 ]]
     then
-      log 'Please provide instance name to stop'
-      usage
-  fi
-
-
-      HOSTNAME=$ARG
+        log 'Please provide instance name to stop'
+        usage
+    elif [[ "$NUM_ARG" -eq 2 ]]
+    then
       AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
       INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
       NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
       STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
-
       if [[ -z "${AWS_HOSTNAME// }" ]]
         then
             log 'Host not found in /etc/hosts file. Please verify the hostname'
@@ -185,12 +180,12 @@ stop(){
                             log 'Error in stopping the instance....'
                         else
                             sleep 10
-                            echo "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} stopped successfully !!"
+                            write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} stopped successfully !!"
                             #write  "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$PUBLIC_AWS_HOSTNAME\n"
                     fi
 
         fi
-
+  fi
 
 }
 stopAll(){
@@ -198,33 +193,34 @@ if [[ "$NUM_ARG" -ge 2 ]]
     then
         log "Invalid number of arguments !!"
         usage
-  fi
-
-  aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" |grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
-  while read line
-   do
-     AWS_HOSTNAME=$line
-     INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-     NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
-     STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
-      if [[ $STATUS == 'running' ]]
-        then
-            write "Stopping ${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG)... ${NC}"
-            aws ec2 stop-instances --instance-ids $INSTANCE_ID
-            SSH_EXIT_STATUS=$?
-            if [[ $SSH_EXIT_STATUS -ne 0 ]]
-              then
-                    EXIT_STATUS=$SSH_EXIT_STATUS
-                    log 'Error in Stopping the instance....'
-           fi
-        else
-          write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} already stopped. Skipping to next..."
+    elif [[ "$NUM_ARG" -eq 1 ]]
+    then
+        aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" |grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
+        while read line
+            do
+                AWS_HOSTNAME=$line
+                INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
+                NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+                STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
+                if [[ $STATUS == 'running' ]]
+                    then
+                        write "Stopping ${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG)... ${NC}"
+                        aws ec2 stop-instances --instance-ids $INSTANCE_ID
+                        SSH_EXIT_STATUS=$?
+                        if [[ $SSH_EXIT_STATUS -ne 0 ]]
+                            then
+                                EXIT_STATUS=$SSH_EXIT_STATUS
+                                log 'Error in Stopping the instance....'
+                        fi
+                else
+                    write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} already stopped. Skipping to next..."
       fi
 
-  #cleanup of temp file
-  done < ~/AWS.txt
-  rm -f ~/AWS.txt
-  log 'All of your AWS instances stopped'
+                #cleanup of temp file
+                done < ~/AWS.txt
+                rm -f ~/AWS.txt
+                log 'All of your AWS instances stopped'
+fi
 }
 setup(){
  if [[ "$NUM_ARG" -ge 3 ]]
@@ -269,31 +265,39 @@ setup(){
 }
 reaper()
 {
-  aws --output json ec2 describe-instances --filters "Name=tag:aws-reaper,Values=on" | grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
-   while read line
-    do
-     AWS_HOSTNAME=$line
-     INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-     NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
-     STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
-      if [[ $STATUS == 'running' ]]
-      then
-        write   "Stopping ${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG)... ${NC}"
-         aws ec2 stop-instances --instance-ids $INSTANCE_ID
-         SSH_EXIT_STATUS=$?
-           if [[ $SSH_EXIT_STATUS -ne 0 ]]
-              then
-                    EXIT_STATUS=$SSH_EXIT_STATUS
-                    log 'Error in Stopping the instance....'
-           fi
-      else
-          write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} already stopped. Skipping to next..."
+  if [[ "$NUM_ARG" -gt 1 ]]
+    then
+        log "Invalid number of arguments !!"
+        usage
+    elif [[ "$NUM_ARG" -eq 1 ]]
+        then
+            aws --output json ec2 describe-instances --filters "Name=tag:aws-reaper,Values=on" | grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
+            while read line
+                do
+                    AWS_HOSTNAME=$line
+                    INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
+                    NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+                    STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
+                    if [[ "$STATUS" == running ]]
+                        then
+                            write   "Stopping ${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG)... ${NC}"
+                            aws ec2 stop-instances --instance-ids $INSTANCE_ID
+                            SSH_EXIT_STATUS=$?
+                            if [[ $SSH_EXIT_STATUS -ne 0 ]]
+                                then
+                                    EXIT_STATUS=$SSH_EXIT_STATUS
+                                    log 'Error in Stopping the instance....'
+                            fi
+                    else
+                        write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} already stopped. Skipping to next..."
+                    fi
 
-      fi
-   done < ~/AWS.txt
 
-   rm -f ~/AWS.txt
-   log 'AWS instances with aws-reaper tag set to ON are now stopped'
+            done < ~/AWS.txt
+
+            rm -f ~/AWS.txt
+            log 'AWS instances with aws-reaper tag set to ON are now stopped'
+  fi
 }
 tag(){
   if [[ "$NUM_ARG" -ge 4 ]]
@@ -302,57 +306,73 @@ tag(){
         usage
     elif [[ "$NUM_ARG" -eq 1 ]]
         then
-            write  "Querying tags on all AWS instances...."
-            write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
-            for i in $(aws --output json ec2 describe-instances --filters "Name=tag:dept,Values=support" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
+            write  "Querying tags on you AWS instances...."
+            write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
+            for i in $(aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                 do
                     OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                     AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                     REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "aws-reaper" | awk '{ print $3 }')
-                    echo  "$OWNER\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                    NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
+                    write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                 done
          elif [[ "$NUM_ARG" -eq 2 ]]
-            then
-                write  "Querying tags on your AWS instances...."
-                write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
-                HOSTNAME=$ARG
-                AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
-                INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-                if [[ -z "${AWS_HOSTNAME// }" ]]
-                    then
-                        log 'Host not found in /etc/hosts file. Please verify the hostname'
-                fi
-                if [[ -z "${INSTANCE_ID// }" ]]
+         then
+            if [[ "$ARG" == all ]]
                 then
-                    log 'AWS instance not found !!'
-                fi
-                OWNER=$(aws --output text ec2 describe-instances --instance-id $INSTANCE_ID | grep TAGS | grep -i "owner" | awk '{ print $3 }')
-                AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $INSTANCE_ID | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
-                REAPER=$(aws --output text ec2 describe-instances --instance-id $INSTANCE_ID | grep TAGS | grep -i "aws-reaper" | awk '{ print $3 }')
-                echo  "$OWNER\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-
-          elif [[ "$NUM_ARG" -eq 3 ]]
-             then
-                write  "Setting aws-reaper tag on your AWS instances...."
-                HOSTNAME=$ARG
-                AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
-                INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-                if [[ -z "${AWS_HOSTNAME// }" ]]
-                    then
-                        log 'Host not found in /etc/hosts file. Please verify the hostname'
-                fi
-                if [[ -z "${INSTANCE_ID// }" ]]
-                then
-                    log 'AWS instance not found !!'
-                fi
-                if [[ "$ARG1" == on || "$ARG1" == off ]];
-                then
-                    aws ec2 create-tags --resources $INSTANCE_ID --tags Key="aws-reaper",Value=$ARG1
-                    write  "aws-reaper tag added to your AWS instance."
-
+                    write  "Querying tags on all AWS instances...."
+                    write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
+                    for i in $(aws --output json ec2 describe-instances --filters "Name=tag:dept,Values=support" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
+                        do
+                            OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
+                            AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
+                            REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "aws-reaper" | awk '{ print $3 }')
+                            NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
+                        write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                        done
                 else
-                    log 'aws-reaper tag value can be either ON or OFF'
-                fi
+                    write  "Querying tags on your AWS instances...."
+                    HOSTNAME=$ARG
+                    AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
+                    INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
+                    if [[ -z "${AWS_HOSTNAME// }" ]]
+                        then
+                            log 'Host not found in /etc/hosts file. Please verify the hostname'
+                        elif [[ -z "${INSTANCE_ID// }" ]]
+                            then
+                                log 'AWS instance not found !!'
+                        else
+                            write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
+                        for i in $(aws --output json ec2 describe-instances --filters "Name=tag:name,Values=$HOSTNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
+                            do
+                                OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
+                                AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
+                                REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "aws-reaper" | awk '{ print $3 }')
+                                NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
+                                write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                            done
+                    fi
+             fi
+          elif [[ "$NUM_ARG" -eq 3 ]]
+                then
+                    write  "Setting aws-reaper tag on your AWS instances...."
+                    HOSTNAME=$ARG
+                    AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
+                    INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
+                    if [[ -z "${AWS_HOSTNAME// }" ]]
+                        then
+                            log 'Host not found in /etc/hosts file. Please verify the hostname'
+                        elif [[ -z "${INSTANCE_ID// }" ]]
+                            then
+                                log 'AWS instance not found !!'
+                        elif [[ "$ARG1" == on || "$ARG1" == off ]];
+                            then
+                                aws ec2 create-tags --resources $INSTANCE_ID --tags Key="aws-reaper",Value=$ARG1
+                                write  "aws-reaper tag added to your AWS instance."
+
+                            else
+                                log 'aws-reaper tag value can be either ON or OFF'
+                    fi
   fi
 }
 
