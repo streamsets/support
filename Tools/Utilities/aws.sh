@@ -1,15 +1,8 @@
-  #!/bin/bash
+ #!/bin/bash
 
-#This script perform following operations on your AWS instance
-#Status check
-#Start instance
-#Stop instance
-#Update /etc/hosts file with your AWS instance information
-
-
-SSH_KEY='~/.ssh/sanju.pem'
+#SSH_KEY='~/.ssh/sanju.pem'
 USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
-HostFile='/etc/hosts'
+#HostFile='/etc/hosts'
 YELLOW='\033[1;33m' # Foreground Yellow
 BC_YELLOW='\033[33;5;7m' #Backgroud Yellow
 NC='\033[0m' # No Color
@@ -19,25 +12,25 @@ usage() {
 
   if [[ "$OSTYPE" == "linux-gnu" ]]; then # Linux
         echo -e  "\n  Usage: ${0} ${BC_YELLOW}  [start] [stop] [status] [reaper] [setup]   ${NC} "  >&2
-        echo -e  "${BC_YELLOW}\n start  <instance-name>${NC}                  Start the AWS instance."  >&2
-        echo -e  "${BC_YELLOW}\n stop    <instance-name>${NC}                 Stop the AWS instance"  >&2
-        echo -e  "${BC_YELLOW}\n stopAll   ${NC}                              Stop all of your AWS instances"  >&2
-        echo -e  "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}     Status of the AWS instance"  >&2
-        echo -e  "${BC_YELLOW}\n reaper ${NC}                                 Stop the instances with aws-reaper tag ON"  >&2
-        echo -e  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> on/off${NC}   Add aws-reaper tag to the AWS instances"  >&2
-        echo -e  "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
-        echo -e  "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
+        echo -e  "${BC_YELLOW}\n start  <instance-name>${NC}                                  Start the AWS instance."  >&2
+        echo -e  "${BC_YELLOW}\n stop    <instance-name>${NC}                                 Stop the AWS instance"  >&2
+        echo -e  "${BC_YELLOW}\n stopAll   ${NC}                                              Stop all of your AWS instances"  >&2
+        echo -e  "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}                     Status of the AWS instance"  >&2
+        echo -e  "${BC_YELLOW}\n reaper ${NC}                                                 Stop the instances with reaper tag ON"  >&2
+        echo -e  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update autostop /reaper tag to the AWS instances"  >&2
+        echo -e  "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                                   Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
+        echo -e  "                                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
-        echo  "\n  Usage: ${0} ${BC_YELLOW}  [start] [stop] [status] [reaper] [setup]   ${NC} "  >&2
-        echo  "${BC_YELLOW}\n start  <instance-name>${NC}                  Start the AWS instance."  >&2
-        echo  "${BC_YELLOW}\n stop    <instance-name>${NC}                 Stop the AWS instance"  >&2
-        echo  "${BC_YELLOW}\n stopAll   ${NC}                              Stop all of your AWS instances"  >&2
-        echo  "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}     Status of the AWS instance"  >&2
-        echo  "${BC_YELLOW}\n reaper ${NC}                                 Stop the instances with aws-reaper tag ON"  >&2
-        echo  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> on/off ${NC}  Add aws-reaper tag to the AWS instances"  >&2
-        echo  "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                       Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
-        echo  "                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
+        echo   "\n  Usage: ${0} ${BC_YELLOW}  [start] [stop] [status] [reaper] [setup]   ${NC} "  >&2
+        echo   "${BC_YELLOW}\n start  <instance-name>${NC}                                  Start the AWS instance."  >&2
+        echo   "${BC_YELLOW}\n stop    <instance-name>${NC}                                 Stop the AWS instance"  >&2
+        echo   "${BC_YELLOW}\n stopAll   ${NC}                                              Stop all of your AWS instances"  >&2
+        echo   "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}                     Status of the AWS instance"  >&2
+        echo   "${BC_YELLOW}\n reaper ${NC}                                                 Stop the instances with reaper tag ON"  >&2
+        echo   "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update autostop /reaper tag to the AWS instances"  >&2
+        echo   "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                                   Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
+        echo   "                                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
   fi
 }
 
@@ -54,7 +47,7 @@ write() {
         echo -e "$1"  # Linux
   fi
   if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "$1"  # Mac OSX
+        echo "$1\n"  # Mac OSX
   fi
 }
 
@@ -271,7 +264,7 @@ reaper()
         usage
     elif [[ "$NUM_ARG" -eq 1 ]]
         then
-            aws --output json ec2 describe-instances --filters "Name=tag:aws-reaper,Values=on" | grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
+            aws --output json ec2 describe-instances --filters "Name=tag:reaper,Values=on" | grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
             while read line
                 do
                     AWS_HOSTNAME=$line
@@ -296,9 +289,10 @@ reaper()
             done < ~/AWS.txt
 
             rm -f ~/AWS.txt
-            log 'AWS instances with aws-reaper tag set to ON are now stopped'
+            log 'AWS instances with reaper tag set to ON are now stopped'
   fi
 }
+
 tag(){
   if [[ "$NUM_ARG" -ge 4 ]]
     then
@@ -312,7 +306,7 @@ tag(){
                 do
                     OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                     AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
-                    REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "aws-reaper" | awk '{ print $3 }')
+                    REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
                     NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
                     write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                 done
@@ -326,7 +320,7 @@ tag(){
                         do
                             OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                             AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
-                            REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "aws-reaper" | awk '{ print $3 }')
+                            REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
                             NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
                         write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                         done
@@ -347,7 +341,7 @@ tag(){
                             do
                                 OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                                 AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
-                                REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "aws-reaper" | awk '{ print $3 }')
+                                REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
                                 NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
                                 write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                             done
@@ -355,7 +349,9 @@ tag(){
              fi
           elif [[ "$NUM_ARG" -eq 3 ]]
                 then
-                    write  "Setting aws-reaper tag on your AWS instances...."
+
+                    TAG=$(echo $ARG1 | cut -d'=' -f1)
+                    VALUE=$(echo $ARG1 | cut -d'=' -f2)
                     HOSTNAME=$ARG
                     AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
                     INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
@@ -365,15 +361,35 @@ tag(){
                         elif [[ -z "${INSTANCE_ID// }" ]]
                             then
                                 log 'AWS instance not found !!'
-                        elif [[ "$ARG1" == on || "$ARG1" == off ]];
-                            then
-                                aws ec2 create-tags --resources $INSTANCE_ID --tags Key="aws-reaper",Value=$ARG1
-                                write  "aws-reaper tag added to your AWS instance."
 
-                            else
-                                log 'aws-reaper tag value can be either ON or OFF'
+                   fi
+
+                    if [[ "$TAG" == autostop || "$TAG" == reaper ]] && [[ "$VALUE" == on || "$VALUE" == off ]];
+                        then
+                            write  "Setting requested tag on your AWS instances...."
+                            aws ec2 create-tags --resources $INSTANCE_ID --tags Key=$TAG,Value=$VALUE
+                            SSH_EXIT_STATUS=$?
+                            if [[ $SSH_EXIT_STATUS -ne 0 ]]
+                                then
+                                    EXIT_STATUS=$SSH_EXIT_STATUS
+                                    log 'Error in adding the requested tag'
+                                else
+                                    write  "Requested tag added to your AWS instance."
+                            fi
+                        elif [[ "$TAG" == autostop || "$TAG" == reaper ]] && [[ "$VALUE" != on || "$VALUE" != off ]];
+                            then
+                                log 'The value for the tag can be ON/OFF'
+                                write 'For example: ./aws.sh tag <instance-name> autostop=off"'
+                            elif [[ "$TAG" != autostop || "$TAG" != reaper ]];
+                                then
+                                    log "Invalid TAG <$TAG> !!"
+                                    write 'Please choose either 'autostop' or 'reaper'. For example, ./aws.sh tag <instance-name> autostop=off'
+
+
                     fi
-  fi
+
+          fi
+
 }
 
 case "$1" in
@@ -402,11 +418,11 @@ case "$1" in
         setup
        ;;
      'reaper')
-        # stop the instances with aws-reaper tag ON
+        # stop the instances with reaper tag ON
         reaper
        ;;
      'tag')
-        # Add aws-reaper tag to AWS instances
+        # Add reaper tag to AWS instances
         tag
        ;;
   #prints command usage in case of bad arguments
