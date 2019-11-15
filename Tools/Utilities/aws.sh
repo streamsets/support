@@ -17,7 +17,7 @@ usage() {
         echo -e  "${BC_YELLOW}\n stopAll   ${NC}                                              Stop all of your AWS instances"  >&2
         echo -e  "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}                     Status of the AWS instance"  >&2
         echo -e  "${BC_YELLOW}\n reaper ${NC}                                                 Stop the instances with reaper tag ON"  >&2
-        echo -e  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update autostop /reaper tag to the AWS instances"  >&2
+        echo -e  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update tags(autostop/reaper) to the AWS instances"  >&2
         echo -e  "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                                   Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
         echo -e  "                                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
   fi
@@ -28,7 +28,7 @@ usage() {
         echo   "${BC_YELLOW}\n stopAll   ${NC}                                              Stop all of your AWS instances"  >&2
         echo   "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}                     Status of the AWS instance"  >&2
         echo   "${BC_YELLOW}\n reaper ${NC}                                                 Stop the instances with reaper tag ON"  >&2
-        echo   "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update autostop /reaper tag to the AWS instances"  >&2
+        echo   "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update tags(autostop/reaper) to the AWS instances"  >&2
         echo   "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                                   Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
         echo   "                                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
   fi
