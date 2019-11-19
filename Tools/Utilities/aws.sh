@@ -1,7 +1,7 @@
  #!/bin/bash
 
 
-USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
+USERNAME=$USER  # Hard code this value for status command to work if running the script from a host where username will be different from your username
 HostFile='/etc/hosts'
 
 # Comment out if not using zsh
@@ -49,7 +49,7 @@ status(){
             write  "Querying status on all of your AWS instances...."
             for i in $(aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                 do
-                    echo  "$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i name | awk '{print $3 "        ==> "}' | tr -d '\n')$(aws --output text ec2 describe-instances --instance-id $i | grep -w STATE | awk '{print $3}')"
+                    echo  "$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep name | awk '{print $3 "        ==> "}' | tr -d '\n')$(aws --output text ec2 describe-instances --instance-id $i | grep -w STATE | awk '{print $3}')"
                 done
     elif [[ "$NUM_ARG" -eq 2 ]]
         then
@@ -62,7 +62,7 @@ status(){
                 then
                     log 'AWS instance not found !!'
                 else
-                    NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+                    NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
                     STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
                     if [[ $STATUS == 'running' ]]
                         then
@@ -88,7 +88,7 @@ HOSTNAME=$ARG
     then
       AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
       INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-      NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+      NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
       STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
       if [[ -z "${AWS_HOSTNAME// }" ]]
         then
@@ -133,7 +133,7 @@ stop(){
     then
       AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
       INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-      NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+      NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
       STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
       if [[ -z "${AWS_HOSTNAME// }" ]]
         then
@@ -174,7 +174,7 @@ if [[ "$NUM_ARG" -ge 2 ]]
             do
                 AWS_HOSTNAME=$line
                 INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-                NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+                NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
                 STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
                 if [[ $STATUS == 'running' ]]
                     then
@@ -219,7 +219,7 @@ setup(){
                         do
                             HOSTNAME=$line
                             HOST_IP=$(echo  ${HOSTNAME%%.*} | sed -e 's/ip-//' -e 's/-/./g')
-                            NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+                            NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
                             HOST_IN_ETC=$(grep $HOSTNAME $HostFile)
 
                             if [[  -z "${HOST_IN_ETC// }" ]]
@@ -250,7 +250,7 @@ reaper()
                 do
                     AWS_HOSTNAME=$line
                     INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-                    NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep -i name | awk '{print $3}')
+                    NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
                     STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
                     if [[ "$STATUS" == running ]]
                         then
@@ -323,7 +323,7 @@ tag(){
                                 OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                                 AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                                 REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
-                                NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
+                                NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
                                 write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                             done
                     fi
