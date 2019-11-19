@@ -288,7 +288,7 @@ tag(){
                     OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                     AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                     REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
-                    NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
+                    NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
                     write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                 done
          elif [[ "$NUM_ARG" -eq 2 ]]
@@ -302,7 +302,7 @@ tag(){
                             OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                             AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                             REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
-                            NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "name" | awk '{ print $3 }')
+                            NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
                         write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                         done
                 else
