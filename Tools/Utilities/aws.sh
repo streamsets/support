@@ -1,54 +1,35 @@
  #!/bin/bash
 
-#SSH_KEY='~/.ssh/sanju.pem'
+
 USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
-#HostFile='/etc/hosts'
-YELLOW='\033[1;33m' # Foreground Yellow
-BC_YELLOW='\033[33;5;7m' #Backgroud Yellow
-NC='\033[0m' # No Color
+HostFile='/etc/hosts'
+
+# Comment out if not using zsh
+#To install zsh on mac, run --> brew install zsh
+
+BYellow='\033[1;33m' # Foreground BYellow
+On_Yellow='\033[33;5;7m' #Backgroud BYellow
+Color_Off='\033[0m' # No Color
+
 
 #prints command usage
 usage() {
-
-  if [[ "$OSTYPE" == "linux-gnu" ]]; then # Linux
-        echo -e  "\n  Usage: ${0} ${BC_YELLOW}  [start] [stop] [status] [reaper] [setup]   ${NC} "  >&2
-        echo -e  "${BC_YELLOW}\n start  <instance-name>${NC}                                  Start the AWS instance."  >&2
-        echo -e  "${BC_YELLOW}\n stop    <instance-name>${NC}                                 Stop the AWS instance"  >&2
-        echo -e  "${BC_YELLOW}\n stopAll   ${NC}                                              Stop all of your AWS instances"  >&2
-        echo -e  "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}                     Status of the AWS instance"  >&2
-        echo -e  "${BC_YELLOW}\n reaper ${NC}                                                 Stop the instances with reaper tag ON"  >&2
-        echo -e  "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update tags(autostop/reaper) to the AWS instances"  >&2
-        echo -e  "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                                   Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
-        echo -e  "                                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
-  fi
-  if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
-        echo   "\n  Usage: ${0} ${BC_YELLOW}  [start] [stop] [status] [reaper] [setup]   ${NC} "  >&2
-        echo   "${BC_YELLOW}\n start  <instance-name>${NC}                                  Start the AWS instance."  >&2
-        echo   "${BC_YELLOW}\n stop    <instance-name>${NC}                                 Stop the AWS instance"  >&2
-        echo   "${BC_YELLOW}\n stopAll   ${NC}                                              Stop all of your AWS instances"  >&2
-        echo   "${BC_YELLOW}\n status   [OPTIONAL] <instance-name>${NC}                     Status of the AWS instance"  >&2
-        echo   "${BC_YELLOW}\n reaper ${NC}                                                 Stop the instances with reaper tag ON"  >&2
-        echo   "${BC_YELLOW}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${NC}   Add/update tags(autostop/reaper) to the AWS instances"  >&2
-        echo   "${BC_YELLOW}\n setup <AWS-OWNER-TAG>${NC}                                   Updates the /etc/hosts file with the name tag on your AWS instances"  >&2
-        echo   "                                                         <your-name>  == Owner TAG on your AWS instances \n"  >&2
-  fi
+        printf   "\n  Usage: ./aws.sh ${On_Yellow}  [start] [stop] [stopAll] [status] [reaper] [tag] [setup]   ${Color_Off} "  >&2
+        printf   "\n${On_Yellow}\n start  <instance-name>${Color_Off}                                  Start the AWS instance."  >&2
+        printf   "\n${On_Yellow}\n stop    <instance-name>${Color_Off}                                 Stop the AWS instance"  >&2
+        printf   "\n${On_Yellow}\n stopAll   ${Color_Off}                                              Stop all of your AWS instances"  >&2
+        printf   "\n${On_Yellow}\n status   [OPTIONAL] <instance-name>${Color_Off}                     Status of the AWS instance"  >&2
+        printf   "\n${On_Yellow}\n reaper ${Color_Off}                                                 Stop the instances with reaper tag ON"  >&2
+        printf   "\n${On_Yellow}\n tag [OPTIONAL] <instance-name> [OPTIONAL] <tag=value>${Color_Off}   Add/update tags(autostop/reaper) to the AWS instances"  >&2
+        printf   "\n${On_Yellow}\n setup <AWS-OWNER-TAG>${Color_Off}                                   Updates the /etc/hosts file with your AWS instances"  >&2
+        printf   "\n                                                         <your-name>  == OWNER tag on your AWS instances \n"  >&2
 }
 
 log() {
-  if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        echo -e "\n ${YELLOW}$1${NC} \n"  # Linux
-  fi
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo  "${YELLOW}\n $1 \n${NC}" # Mac OSX
-  fi
+    printf "\n ${BYellow}$1${Color_Off} \n"
 }
 write() {
-  if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        echo -e "$1"  # Linux
-  fi
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "$1\n"  # Mac OSX
-  fi
+   printf "$1 \n"
 }
 
 NUM_ARG=$#
@@ -119,7 +100,7 @@ HOSTNAME=$ARG
                 then
                     log 'Instance is already running'
                 else
-                    write "\nStarting: ${BC_YELLOW} $INSTANCE_ID --> ($NAME_TAG) ${NC}"
+                    write "\nStarting: ${On_Yellow} $INSTANCE_ID --> ($NAME_TAG) ${Color_Off}"
                     aws ec2 start-instances --instance-ids $INSTANCE_ID
                     SSH_EXIT_STATUS=$?
                     if [[ $SSH_EXIT_STATUS -ne 0 ]]
@@ -128,7 +109,7 @@ HOSTNAME=$ARG
                             log 'Error in starting the instance....'
                         else
                             sleep 10
-                            write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} started successfully !!"
+                            write "${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG) ${Color_Off} started successfully !!"
                             #write  "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$PUBLIC_AWS_HOSTNAME\n"
                     fi
 
@@ -164,7 +145,7 @@ stop(){
                 then
                     log 'Instance is already stopped'
                 else
-                    write "\nStopping: ${BC_YELLOW} $INSTANCE_ID --> ($NAME_TAG) ${NC}"
+                    write "\nStopping: ${On_Yellow} $INSTANCE_ID --> ($NAME_TAG) ${Color_Off}"
                     aws ec2 stop-instances --instance-ids $INSTANCE_ID
                     SSH_EXIT_STATUS=$?
                     if [[ $SSH_EXIT_STATUS -ne 0 ]]
@@ -173,7 +154,7 @@ stop(){
                             log 'Error in stopping the instance....'
                         else
                             sleep 10
-                            write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} stopped successfully !!"
+                            write "${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG) ${Color_Off} stopped successfully !!"
                             #write  "Please login to your instance using the command: ssh -i $SSH_KEY ubuntu@$PUBLIC_AWS_HOSTNAME\n"
                     fi
 
@@ -197,7 +178,7 @@ if [[ "$NUM_ARG" -ge 2 ]]
                 STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
                 if [[ $STATUS == 'running' ]]
                     then
-                        write "Stopping ${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG)... ${NC}"
+                        write "Stopping ${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG)... ${Color_Off}"
                         aws ec2 stop-instances --instance-ids $INSTANCE_ID
                         SSH_EXIT_STATUS=$?
                         if [[ $SSH_EXIT_STATUS -ne 0 ]]
@@ -206,7 +187,7 @@ if [[ "$NUM_ARG" -ge 2 ]]
                                 log 'Error in Stopping the instance....'
                         fi
                 else
-                    write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} already stopped. Skipping to next..."
+                    write "${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG) ${Color_Off} already stopped. Skipping to next..."
       fi
 
                 #cleanup of temp file
@@ -244,9 +225,9 @@ setup(){
                             if [[  -z "${HOST_IN_ETC// }" ]]
                                 then
                                     sudo bash -c "echo  $HOST_IP  $HOSTNAME $NAME_TAG >> /etc/hosts"
-                                    write "${BC_YELLOW}\n [$HOST_IP]  [$HOSTNAME] [$NAME_TAG] ${NC} added to the /etc/hosts file"
+                                    write "${On_Yellow}\n [$HOST_IP]  [$HOSTNAME] [$NAME_TAG] ${Color_Off} added to the /etc/hosts file"
                                 else
-                                    write "${BC_YELLOW}\n $HOSTNAME ${NC} alreasy exists in /etc/hosts file. skipping..."
+                                    write "${On_Yellow}\n $HOSTNAME ${Color_Off} alreasy exists in /etc/hosts file. skipping..."
 
                             fi
                     #cleanup of temp file
@@ -273,7 +254,7 @@ reaper()
                     STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
                     if [[ "$STATUS" == running ]]
                         then
-                            write   "Stopping ${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG)... ${NC}"
+                            write   "Stopping ${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG)... ${Color_Off}"
                             aws ec2 stop-instances --instance-ids $INSTANCE_ID
                             SSH_EXIT_STATUS=$?
                             if [[ $SSH_EXIT_STATUS -ne 0 ]]
@@ -282,7 +263,7 @@ reaper()
                                     log 'Error in Stopping the instance....'
                             fi
                     else
-                        write "${BC_YELLOW}\n $INSTANCE_ID --> ($NAME_TAG) ${NC} already stopped. Skipping to next..."
+                        write "${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG) ${Color_Off} already stopped. Skipping to next..."
                     fi
 
 
@@ -301,7 +282,7 @@ tag(){
     elif [[ "$NUM_ARG" -eq 1 ]]
         then
             write  "Querying tags on you AWS instances...."
-            write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
+            write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
             for i in $(aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                 do
                     OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
@@ -315,7 +296,7 @@ tag(){
             if [[ "$ARG" == all ]]
                 then
                     write  "Querying tags on all AWS instances...."
-                    write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
+                    write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
                     for i in $(aws --output json ec2 describe-instances --filters "Name=tag:dept,Values=support" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                         do
                             OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
@@ -336,7 +317,7 @@ tag(){
                             then
                                 log 'AWS instance not found !!'
                         else
-                            write "${BC_YELLOW}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${NC}"
+                            write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
                         for i in $(aws --output json ec2 describe-instances --filters "Name=tag:name,Values=$HOSTNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                             do
                                 OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
@@ -425,8 +406,8 @@ case "$1" in
         # Add reaper tag to AWS instances
         tag
        ;;
-  #prints command usage in case of bad arguments
-    *) usage
+        #prints command usage in case of bad arguments
+     *) usage
       ;;
 esac
 exit $EXIT_STATUS
