@@ -1,8 +1,11 @@
  #!/bin/bash
 
 
+#USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
 USERNAME=$USER  # Hard code this value for status command to work if running the script from a host where username will be different from your username
 HostFile='/etc/hosts'
+
+# aws s3api list-objects --bucket customer-support-bundle-basis --query "Contents[?contains(Key, '099319aa-552b-11e8-9510-2f6e25602906')]"
 
 # Comment out if not using zsh
 #To install zsh on mac, run --> brew install zsh
@@ -282,29 +285,46 @@ tag(){
     elif [[ "$NUM_ARG" -eq 1 ]]
         then
             write  "Querying tags on you AWS instances...."
-            write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+            #write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+            TITLE="${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+            echo $TITLE >> ~/AWS.txt
             for i in $(aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                 do
                     OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                     AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                     REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
                     NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
-                    write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-                done
+                    #write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                    FORMATTED_OUTPUT="$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                    echo $FORMATTED_OUTPUT >> ~/AWS.txt
+                    printf "."
+                 done
+                    clear
+                    cat ~/AWS.txt | column -t
+                    rm ~/AWS.txt
+
          elif [[ "$NUM_ARG" -eq 2 ]]
          then
             if [[ "$ARG" == all ]]
                 then
                     write  "Querying tags on all AWS instances...."
-                    write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+                    TITLE="${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+                    echo $TITLE >> ~/AWS.txt
                     for i in $(aws --output json ec2 describe-instances --filters "Name=tag:dept,Values=support" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                         do
-                            OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
-                            AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
-                            REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
-                            NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
-                        write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                            OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }  ')
+                            AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }  ')
+                            REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }  ')
+                            NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }  ')
+                            #write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                            FORMATTED_OUTPUT="$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                            echo $FORMATTED_OUTPUT >> ~/AWS.txt
+                            printf "."
                         done
+                            clear
+                            cat ~/AWS.txt | column -t
+                            rm ~/AWS.txt
+
                 else
                     write  "Querying tags on your AWS instances...."
                     HOSTNAME=$ARG
@@ -317,15 +337,23 @@ tag(){
                             then
                                 log 'AWS instance not found !!'
                         else
-                            write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+                            #write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+                            TITLE="${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
+                            echo $TITLE >> ~/AWS.txt
                         for i in $(aws --output json ec2 describe-instances --filters "Name=tag:name,Values=$HOSTNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                             do
                                 OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                                 AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                                 REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
                                 NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
-                                write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                                #write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                                FORMATTED_OUTPUT="$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                                echo $FORMATTED_OUTPUT >> ~/AWS.txt
+                                printf "."
                             done
+                                clear
+                                cat ~/AWS.txt | column -t
+                                rm ~/AWS.txt
                     fi
              fi
           elif [[ "$NUM_ARG" -eq 3 ]]
