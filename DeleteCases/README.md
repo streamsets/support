@@ -18,7 +18,7 @@ that is - 4 parts in the name with the parts separated by "_"
 It then checks if second token (the ZD ticket number) is CLOSED or SOLVED, and if so it prints an rm command you can 
 cut-n-paste into a shell window to remove the directory.
 
-=== building. 
+### building. 
 After cheking out the repo, go into the root directory for this program and type: 
 ```mvn clean package```
 That should build it.   :) 
