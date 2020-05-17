@@ -96,4 +96,14 @@ You can add docker start command to your ~/.bash_profile on the ec2 instance to 
                     
                     Also, the actual deleteing part is commented out, so you can try it and determine
                     if it meets your requirements. 
+#<on-prem.sh>: This script make it easy to install the SCH/controlhub with all the basic requirement
 
+
+# Need to create new instance with centos7 or Amazon Linux 2 
+# Download the script on the newly created instance and please make it executable using below command
+
+# Usage : chmod +x on-prem-sch.sh
+
+# Execute the script using below command and it'll ask for SCH version, Please select the version from the list which you want to install 
+
+# Usage : sh -x on-prem-sch.sh
