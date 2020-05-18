@@ -1,82 +1,83 @@
 #!/usr/bin/env bash
 
+=============================================================== Development Notes =================================================================
+ # Create a new branch with the Jira id
+ git checkout -b SDC-11465 origin/master
+ git status
+ #Make changes and commit
+
+ git add <files>
+ git commit
+
+ # Verify the changes can be seen in the got log
+ git log
+
+ # Fetach changes by others and rebase
+
+ git fetch
+ git rebase -i
+ #Send for review:
+
+ git review -R
+
+Backtracking changes:
+
+git stash - put away changes
+git fetch origin - get recent chganges
+git rebase origin/master - rebase
+
+Retrive stashed changes:
+git stash pop
+
+
+Enable remote debugger:
+export SDC_JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=51598
+
+Reverting to older git commit:
+git reflog
+git reset --hard  HEAD@{8}
+
+reverting specific changes from commit:
+https://stackoverflow.com/questions/12481639/remove-files-from-git-commit
+
+git reset --soft HEAD~1
+#Back out changes like below:
+git reset HEAD ./out/*
+git reset HEAD ./MiscJavaClients/target/*
+git reset HEAD ./.idea/*
+git reset HEAD ./MiscJavaClients/target/*
+git status
+#commit rest of the changes.
+git commit -c ORIG_HEAD
+#For example:
+git commit -c HEAD@{8}
+
+
 
 =============================================================== BASH =================================================================
-
-find ./ -name pipeline.json | for pipeline in $(cat $pipeline); do grep -i "labels" $pipeline; done
-find . -name system.log | for logs in $(cat $logs); do grep -i "G1 Young Generation GC in" $logs; done
+Python install on mac: https://wsvincent.com/install-python3-mac/
 
 TCPDUMP:
 tcpdump -A -nn dst 172.18.4.115 port 8080 
 
 Automated jstack - https://github.com/Azure/hbase-utils/blob/master/debug/hdi_collect_stacks.sh
 
-Detect pause is logs:
-The following awk lines may be helpful to spot a timeline gap in the log
-
-awk 'BEGIN{ threshold=177} /^20[0-9][0-9]/{ if(!length(curr_time)){ split($1, d, "-") ; split($2, t, ":") ; curr_time = mktime(d[1] " " d[2] " " d[3] " " t[1] " " t[2] " " t[3]); curr_line=$0 } else{ split($1, d, "-") ;split($2, t, ":"); prev_time = curr_time; prev_line=curr_line ;curr_time = mktime(d[1] " " d[2] " " d[3] " " t[1] " " t[2] " " t[3]); curr_line=$0 ; gap = curr_time-prev_time; if(gap > threshold) { printf "=====Line %d =========================================================================\n", NR; print prev_line; print " | " ; printf " %d seconds gap\n",gap ; print " | " ; print curr_line ; flag=1 } } } END { if(flag!=1){print "No pauses found in log"}}'   <filename>
 
 CURL:
 
-WebHDFS
-
 curl -i --negotiate -u : "http://master2.openstacklocal:50070/webhdfs/v1/tmp/?op=LISTSTATUS"
-
-
-Sample log:
-
-$ grep "1506612784935.d87b7f9b740282c058a34edbf0f3515a." catalina.2017-10-31.out
-Mon Oct 30 16:58:34 CET 2017, RpcRetryingCaller{globalStartTime=1509379114214, pause=1000, retries=3}, org.apache.hadoop.hbase.NotServingRegionException: org.apache.hadoop.hbase.NotServingRegionException: Region dco_edma:utilisateur,1-MRH4ZM,1506612784935.d87b7f9b740282c058a34edbf0f3515a. is not online on noeyy5jb.noe.edf.fr,60020,1508437472510
-Mon Oct 30 16:58:37 CET 2017, RpcRetryingCaller{globalStartTime=1509379114214, pause=1000, retries=3}, org.apache.hadoop.hbase.NotServingRegionException: org.apache.hadoop.hbase.NotServingRegionException: Region dco_edma:utilisateur,1-MRH4ZM,1506612784935.d87b7f9b740282c058a34edbf0f3515a. is not online on noeyy5jb.noe.edf.fr,60020,1508437472510
-Mon Oct 30 16:58:42 CET 2017, RpcRetryingCaller{globalStartTime=1509379114214, pause=1000, retries=3}, org.apache.hadoop.hbase.NotServingRegionException: org.apache.hadoop.hbase.NotServingRegionException: Region dco_edma:utilisateur,1-MRH4ZM,1506612784935.d87b7f9b740282c058a34edbf0f3515a. is not online on noeyy5jb.noe.edf.fr,60020,1508437472510
-
-$ grep NotServingRegionException ../catalina.2017-10-31.out | awk -F "," '{print $7}' | awk '{print $1}' | sort | uniq -c | wc -l
-      23
-
-$ grep NotServingRegionException ../catalina.2017-10-31.out | awk -F "," '{print $7}' | awk '{print $1}' | sort | uniq -c
-  12 1490778790938.4c2778ab5f5bd69fb90506b3d8f9e329.
-  30 1496321429986.b4d41e21d29cad1430297df0cc3bb740.
-  10 1496384153157.450b8564ebe60c34f9f0e89328d9dfea.
-
 
 keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore1.jks -storepass password -validity 360 -keysize 2048
 
-credentialStores=jks
-credentialStore.jks.def
-credentialStore.jks.config.keystore.type
-credentialStore.jks.config.keystore.file
-credentialStore.jks.config.keystore.storePassword
 
 
-credentialStores=jks
-credentialStore.jks.def=streamsets-datacollector-jks-credentialstore-lib::com_streamsets_datacollector_credential_javakeystore_JavaKeyStoreCredentialStore
-credentialStore.jks.config.keystore.type=PKCS12
-credentialStore.jks.config.keystore.file=/etc/sdc-jks/jks-credentialStore.pkcs12
-credentialStore.jks.config.keystore.storePassword=password
-
-Create SSH tunnel:
-
-ssh -i <ssh-key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<ec2_host>
-
-ssh -i ~/.ssh/sanju_aws.pem -L 18636:172.18.0.3:18636 -fN ubuntu@ec2-34-214-4-253.us-west-2.compute.amazonaws.com
-ssh -i ~/.ssh/sanju_aws.pem -L 18636:172.18.0.2:18636 -fN ubuntu@ec2-34-214-4-253.us-west-2.compute.amazonaws.com
-
-find . -name tpstats | grep -v '76.96.27.71' | grep -v 76.96.26.222 | for tpstats in $(cat $tpstats); do ls $tpstats ; done; for tpstats in $(cat $tpstats); do awk -F "/" '{print $3 }'; cat $tpstats | grep -i Native-Transport-Requests | awk '{print $3}'; done | awk '{key=$0; getline; print key " - " $0;}'
-find . -name tpstats | for tpstats in $(cat $tpstats); do ls $tpstats | grep -Ev '76.96.27.71 | 76.96.26.222' |do ls $tpstats; done;
-find . -name tpstats | for tpstats in $(cat $tpstats); do ls $tpstats  | awk -F "/" '{print $3 }'; cat $tpstats | grep -i Native-Transport-Requests | awk '{print $3}'; done | awk '{key=$0; getline; print key " - " $0;}'
-find . -name system.log | for logs in $(cat $logs); do grep -i "exception" $logs ; done
 sudo lsof -i -n | grep LISTEN | grep java > lsof-`hostname -i`.txt
-for i in $(find . -name system.log);do echo -e "========= $i =========="; grep -i "intersects a local range" $i ; done
-$ find . -name system.log | for logs in $(cat $logs); do grep -i "G1 Young Generation GC in" $logs | awk -F " " '{print $13}' | sed  's/ms.//g'; done | sort -nr | head -5
-find /usr/lib | grep jar$ | while read fname; do jar tf $fname | grep && echo $fname; done
 
+Find class in JAR:
+
+find ./ | grep jar$ | while read fname; do jar tf $fname | grep PathElement && echo $fname; done
 sed -i 's/something/other/g' filename.txt
 
-set local time:
-cp /etc/localtime /root/old.timezone
-rm -f /etc/localtime
-ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
-date
 
 Add a service user:
 for f in `cat hosts.txt | awk '{print $1}'`; do ssh -i ~/.ssh/sanju.pem root@$f useradd -g hdfs sanju ; done
@@ -100,6 +101,8 @@ KERBEROS SETUP:
 Adding kerberos user principal:
 kadmin.local
 addprinc <user>@realm
+Create the keytab files, using the Kadmin command:
+kadmin:  xst -k sdc.keytab sdc@CLUSTER
 
 Re-generating a keytab:
 kinit admin/admin@HWX.COM
@@ -108,29 +111,66 @@ listprinc
 xst -k sanju.keytab dn/data7.openstacklocal@HWX.COM
 copy the keytab to the desired host
 
-
-Running java code against cluster⇒
-export JAVA_HOME=/usr/jdk64/jdk1.8.0_77/
-export PATH=$PATH:/usr/jdk64/jdk1.8.0_77/bin/
-export HADOOP_CLASSPATH=`hadoop classpath`
-export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/usr/jdk64/jdk1.8.0_77/jre/lib/*
-javac -cp `hadoop classpath`$HADOOP_CLASSPATH HdfsDemo.java
-java -cp `hadoop classpath`$HADOOP_CLASSPATH: HdfsDemo
-
 =============================================================== Docker/STE/STF ===============================================================
 
-ssh -i <key> -L <local_port>:<container_ip>:<container_port> -fN ubuntu@<hostname>
+Add keys to SSH
 
-ssh -i ~/.ssh/sanju.pem -L 8042:172.18.0.3:8042 -fN ubuntu@lab
+To list the keys:
 
-Exposing docker ports:
+ssh-add -l
+
+To add the keys:
+
+ssh-add -k ~/.ssh/sanju.pem
+
+Opening tunnel in background:
+
+ssh -i ~/.ssh/sanju.pem -f -N -L <local-port>:<remote-host>:<remote-port> user@bastion
+
+Host 10.10.48.216
+ForwardAgent yes
+GatewayPorts yes
+ProxyCommand ssh -A sanjeev@ec2-34-222-148-53.us-west-2.compute.amazonaws.com -W %h:%p
+
+Host 10.10.59.56
+ForwardAgent yes
+GatewayPorts yes
+ProxyCommand ssh -A sanjeev@ec2-34-222-148-53.us-west-2.compute.amazonaws.com -W %h:%p
+
+ssh -D 1080 ubuntu@10.10.48.216
+ssh -D 1080 ubuntu@10.10.59.56
+
+Exposing docker ports(Linux):
 
 1) Stop the container ; for container in $(docker ps -q);do echo "$(docker stop $container)"; done
 2) Stop docker engine - sudo systemctl stop docker
-3) Edit hostconfig.json & config.v2.json  --  /var/lib/docker/containers/3d6fc1cdaacaa1d342edef279ee340fd12099009253e151725146555b094e0a3/
+
+3) Edit hostconfig.json & config.v2.json
+
+sudo vi /var/lib/docker/containers/23337e129dd79ccb487f601acf3cd65006f144f44e2647b36f0350fd1cb54301/hostconfig.json
+
+sudo vi /var/lib/docker/containers/23337e129dd79ccb487f601acf3cd65006f144f44e2647b36f0350fd1cb54301/config.v2.json
+
 4) sudo systemctl start docker
 5) Start the container
 
+
+docker start 23337e129dd7 76a1e54b173f 5579af9fb033
+
+docker start 6aeabb78cbaa ed6538209773 e83caff203e8 3dedc4b868da
+docker exec -it e83caff203e8 service dpm start
+
+Exposing docker ports(Mac OS)
+
+1)Install socat. With brew:
+    brew install socat
+2)Run this socat command to forward TCP requests to the socket
+    socat TCP-LISTEN:51599,reuseaddr,fork,bind=localhost UNIX-CONNECT:/var/run/docker.sock
+3)Map what you want on tcp://localhost:51599
+
+Find and Kill Docker containers:
+
+docker ps -a | awk '{if (NR!=1) {print "docker stop "$1}}'
 docker ps -a | awk '{if (NR!=1) {print "docker rm "$1}}'
 
 CDH :
@@ -141,13 +181,16 @@ sudo pip3 install -r topology_cdh/requirements.txt
 
 Non Kerberos:
 
-ste -v start CDH_5.15.0 --kafka-version 3.1.0  --spark2-version 2.3-r2 --sdc-version 3.7.2 --predictable --secondary-nodes node-{2..3}
+ste -v start CDH_5.15.0 --kafka-version 3.1.0  --spark2-version 2.3-r2 --sdc-version 3.9.1 --predictable --secondary-nodes node-{2..3}
 
 
 Kerberos:
-clusterdock -v start --namespace streamsets topology_cdh --kerberos --kerberos-principals sdctest --java jdk1.8.0_131 --cdh-version 5.15.0 --cm-version 5.15.0 --kafka-version 2.1.0 --ssl encryption --kudu-version 1.7.0 --predictable --spark2-version 2.3-r2 --sdc-version 3.8.0 --secondary-nodes node-{2..3}
+clusterdock -v start --namespace streamsets topology_cdh --kerberos --kerberos-principals sdctest --java jdk1.8.0_131 --cdh-version 5.15.0 --cm-version 5.15.0 --kafka-version 2.1.0 --ssl encryption --kudu-version 1.7.0 --predictable --spark2-version 2.3-r2 --sdc-version 3.10.1 --secondary-nodes node-{2..3}
 
 ste -v start CDH_5.15.0_Kerberos --kafka-version 3.1.0  --kudu-version 1.7.0 --spark2-version 2.3-r2 --sdc-version 3.7.2 --predictable --secondary-nodes node-{2..3}
+
+ste -v start CDH_6.1.1_Kerberos --kafka-version 3.1.0  --kudu-version 1.7.0 --spark2-version 2.3-r2 --sdc-version 3.10.1 --predictable --secondary-nodes node-{2..3}
+
 ls ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/
 sudo cp ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/clusterdock.keytab ~/sdc-backup.keytab
 cp ~/.streamsets/testenvironments/CDH_5.15.0_Kerberos/kerberos/clusterdock.keytab ${SDC_CONTAINER_ID}:/etc/sdc/sdc.keytab
@@ -175,6 +218,7 @@ ln -s /etc/hadoop/conf/hdfs-site.xml hdfs-site.xml
 ln -s /etc/hadoop/conf/core-site.xml core-site.xml
 ln -s /etc/hadoop/conf/mapred-site.xml mapred-site.xml
 ln -s /etc/hadoop/conf/yarn-site.xml yarn-site.xml
+ln -s /etc/hive/conf/hive-site.xml hive-site.xml
 
 Running the tests:
 
@@ -183,15 +227,17 @@ stf -v --testframework-config-directory /home/ubuntu/.streamsets/testenvironment
 MR:
 stf -v --testframework-config-directory /home/ubuntu/.streamsets/testenvironments/CDH_5.15.0_Kerberos test -vs --sdc-server-url=http://node-1.cluster:18630 --cluster-server=cm://node-1.cluster:7180 --kerberos stage/test_mapreduce_executor.py
 
+stf -v test -vs --sdc-server-url http://node-1.cluster:18630 stage/
+
 ControlHub:
 =============
 cd ~/workspace
-git clone https://github.com/streamsets/topology_sch.git -b streamsets
+git clone git@github.com:streamsets/topology_sch.git
 pip3 install -r topology_sch/requirements.txt
 clusterdock -v start topology_sch --predictable --sch-version ${SCH_VERSION} --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version ${SDC_VERSION}
 
 For example:
-clusterdock -v start topology_sch --predictable --sch-version 3.9.0 --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.7.2
+clusterdock -v start topology_sch --predictable --sch-version 3.12.0-latest --mysql-version 5.7 --influxdb-version 1.4 --system-sdc-version 3.10.1-latest
 
 
 Additional SDC instances:
@@ -219,11 +265,15 @@ ElasticSearch:
 
 stf test -vs -m elasticsearch --elasticsearch-url http://elastic:changeme@myelastic.cluster:9200 --sdc-version 3.7.2 --sdc-server-url http://node-1.cluster:18630 stage/test_elasticsearch_stages.py
 
+Postgres::
+
+stf test -vs -m database --keep-sdc-instances --database postgresql://postgres-cdc-10.4.cluster:5432/default stage/test_postgres_cdc.py
 
 REST Calls:
 
 # login to Control Hub security app
-curl -X POST -d '{"userName":"admin@admin", "password": "admin@admin"}' http://sch.cluster:18631/security/public-rest/v1/authentication/login --header "Content-Type:application/json" --header "X-Requested-By:admin@admin" -c cookie.txt
+curl -X POST -d '{"userName":"admin@admin", "password": "matrix008"}' http://sch.cluster:18631/security/public-rest/v1/authentication/login --header "Content-Type:application/json" --header "X-Requested-By:admin@admin" -c cookie.txt
+
 
 # generate auth token from security app
 sessionToken=$(cat cookie.txt | grep SSO | rev | grep -o '^\S*' | rev)
@@ -238,7 +288,7 @@ curl -s -X POST -d '{"userName":"admin@experian”, "password": "12345678"}' htt
 
 STREAMSETS CLI:
 
-bin/streamsets cli -U http://localhost:18331 help store import
+bin/streamsets cli -U http://localhost:19372 help store import
 
 bin/streamsets cli -U http://node-1.cluster:18343 -a dpm -u admin@admin -p admin@admin --dpmURL http://sch.cluster:18631 store list
 
@@ -246,6 +296,8 @@ bin/streamsets cli -U http://node-1.cluster:18400 -a dpm -u admin@admin -p admin
 
 bin/streamsets cli -U http://localhost:18331 -u admin -p admin store list
 bin/streamsets cli -U http://localhost:18331 -u admin -p admin store import -n "Dev to Trash" -f
+
+bin/streamsets cli -U http://macbook:19372 -a dpm -u admin@admin -p matrix008 --dpmURL http://sch.cluster:18631 store list
 
 
 
@@ -266,8 +318,8 @@ maprcli node services -name webserver -action start -nodes node-1.cluster
 =============================================================== KAFKA ===============================================================
 
 --create topic
-kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic test
-kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic stats
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 1 --partitions 1 --topic AAE1-EMME-ERROR
+kafka-topics --create --zookeeper `hostname`:2181 --replication-factor 3 --partitions 3 --topic sanju
 
 --list kafka-topics
 kafka-topics --list --zookeeper `hostname`:2181
@@ -277,7 +329,7 @@ kafka-topics --list --zookeeper `hostname`:2181
 kafka-topics --describe --zookeeper `hostname`:2181 --topic sanju
 
 -- count messages in a topic
-kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic source --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
+kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname`:9092 --topic AAE1-EMME-ERROR --time -1 --offsets 1 | awk -F  ":" '{sum += $3} END {print sum}'
 
 --Post messages to queue:
 
@@ -289,14 +341,25 @@ while read -r line; do kafka-console-producer.sh --broker-list `hostname`:9092 -
 
 kafka-console-consumer --bootstrap-server `hostname`:9092 --topic sanju --from-beginning
 
+-- Delete topic
+
+kafka-topics --zookeeper `hostname`:2181 --delete --topic cdc
+
+-- Read message and output to standard out
+
+kafka-console-consumer --zookeeper `hostname`:2181 --topic source > /tmp/source.out
+
 =============================================================== Misc ===============================================================
 Java Download on Ubuntu:
 sudo apt-get update
 wget --header "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz
 CentOS:
 
-curl -L -b "oraclelicense=a" -O http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.rpm
-sudo yum localinstall jdk-8u181-linux-x64.rpm
+curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm > jdk-8u131-linux-x64.rpm
+
+curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn/java/jdk/8u221-b11/230deb18db3e4014bb8e3e8324f81b43/jdk-8u221-linux-x64.rpm > jdk-8u221-linux-x64.rpm
+
+sudo yum localinstall jdk-8u131-linux-x64.rpm
 sudo alternatives --config java
 
 linux user add - useradd -G
@@ -431,6 +494,7 @@ wget http://stat-computing.org/dataexpo/2009/2006.csv.bz2
 wget http://stat-computing.org/dataexpo/2009/2007.csv.bz2
 wget http://stat-computing.org/dataexpo/2009/2008.csv.bz2
 
+MySQL:
 
 create table flights
 (Year mediumint ,
@@ -465,6 +529,39 @@ LateAircraftDelay varchar(255),
 id int unsigned NOT NULL auto_increment,
 PRIMARY KEY (id)) AUTO_INCREMENT=1;
 
+MS SQL Server:
+
+create table flights
+(Year int ,
+Month int ,
+DayofMonth int ,
+DayOfWeek int ,
+DepTime int ,
+CRSDepTime int ,
+ArrTime int ,
+CRSArrTime int ,
+UniqueCarrier varchar(255) ,
+FlightNum int ,
+TailNum varchar(255) ,
+ActualElapsedTime int ,
+CRSElapsedTime int ,
+AirTime varchar(255) ,
+ArrDelay int ,
+DepDelay int ,
+Origin varchar(255) ,
+Dest varchar(255) ,
+Distance int ,
+TaxiIn varchar(255) ,
+TaxiOut varchar(255) ,
+Cancelled int ,
+CancellationCode varchar(255) ,
+Diverted int ,
+CarrierDelay varchar(255) ,
+WeatherDelay varchar(255) ,
+NASDelay varchar(255) ,
+SecurityDelay varchar(255) ,
+LateAircraftDelay varchar(255));
+
 PostgreSQL Command:
 
 psql -h ip -U postgres dbname
@@ -479,6 +576,9 @@ MYSQL command:
 Set root passsword - $ mysqladmin -u root password NEWPASSWORD
 Reset password - mysqladmin -u root -p'oldpassword' password newpass
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'host' IDENTIFIED BY 'password' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'node-1.cluster' IDENTIFIED BY '' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.18.0.3' IDENTIFIED BY '' WITH GRANT OPTION;
+flush privileges;
 
 Test Employee database @ https://github.com/datacharmer/test_db
 Test data generator: https://github.com/snowindy/csv-test-data-generator
@@ -489,7 +589,7 @@ Student Table:
 
 DROP TABLE Student_Table;
 
-CREATE TABLE Student_Table (
+CREATE TABLE student (
   id mediumint(8) unsigned NOT NULL auto_increment,
   Student_ID mediumint,
  Last_Name varchar(255) default NULL,
@@ -499,7 +599,7 @@ CREATE TABLE Student_Table (
   PRIMARY KEY (id)
 ) AUTO_INCREMENT=1;
 
-INSERT INTO `Student_Table` (`Student_ID`,`Last_Name`,`First_Name`,`Class_Code`,`Grade_Pt`) VALUES (100,"Mark","Gretchen","SO",5),(101,"Hyatt","Kellie","SR",5),(102,"Reece","Selma","SO",1),(103,"Jameson","Zoe","SR",7),(104,"Matthew","Athena","",5),(105,"Erich","Iliana","FR",2),(106,"Bruno","Shellie","FR",7),(107,"Cairo","Margaret","SO",2),(108,"Ciaran","Kyra","JR",3),(109,"Bert","Zephr","",6),(110,"Hamilton","Tallulah","SR",7),(111,"Curran","Eleanor","JR",4),(112,"Graham","Kelly","SO",5),(113,"Reed","Brenna","",10),(114,"Keegan","Keiko","SO",10),(115,"Jason","Chiquita","JR",6),(116,"Walker","Halla","FR",10),(117,"Jameson","Echo","JR",7),(118,"Byron","Judith","SO",6),(119,"Thaddeus","Ursula","SR",3),(120,"Aaron","Marny","SO",10),(121,"Lionel","Imogene","SR",7),(122,"Thane","Ciara","JR",3),(123,"Linus","Debra","SR",5),(124,"Caldwell","Keiko","",9),(125,"Omar","Irene","SO",1),(126,"Cole","India","",7),(127,"Tanek","Rhonda","JR",2),(128,"Isaiah","Sandra","FR",4),(129,"Chancellor","Elaine","",2),(130,"Edan","Brielle","JR",3),(131,"Nero","Joy","JR",2),(132,"Elijah","Kathleen","SR",7),(133,"Caleb","Bertha","SO",7),(134,"Kasper","Samantha","FR",3),(135,"Philip","Hedda","SR",2),(136,"Chadwick","Stephanie","JR",1),(137,"John","Lacy","FR",5),(138,"Todd","Deborah","SR",3),(139,"Orson","Alexandra","FR",10),(140,"Hyatt","Ivy","SO",1),(141,"Michael","Ruby","SO",5),(142,"Jesse","Nicole","FR",8),(143,"Malachi","Hedy","FR",3),(144,"Holmes","Yolanda","JR",3),(145,"Holmes","Amaya","SR",3),(146,"Cruz","Dakota","JR",5),(147,"Herman","Rachel","SO",1),(148,"Vernon","Inez","SO",8),(149,"Robert","Nichole","JR",6),(150,"Brenden","Ramona","JR",4),(151,"Anthony","Shay","JR",3),(152,"Walker","Cameron","FR",4),(153,"Rigel","Kiara","JR",10),(154,"Colton","Desiree","SR",4),(155,"Cyrus","Ruby","SO",7),(156,"Arsenio","Dai","",6),(157,"Randall","Fatima","FR",6),(158,"Peter","Regan","SR",1),(159,"Merrill","Jenette","SR",8),(160,"Neil","Yvonne","",5),(161,"Edan","Bethany","SR",9),(162,"Jerry","Lani","FR",3),(163,"Lev","Cherokee","SR",1),(164,"Ryder","Phoebe","SO",1),(165,"Stewart","Shaeleigh","JR",4),(166,"Ahmed","Quintessa","",8),(167,"Abel","Giselle","SR",4),(168,"Alvin","Hermione","SR",1),(169,"Nasim","Brynne","SR",9),(170,"Connor","Ivory","SR",5),(171,"Moses","Tamara","",2),(172,"Jack","Zelenia","SO",10),(173,"Tyler","Ora","",4),(174,"Ali","Nola","SR",6),(175,"Gray","Victoria","FR",5),(176,"Alexander","Montana","JR",8),(177,"Allistair","Zelda","",1),(178,"Herman","Jemima","",2),(179,"Myles","Britanni","SO",6),(180,"Devin","Heather","",9),(181,"Dustin","Mechelle","FR",1),(182,"Tanek","Blythe","SR",7),(183,"Lester","Shaeleigh","FR",10),(184,"Phelan","Daryl","JR",6),(185,"Kadeem","Minerva","",5),(186,"Elijah","Orli","",4),(187,"Aladdin","Cameran","FR",5),(188,"Paul","Althea","JR",8),(189,"Hyatt","Ivory","FR",10),(190,"Kasimir","Daphne","JR",9),(191,"Isaac","Aiko","JR",5),(192,"Porter","Stella","SR",10),(193,"Joseph","Maile","JR",1),(194,"Devin","Tanisha","SO",6),(195,"Kermit","Cally","JR",5),(196,"Abel","Autumn","",3),(197,"Garrison","Lysandra","SO",8),(198,"Nash","Ora","",9),(199,"Cade","Priscilla","SR",7);
+INSERT INTO student (Student_ID,Last_Name,First_Name,Class_Code,Grade_Pt) VALUES (100,'Mark','Gretchen','SO',5),(101,'Hyatt','Kellie','SR',5),(102,'Reece','Selma','SO',1),(103,'Jameson','Zoe','SR',7),(104,'Matthew','Athena','',5),(105,'Erich','Iliana','FR',2),(106,'Bruno','Shellie','FR',7),(107,'Cairo','Margaret','SO',2),(108,'Ciaran','Kyra','JR',3),(109,'Bert','Zephr','',6),(110,'Hamilton','Tallulah','SR',7),(111,'Curran','Eleanor','JR',4),(112,'Graham','Kelly','SO',5),(113,'Reed','Brenna','',10),(114,'Keegan','Keiko','SO',10),(115,'Jason','Chiquita','JR',6),(116,'Walker','Halla','FR',10),(117,'Jameson','Echo','JR',7),(118,'Byron','Judith','SO',6),(119,'Thaddeus','Ursula','SR',3),(120,'Aaron','Marny','SO',10),(121,'Lionel','Imogene','SR',7),(122,'Thane','Ciara','JR',3),(123,'Linus','Debra','SR',5),(124,'Caldwell','Keiko','',9),(125,'Omar','Irene','SO',1),(126,'Cole','India','',7),(127,'Tanek','Rhonda','JR',2),(128,'Isaiah','Sandra','FR',4),(129,'Chancellor','Elaine','',2),(130,'Edan','Brielle','JR',3),(131,'Nero','Joy','JR',2),(132,'Elijah','Kathleen','SR',7),(133,'Caleb','Bertha','SO',7),(134,'Kasper','Samantha','FR',3),(135,'Philip','Hedda','SR',2),(136,'Chadwick','Stephanie','JR',1),(137,'John','Lacy','FR',5),(138,'Todd','Deborah','SR',3),(139,'Orson','Alexandra','FR',10),(140,'Hyatt','Ivy','SO',1),(141,'Michael','Ruby','SO',5),(142,'Jesse','Nicole','FR',8),(143,'Malachi','Hedy','FR',3),(144,'Holmes','Yolanda','JR',3),(145,'Holmes','Amaya','SR',3),(146,'Cruz','Dakota','JR',5),(147,'Herman','Rachel','SO',1),(148,'Vernon','Inez','SO',8),(149,'Robert','Nichole','JR',6),(150,'Brenden','Ramona','JR',4),(151,'Anthony','Shay','JR',3),(152,'Walker','Cameron','FR',4),(153,'Rigel','Kiara','JR',10),(154,'Colton','Desiree','SR',4),(155,'Cyrus','Ruby','SO',7),(156,'Arsenio','Dai','',6),(157,'Randall','Fatima','FR',6),(158,'Peter','Regan','SR',1),(159,'Merrill','Jenette','SR',8),(160,'Neil','Yvonne','',5),(161,'Edan','Bethany','SR',9),(162,'Jerry','Lani','FR',3),(163,'Lev','Cherokee','SR',1),(164,'Ryder','Phoebe','SO',1),(165,'Stewart','Shaeleigh','JR',4),(166,'Ahmed','Quintessa','',8),(167,'Abel','Giselle','SR',4),(168,'Alvin','Hermione','SR',1),(169,'Nasim','Brynne','SR',9),(170,'Connor','Ivory','SR',5),(171,'Moses','Tamara','',2),(172,'Jack','Zelenia','SO',10),(173,'Tyler','Ora','',4),(174,'Ali','Nola','SR',6),(175,'Gray','Victoria','FR',5),(176,'Alexander','Montana','JR',8),(177,'Allistair','Zelda','',1),(178,'Herman','Jemima','',2),(179,'Myles','Britanni','SO',6),(180,'Devin','Heather','',9),(181,'Dustin','Mechelle','FR',1),(182,'Tanek','Blythe','SR',7),(183,'Lester','Shaeleigh','FR',10),(184,'Phelan','Daryl','JR',6),(185,'Kadeem','Minerva','',5),(186,'Elijah','Orli','',4),(187,'Aladdin','Cameran','FR',5),(188,'Paul','Althea','JR',8),(189,'Hyatt','Ivory','FR',10),(190,'Kasimir','Daphne','JR',9),(191,'Isaac','Aiko','JR',5),(192,'Porter','Stella','SR',10),(193,'Joseph','Maile','JR',1),(194,'Devin','Tanisha','SO',6),(195,'Kermit','Cally','JR',5),(196,'Abel','Autumn','',3),(197,'Garrison','Lysandra','SO',8),(198,'Nash','Ora','',9),(199,'Cade','Priscilla','SR',7);
 
 DROP TABLE Sales_Data;
 
@@ -517,7 +617,7 @@ LOAD DATA LOCAL INFILE '/tmp/1987.csv' INTO TABLE onTimePerfStage FIELDS TERMINA
 
 HIVE:
 
-create table flights
+create table flight
 (Year INT ,
 Month INT ,
 DayofMonth INT ,
@@ -553,7 +653,7 @@ STORED AS TEXTFILE;
 LOAD DATA LOCAL INPATH "/tmp/1987.csv" OVERWRITE INTO TABLE flights;
 
 
-create table onTimePerf
+create table onTimePerf1
 (DayofMonth INT ,
 DayOfWeek INT ,
 DepTime INT ,
@@ -662,3 +762,144 @@ mysql> use mydb;
 mysql> source db_backup.dump;
 OR
 mysql --max_allowed_packet=100M -u root -p database < dump.sql
+
+============================================ Oracle Docker Setup ===============================
+
+https://docs.google.com/document/d/1bSPT2MWl8TlVyPrQBx50sLkGrYgaHyYCbnJBFRwMqcI/edit#heading=h.ovjw0pxdz7qa
+https://docs.google.com/document/d/10dddP_I0vo-_idanLNqI4-X3dM_v0n6j0rqkb_piU4g/edit#heading=h.opdzljml682i
+
+============================================ SCH LDAP Setup ===============================
+To check connectivity:
+
+ldapsearch -LLL -H ldaps://adc01.streamsets.net:636 -x -D 'sanjeev@streamsets.net' -w 'pwd' -b 'ou=StreamSets,dc=streamsets,dc=net' sAMAccountName=sanjeev
+
+Example configuration for Active Directory (username/password removed)
+
+# Streamsets LDAP configuration
+
+userGroupProvider.id=M
+userGroupProvider.M.providerClass=com.streamsets.apps.security.authentication.MultiUserGroupProvider
+userGroupProvider.M.multi.ids=AD
+userGroupProvider.M.multi.fetchGroups=true
+userGroupProvider.M.multi.allGroupsProviderId=AD
+userGroupProvider.M.multi.AD.providerClass=com.streamsets.apps.security.authentication.ldap.LdapUserGroupProvider
+
+
+userGroupProvider.externalProvider.principalCache.expiration.secs=60
+userGroupProvider.M.multi.AD.ldap.poolMinConnections=3
+userGroupProvider.M.multi.AD.ldap.poolMaxConnections=10
+userGroupProvider.M.multi.AD.ldap.poolValidateConnections=true
+userGroupProvider.M.multi.AD.ldap.connectionTimeoutMillis=5000
+userGroupProvider.M.multi.AD.ldap.responseTimeoutMillis=5000
+userGroupProvider.M.multi.AD.ldap.hostname=adc01.streamsets.net
+userGroupProvider.M.multi.AD.ldap.port=636
+userGroupProvider.M.multi.AD.ldap.ldaps=true
+userGroupProvider.M.multi.AD.ldap.startTLS=false
+userGroupProvider.M.multi.AD.ldap.userBaseDn=OU=StreamSets,DC=streamsets,DC=net
+userGroupProvider.M.multi.AD.ldap.userObjectClass=organizationalPerson
+userGroupProvider.M.multi.AD.ldap.userNameAttribute=sAMAccountName
+userGroupProvider.M.multi.AD.ldap.userEmailAttribute=mail
+userGroupProvider.M.multi.AD.ldap.userFullNameAttribute=cn
+userGroupProvider.M.multi.AD.ldap.userFilter=%s={user}
+userGroupProvider.M.multi.AD.ldap.bindDn=sanjeev@streamsets.net
+userGroupProvider.M.multi.AD.ldap.bindPassword=********
+userGroupProvider.M.multi.AD.ldap.fetchGroups=true
+userGroupProvider.M.multi.AD.ldap.groupBaseDn=OU=StreamSets,DC=streamsets,DC=net
+userGroupProvider.M.multi.AD.ldap.groupObjectClass=group
+userGroupProvider.M.multi.AD.ldap.groupMemberAttribute=member
+userGroupProvider.M.multi.AD.ldap.groupNameAttribute=cn
+userGroupProvider.M.multi.AD.ldap.groupFullNameAttribute=description
+userGroupProvider.M.multi.AD.ldap.groupFilter=%s={dn}
+
+For SDC:
+
+Under sdc.prop
+http.authentication.login.module=ldap
+http.authentication.ldap.role.mapping=Eng:admin
+
+Under ldap-login.conf:
+
+ldap {
+     com.streamsets.datacollector.http.LdapLoginModule required
+     debug="true"
+     useLdaps="true"
+     useStartTLS="false"
+     contextFactory="com.sun.jndi.ldap.LdapCtxFactory"
+     hostname="adc01.streamsets.net"
+     port="636"
+     bindDn="sanjeev@streamsets.net"
+     bindPassword="@ldap-bind-password.txt@"
+     forceBindingLogin="true"
+     userBaseDn="OU=StreamSets,DC=streamsets,DC=net"
+     userIdAttribute="sAMAccountName"
+     userPasswordAttribute=""
+     userObjectClass="person"
+     userFilter="sAMAccountName={user}"
+     roleBaseDn="OU=StreamSets,DC=streamsets,DC=net"
+     roleNameAttribute="cn"
+     roleMemberAttribute="member"
+     roleObjectClass="group"
+     roleFilter="member={dn}";
+};
+
+
+
+============================================================= DEBUG LOGS ===============================================
+
+#LDAP
+log4j.logger.com.streamsets.apps.security.authentication.ldap.LdapUserGroupProvider=TRACE
+
+
+Here's a quick & dirty Python example that authenticates against DPM, and then uses the cookie from DPM to make a requests to a DPM-managed SDC:
+
+import requests
+import json
+dpm_auth_creds = {"userName": "alex@woolford.io", "password": "p@ssword"}
+headers = {"Content-Type": "application/json", "X-Requested-By": "SDC"}
+auth_request = requests.post('http://dpm.woolford.io:18631/security/public-rest/v1/authentication/login', data=json.dumps(dpm_auth_creds), headers=headers)
+cookies = auth_request.cookies
+pipeline_status = requests.get("http://dpm.woolford.io:18630/rest/v1/pipeline/httporiginpaginationaed0daee-7810-4c2e-af29-8b7b6fe0c8b0/status", cookies=cookies)
+print(pipeline_status.content.decode())
+This returns:
+
+{
+"pipelineId" : "httporiginpaginationaed0daee-7810-4c2e-af29-8b7b6fe0c8b0",
+"rev" : "0",
+"user" : "alex@woolford.io",
+"status" : "EDITED",
+"message" : "Pipeline edited",
+"timeStamp" : 1527174457123,
+"attributes" : {
+"IS_REMOTE_PIPELINE" : false,
+"RUNTIME_PARAMETERS" : null
+},
+"executionMode" : "STANDALONE",
+"metrics" : null,
+"retryAttempt" : 0,
+"nextRetryTimeStamp" : 0,
+"name" : "httporiginpaginationaed0daee-7810-4c2e-af29-8b7b6fe0c8b0"
+}
+
+============================================================= DEBUG LOGS ===============================================
+
+Update node IP's with Cloudera manager:
+
+docker exec -it 23337e129dd7 service cloudera-scm-server stop
+docker exec -it 23337e129dd7 service cloudera-scm-agent stop
+docker exec -it  76a1e54b173f service cloudera-scm-agent stop
+docker exec -it  5579af9fb033 service cloudera-scm-agent stop
+
+
+1) Shutdown all services
+2) On all nodes, “service cloudera-scm-agent stop”
+3) On the CM server, “service cloudera-scm-server stop”.
+4) Extract the password for CM DB: grep password  /etc/cloudera-scm-server/db.properties
+5) #psql -h localhost -p 7432 -U scm
+6) select host_id,host_identifier,name,ip_address from hosts;
+7) update hosts set (host_identifier,name,ip_address) = ('node-1.cluster','node-1.cluster','172.18.0.2') where host_id=1;
+8) Then edit the /etc/cloudera-scm-agent/config.ini and update the server and the listen ip & hostname section on all nodes to the new interface ip & address
+
+docker exec -it 23337e129dd7 service cloudera-scm-server start
+docker exec -it 23337e129dd7 service cloudera-scm-agent start
+docker exec -it  76a1e54b173f service cloudera-scm-agent start
+docker exec -it  5579af9fb033 service cloudera-scm-agent start
