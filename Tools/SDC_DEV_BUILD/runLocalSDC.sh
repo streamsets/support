@@ -1,6 +1,5 @@
-#!/bin/bash
-
-export SDC_VERSION=3.9.0-SNAPSHOT
+#!/usr/bin/env bash
+export SDC_VERSION=3.17.0-SNAPSHOT
 : "${SDC_VERSION? Need to set SDC_VERSION}"
 
 # Clean logs/sysmlinks and start new logs
