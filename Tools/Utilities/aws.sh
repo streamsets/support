@@ -1,11 +1,7 @@
- #!/bin/bash
+#!/bin/bash
 
-
-#USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
-USERNAME=$USER  # Hard code this value for status command to work if running the script from a host where username will be different from your username
+USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
 HostFile='/etc/hosts'
-
-# aws s3api list-objects --bucket customer-support-bundle-basis --query "Contents[?contains(Key, '099319aa-552b-11e8-9510-2f6e25602906')]"
 
 # Comment out if not using zsh
 #To install zsh on mac, run --> brew install zsh
@@ -31,14 +27,16 @@ usage() {
 log() {
     printf "\n ${BYellow}$1${Color_Off} \n"
 }
+logger() {
+    printf "\n[$(date)]-- $1 \n"
+}
 write() {
    printf "$1 \n"
 }
 
 NUM_ARG=$#
-ARG=$2
-ARG1=$3
-
+ARG=$2  #command
+ARG1=$3 #instance-name / zone / owner etc
 
 # Function to check the status of the AWS instance
 status(){
@@ -91,8 +89,7 @@ HOSTNAME=$ARG
     then
       AWS_HOSTNAME=$(cat /etc/hosts | grep -w $HOSTNAME |  awk '{print $2}')
       INSTANCE_ID=$(aws --output json ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" |grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",")
-      NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')
-      STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
+      NAME_TAG=$(aws --output text ec2 describe-instances --filters "Name=private-dns-name,Values=$AWS_HOSTNAME" | grep TAGS | grep name | awk '{print $3}')      STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
       if [[ -z "${AWS_HOSTNAME// }" ]]
         then
             log 'Host not found in /etc/hosts file. Please verify the hostname'
@@ -242,13 +239,13 @@ setup(){
 }
 reaper()
 {
-  if [[ "$NUM_ARG" -gt 1 ]]
+  if [[ "$NUM_ARG" -gt 2 ]]
     then
         log "Invalid number of arguments !!"
         usage
-    elif [[ "$NUM_ARG" -eq 1 ]]
+    elif [[ "$NUM_ARG" -eq 2 ]]
         then
-            aws --output json ec2 describe-instances --filters "Name=tag:reaper,Values=on" | grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
+            aws --output json ec2 describe-instances --filters "Name=tag:reaper,Values=on,Name=tag:zone,Values=$ARG" | grep "PrivateDnsName" | awk '{print $2}' | sort | uniq | tr -d "\"" | tr -d "," > ~/AWS.txt
             while read line
                 do
                     AWS_HOSTNAME=$line
@@ -257,23 +254,23 @@ reaper()
                     STATUS=$(aws --output text ec2 describe-instance-status --instance-ids $INSTANCE_ID | sed -n '2p' |  awk '{print $3}')
                     if [[ "$STATUS" == running ]]
                         then
-                            write   "Stopping ${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG)... ${Color_Off}"
+                            logger   "Stopping $INSTANCE_ID --> ($NAME_TAG)..."
                             aws ec2 stop-instances --instance-ids $INSTANCE_ID
                             SSH_EXIT_STATUS=$?
                             if [[ $SSH_EXIT_STATUS -ne 0 ]]
                                 then
                                     EXIT_STATUS=$SSH_EXIT_STATUS
-                                    log 'Error in Stopping the instance....'
+                                    logger "Error in Stopping the instance...."
                             fi
                     else
-                        write "${On_Yellow}\n $INSTANCE_ID --> ($NAME_TAG) ${Color_Off} already stopped. Skipping to next..."
+                        logger "$INSTANCE_ID --> ($NAME_TAG) already stopped. Skipping to next..."
                     fi
 
 
             done < ~/AWS.txt
 
             rm -f ~/AWS.txt
-            log 'AWS instances with reaper tag set to ON are now stopped'
+            logger "AWS instances with reaper tag set to ON are now stopped"
   fi
 }
 
@@ -285,46 +282,41 @@ tag(){
     elif [[ "$NUM_ARG" -eq 1 ]]
         then
             write  "Querying tags on you AWS instances...."
-            #write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
-            TITLE="${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
-            echo $TITLE >> ~/AWS.txt
+            write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
             for i in $(aws --output json ec2 describe-instances --filters "Name=tag:owner,Values=$USERNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                 do
                     OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                     AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                     REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
                     NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
-                    #write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-                    FORMATTED_OUTPUT="$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-                    echo $FORMATTED_OUTPUT >> ~/AWS.txt
-                    printf "."
-                 done
-                    clear
-                    cat ~/AWS.txt | column -t
-                    rm ~/AWS.txt
-
+                    ZONE=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "zone" | awk '{ print $3 }  ');
+                    if [ -z "$OWNER" ]; then OWNER="<empty>"; fi;
+                    if [ -z "$AUTOSTOP" ]; then AUTOSTOP="<empty>"; fi;
+                    if [ -z "$REAPER" ]; then REAPER="<empty>"; fi;
+                    if [ -z "$NAME" ]; then NAME="<empty>"; fi;
+                    if [ -z "$ZONE" ]; then ZONE="<empty>"; fi;
+                    write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
+                done
          elif [[ "$NUM_ARG" -eq 2 ]]
          then
             if [[ "$ARG" == all ]]
                 then
                     write  "Querying tags on all AWS instances...."
-                    TITLE="${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
-                    echo $TITLE >> ~/AWS.txt
+                    write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
                     for i in $(aws --output json ec2 describe-instances --filters "Name=tag:dept,Values=support" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                         do
-                            OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }  ')
-                            AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }  ')
-                            REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }  ')
-                            NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }  ')
-                            #write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-                            FORMATTED_OUTPUT="$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-                            echo $FORMATTED_OUTPUT >> ~/AWS.txt
-                            printf "."
+                            OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
+                            AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
+                            REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
+                            NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
+                            ZONE=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "zone" | awk '{ print $3 }  ');
+                            if [ -z "$OWNER" ]; then OWNER="<empty>"; fi;
+                            if [ -z "$AUTOSTOP" ]; then AUTOSTOP="<empty>"; fi;
+                            if [ -z "$REAPER" ]; then REAPER="<empty>"; fi;
+                            if [ -z "$NAME" ]; then NAME="<empty>"; fi;
+                            if [ -z "$ZONE" ]; then ZONE="<empty>"; fi;
+                            write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                         done
-                            clear
-                            cat ~/AWS.txt | column -t
-                            rm ~/AWS.txt
-
                 else
                     write  "Querying tags on your AWS instances...."
                     HOSTNAME=$ARG
@@ -337,23 +329,15 @@ tag(){
                             then
                                 log 'AWS instance not found !!'
                         else
-                            #write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
-                            TITLE="${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
-                            echo $TITLE >> ~/AWS.txt
+                            write "${On_Yellow}\nOWNER\t\t\t\t\t\tNAME\t\t\t\t\t\tAUTOSTOP\t\t\t\t\t\tREAPER${Color_Off}"
                         for i in $(aws --output json ec2 describe-instances --filters "Name=tag:name,Values=$HOSTNAME" | grep "InstanceId" | awk '{print $2}' | tr -d "\"" | tr -d ",");
                             do
                                 OWNER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "owner" | awk '{ print $3 }')
                                 AUTOSTOP=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "autostop" | awk '{ print $3 }')
                                 REAPER=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep -i "reaper" | awk '{ print $3 }')
                                 NAME=$(aws --output text ec2 describe-instances --instance-id $i | grep TAGS | grep  "name" | awk '{ print $3 }')
-                                #write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-                                FORMATTED_OUTPUT="$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
-                                echo $FORMATTED_OUTPUT >> ~/AWS.txt
-                                printf "."
+                                write  "$OWNER\t\t\t\t\t\t$NAME\t\t\t\t\t\t$AUTOSTOP\t\t\t\t\t\t$REAPER"
                             done
-                                clear
-                                cat ~/AWS.txt | column -t
-                                rm ~/AWS.txt
                     fi
              fi
           elif [[ "$NUM_ARG" -eq 3 ]]
@@ -370,30 +354,44 @@ tag(){
                         elif [[ -z "${INSTANCE_ID// }" ]]
                             then
                                 log 'AWS instance not found !!'
-
-                   fi
-
-                    if [[ "$TAG" == autostop || "$TAG" == reaper ]] && [[ "$VALUE" == on || "$VALUE" == off ]];
-                        then
-                            write  "Setting requested tag on your AWS instances...."
-                            aws ec2 create-tags --resources $INSTANCE_ID --tags Key=$TAG,Value=$VALUE
-                            SSH_EXIT_STATUS=$?
-                            if [[ $SSH_EXIT_STATUS -ne 0 ]]
-                                then
-                                    EXIT_STATUS=$SSH_EXIT_STATUS
-                                    log 'Error in adding the requested tag'
-                                else
-                                    write  "Requested tag added to your AWS instance."
-                            fi
-                        elif [[ "$TAG" == autostop || "$TAG" == reaper ]] && [[ "$VALUE" != on || "$VALUE" != off ]];
-                            then
-                                log 'The value for the tag can be ON/OFF'
-                                write 'For example: ./aws.sh tag <instance-name> autostop=off"'
-                            elif [[ "$TAG" != autostop || "$TAG" != reaper ]];
+                            elif [[ ! $TAG =~ ^(autostop|reaper|zone)$ ]];
                                 then
                                     log "Invalid TAG <$TAG> !!"
-                                    write 'Please choose either 'autostop' or 'reaper'. For example, ./aws.sh tag <instance-name> autostop=off'
-
+                                    write 'Please choose either: [ autostop | reaper | zone ]'
+                                    write 'For example: ./aws.sh tag <instance-name> autostop=off'
+                                #elif [[ "$TAG" == autostop || "$TAG" == reaper ]] && [[ "$VALUE" == on || "$VALUE" == off ]];
+                                elif [[ $TAG =~ (autostop|reaper)$ ]] && [[ $VALUE =~ (on|off)$ ]];
+                                    then
+                                        write  "Setting requested tag on your AWS instances...."
+                                        aws ec2 create-tags --resources $INSTANCE_ID --tags Key=$TAG,Value=$VALUE
+                                        SSH_EXIT_STATUS=$?
+                                        if [[ $SSH_EXIT_STATUS -ne 0 ]]
+                                            then
+                                                EXIT_STATUS=$SSH_EXIT_STATUS
+                                                log 'Error in adding the requested tag'
+                                            else
+                                                write  "Requested tag added to your AWS instance."
+                                        fi
+                                elif [[ $TAG =~ (autostop|reaper)$ ]] && [[ ! $VALUE =~ ^(on|off)$ ]];
+                                    then
+                                        log 'The value for the tag can be [ ON/OFF ]'
+                                        write 'For example: ./aws.sh tag <instance-name> autostop=off"'
+                                elif [[ $TAG =~ (zone)$ ]] && [[ $VALUE =~ (US|EMEA|APAC)$ ]];
+                                     then
+                                         write  "Setting requested tag on your AWS instances...."
+                                         aws ec2 create-tags --resources $INSTANCE_ID --tags Key=$TAG,Value=$VALUE
+                                         SSH_EXIT_STATUS=$?
+                                         if [[ $SSH_EXIT_STATUS -ne 0 ]]
+                                            then
+                                                EXIT_STATUS=$SSH_EXIT_STATUS
+                                                log 'Error in adding the requested tag'
+                                            else
+                                                write  "Requested tag added to your AWS instance."
+                                         fi
+                                elif [[ $TAG =~ (zone)$ ]] && [[ ! $VALUE =~ ^(US|EMEA|APAC)$  ]];
+                                    then
+                                        log 'The value for the tag should be [ US | EMEA | APAC ]'
+                                        write 'For example: ./aws.sh tag <instance-name> zone=US'
 
                     fi
 
@@ -438,4 +436,4 @@ case "$1" in
      *) usage
       ;;
 esac
-exit $EXIT_STATUS
+#exit $EXIT_STATUS
