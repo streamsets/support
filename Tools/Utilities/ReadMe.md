@@ -1,17 +1,18 @@
 <img src="/images/readme.png" align="right" />
 
-#<aws.sh> This script perform following operations on your EC2 instance
+#### <aws.sh> This script perform following operations on your EC2 instance
 1) Status check
-2) Start instance
-3) Stop instance
-4) Update /etc/hosts file with your EC2 instance information. Use 'setup' option to update your hosts file with your current ec2 instances
+2) Start/Stop instance
+3) Add tags to the instances
+4) Update /etc/hosts file with your EC2 instance information. 
+   Use the 'setup' option to update your hosts file with your current ec2 instances
 
-# Pre-req:
+#### Pre-req:
 
 1) Get your AWS Access ID and Secret from IT
 2) Install awscli (eg: for OSX -brew install awscli) or follow ==> https://docs.aws.amazon.com/cli/latest/userguide/cli-install-macos.html
 
-  # Configuring your AWS CLI
+#### Configuring your AWS CLI
   Run the command 'aws configure'
   This will ask you for following:
   
@@ -25,30 +26,17 @@ Default output format:  [json / text] ** Script can handle either, however choos
 
 3) This scripts makes certain assumptions and need one customization
 
-# Assumptions: 
-1) The 'owner' tag on your Ec2 instance is same as your user name on your Mac
-2) Your host file is default /etc/hosts ** I'll wonder why it would be anything else ;)
+#### Please note:
 
-# Customization:
-1) When you clone this script locally, please update the 'SSH_KEY'variable at the top with your AWS key
+1) The 'owner' tag on your Ec2 instance is same as your user name on your Mac.
+   If not hard-code the USERNAME at the top of the script.
+2) When you clone this script locally, please update the 'SSH_KEY'variable at the top with your AWS key
+3) You can add docker start command to your ~/.bash_profile on the ec2 instance to launch your docker containers upon starting the instance using this script 
 
-# Pro-Tip: 
-
-You can add docker start command to your ~/.bash_profile on the ec2 instance to launch your docker containers upon starting the instance using this script 
-
-# Usage: /Users/sanjeev/aws.sh [-start] [-stop] [-status] [-setup]
-
-  -start  <instance-name>       Start the AWS instance.
-  
-  -stop    <instance-name>     Stop the AWS instance
-  
-  -status   [OPTIONAL] <instance-name>    Status of the AWS instance
-  
-  -setup <your-name>  Update /etc/hosts file with your EC2 instances
-  
-      ** <your-name>  == Owner TAG on your EC2 instances
       
-# Setting up a cron job:
+#### (Optional)Setting up a cron job:
+
+** This script is running as a cronjob on the 'Unbundle' server for the whole team, so individuals don't need to setup the cron job.
 
 1) vi jobname.cron
 2) Specify the schedule and the script to run.
@@ -66,25 +54,20 @@ You can add docker start command to your ~/.bash_profile on the ec2 instance to 
 
 6) To remove the cron job, run ==> sudo crontab -u ec2-user -r
   
- ** We all will have one cron job including entries for everyone on the team. In doing so, we all can use a single AWS micro(free) instance to run our cron job. 
+*****************************************************************************************************************************************************************
+#### <doc.sh>: This scripts makes it easy to start/stop/status-check on the Docker engine on your Mac
 
-#<doc.sh>: This scripts makes it easy to start/stop/status-check on the Docker engine on your Mac
+*****************************************************************************************************************************************************************
+#### <longPause.sh>: This scripts helps to spot a timeline gap in a given log file
 
-#   Usage: doc  [-start] [-stop] [-status]
+*****************************************************************************************************************************************************************
+#### <threads.sh>: This scripts collects java thread dumps 
 
--start        Start the Docker engine.
+*****************************************************************************************************************************************************************
+#### <startPipeline.sh>: Example script to launch pipeline from CLI
 
--stop         Stop the Docker engine
-
--status       Status of the Docker engine
-
-# <longPause.sh>: This scripts helps to spot a timeline gap in a given log file
-
-# <threads.sh>: This scripts collects java thread dumps 
-
-# <startPipeline.sh>: Example script to launch pipeline from CLI
-
-# <SyncRunInfo.pl>: 
+*****************************************************************************************************************************************************************
+#### <SyncRunInfo.pl>: 
 
                     Perl script to delete the extra directories which may be found in $SDC_DATA/runInfo
                     These directories are sometimes left over when pipelines are deleted and some error
@@ -96,14 +79,16 @@ You can add docker start command to your ~/.bash_profile on the ec2 instance to 
                     
                     Also, the actual deleteing part is commented out, so you can try it and determine
                     if it meets your requirements. 
-#<on-prem.sh>: This script make it easy to install the SCH/controlhub with all the basic requirement
+
+*****************************************************************************************************************************************************************                  
+#### <on-prem.sh>: This script make it easy to install the SCH/controlhub with all the basic requirement
 
 
-# Need to create new instance with centos7 or Amazon Linux 2 
-# Download the script on the newly created instance and please make it executable using below command
+ Need to create new instance with centos7 or Amazon Linux 2 
+ Download the script on the newly created instance and please make it executable using below command
 
-# Usage : chmod +x on-prem-sch.sh
+ Usage : chmod +x on-prem-sch.sh
 
-# Execute the script using below command and it'll ask for SCH version, Please select the version from the list which you want to install 
+ Execute the script using below command and it'll ask for SCH version, Please select the version from the list which you want to install 
 
-# Usage : sh -x on-prem-sch.sh
+ Usage : sh -x on-prem-sch.sh
