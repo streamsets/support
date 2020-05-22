@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USERNAME='sanjeev-basis'  # Hard code this value for status command to work if running the script from a host where username will be different from your username
+USERNAME=$USER  # Hard code this value for status command to work if running the script from a host where username will be different from your username
 HostFile='/etc/hosts'
 
 # Comment out if not using zsh
