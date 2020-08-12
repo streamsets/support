@@ -89,6 +89,6 @@ Default output format:  [json / text] ** Script can handle either, however choos
 
  Usage : chmod +x on-prem-sch.sh
 
- Execute the script using below command and it'll ask for SCH version, Please select the version from the list which you want to install 
+ Execute the script using below command and it'll ask for SCH version and for SSL , Please select according to the requirement 
 
  Usage : sh -x on-prem-sch.sh
