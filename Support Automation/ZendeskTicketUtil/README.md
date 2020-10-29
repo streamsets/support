@@ -3,10 +3,14 @@ This utility will delete directories pertaining to ZenDesk tickets that are no l
 Use `python3 zd_util.py -h` for usage instructions.
 
 This script expects that ticket directory you specify contains top-level directory names that are ticket numbers.
-For example: /users/me/tickets/
+For example:
+```
+		/users/me/tickets/
 			       |-> 12345
 			       |-> 23456
 			       |-> 19863
+```
+
 
 Prerequisites:
 
