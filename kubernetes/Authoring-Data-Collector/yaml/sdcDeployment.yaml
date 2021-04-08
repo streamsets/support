@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-sdc
+spec:
+  selector:
+    matchLabels:
+      app: auth-sdc
+  template:
+    metadata:
+      labels:
+        app: auth-sdc
+    spec:
+      containers:
+      - name: sdc
+        image: streamsets/datacollector:latest
+        ports:
+        - containerPort: 18630
+        env:
+        - name: SDC_CONF_SDC_BASE_HTTP_URL
+          value: https://sanju-auth-sdc/sdc/
+        - name: SDC_JAVA_OPTS
+          value: "-Xmx1g -Xms1g"
+        - name: SDC_CONF_HTTP_ENABLE_FORWARDED_REQUESTS
+          value: "true"
+        - name: SDC_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: sdc-deployment-config
+              key: SDC_VERSION
+        volumeMounts:
+        - name: sdc-id
+          mountPath: /data/sdc.id
+          subPath: sdc.id
+        - name: sdc-auth-token
+          mountPath: /etc/sdc/application-token.txt
+          subPath: application-token.txt
+        - name: dpm-config
+          mountPath: /etc/sdc/dpm.properties
+          subPath: dpm.properties
+      volumes:
+      - name: sdc-id
+        secret:
+          secretName: sdc-id
+      - name: sdc-auth-token
+        secret:
+          secretName: sdc-auth-token
+      - name: sdc-keystore
+        secret:
+          secretName: sdc-keystore
+      - name: dpm-config
+        configMap:
+          name: dpm-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-sdc-svc
+  labels:
+    app: auth-sdc-svc
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 18630
+    targetPort: 18630
+    protocol: TCP
+  selector:
+    app: auth-sdc
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sdc
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: \"false\"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  tls:
+  - hosts:
+    - sanju-auth-sdc
+    secretName: sdc-tls
+  rules:
+  - host: sanju-auth-sdc
+    http:
+      paths:
+      - path: /sdc(/|$)(.*)
+        backend:
+          serviceName: auth-sdc-svc
+          servicePort: 18630
