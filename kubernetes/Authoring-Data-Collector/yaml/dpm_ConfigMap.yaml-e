@@ -1,0 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: dpm-config
+data:
+    dpm.properties: |-
+      dpm.enabled=true
+      dpm.base.url=https://sch-url
+      dpm.registration.retry.attempts=5
+      dpm.security.validationTokenFrequency.secs=60
+      dpm.appAuthToken=@application-token.txt@
+      dpm.remote.control.job.labels=sanju,sanjeev-sdc-3-22-1
+      dpm.remote.control.ping.frequency=5000
+      dpm.remote.control.events.recipient=jobrunner-app
+      dpm.remote.control.process.events.recipients=jobrunner-app,timeseries-app
+      dpm.remote.control.status.events.interval=60000
+      http.meta.redirect.to.sso=false

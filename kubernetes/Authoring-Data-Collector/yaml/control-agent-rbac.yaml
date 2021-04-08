@@ -1,0 +1,35 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: streamsets-agent
+  labels:
+    app.kubernetes.io/name: streamsets-agent
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: streamsets-agent
+  labels:
+    app.kubernetes.io/name: streamsets-agent
+rules:
+- apiGroups: ["", "extensions", "autoscaling", "apps"]
+  resources: ["pods", "deployments", "replicasets", "horizontalpodautoscalers", "services", "ingresses"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: streamsets-agent
+  labels:
+    app.kubernetes.io/name: streamsets-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: streamsets-agent
+subjects:
+  - kind: ServiceAccount
+    name: streamsets-agent
+---

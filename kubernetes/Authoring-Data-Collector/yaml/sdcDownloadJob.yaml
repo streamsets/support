@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sdc-stage-libs-job
+spec:
+  template:
+    metadata:
+      name: sdc-stage-libs-job
+    spec:
+      containers:
+      - name: sdc-stage-libs-job
+        image: cirrusci/wget
+        env:
+        - name: STREAMSETS_DOWNLOAD_URL
+          valueFrom:
+            configMapKeyRef:
+              name: sdc-deployment-config
+              key: STREAMSETS_DOWNLOAD_URL
+        - name: SDC_DOWNLOAD_USER
+          valueFrom:
+            configMapKeyRef:
+              name: sdc-deployment-config
+              key: SDC_DOWNLOAD_USER
+        - name: SDC_DOWNLOAD_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sdc-deployment-secret
+              key: SDC_DOWNLOAD_PASSWORD
+        - name: SDC_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: sdc-deployment-config
+              key: SDC_VERSION
+
+        command: ["/bin/sh", "-c"]
+        args:
+          - sleep 60;
+            addgroup -g 20159 sdc && adduser -D -u 20159 -G sdc sdc;
+            wget --user=$SDC_DOWNLOAD_USER --password="${SDC_DOWNLOAD_PASSWORD}" ${STREAMSETS_DOWNLOAD_URL}/${SDC_VERSION}/tarball/streamsets-datacollector-all-${SDC_VERSION}.tgz;
+            tar -xvf streamsets-datacollector-all-${SDC_VERSION}.tgz -C /tmp;
+            cp -R /tmp/streamsets-datacollector-${SDC_VERSION}/streamsets-libs/* /streamsets-libs;
+            echo "Download Completed !!";
+            rm -rf /streamsets-libs/lost+found;
+            rm streamsets-datacollector-all-${SDC_VERSION}.tgz;
+            rm -rf /tmp/streamsets-datacollector-${SDC_VERSION};
+            chown -R sdc:sdc /streamsets-libs;
+            echo "Permissions and cleanup completed !!";
+            sleep 1;
+        volumeMounts:
+        - name: sdc-stage-libs-pvc
+          mountPath: /streamsets-libs
+      restartPolicy: Never
+      volumes:
+      - name: sdc-stage-libs-pvc
+        persistentVolumeClaim:
+          claimName: sdc-stage-libs-pvc
